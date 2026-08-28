@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ShieldHalf, User, Swords, Globe, Link2, Handshake, Image, Newspaper, UserPlus, X } from "lucide-react";
+import { ShieldHalf, User, Swords, Globe, Link2, Handshake, Image, Newspaper, UserPlus, X, Copy, ExternalLink } from "lucide-react";
 import { supabase } from "../../lib/supabaseClient";
+import { getTournamentUrl } from "../../lib/publicUrls";
 import { PageLoader } from "../../components/ui/LoadingSpinner";
 import { ErrorState } from "../../components/ui/ErrorState";
 
@@ -124,6 +125,7 @@ export default function TournamentDetailPage() {
   const [tournament, setTournament] = useState<TournamentDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -152,9 +154,27 @@ export default function TournamentDetailPage() {
 
       {tournament.description && <p className="max-w-2xl text-sm text-[var(--color-text)]">{tournament.description}</p>}
 
-      <a href={`https://${tournament.slug}.tournamentlive.app`} target="_blank" rel="noreferrer" className="inline-block text-sm text-[var(--color-primary)] hover:underline">
-        {tournament.slug}.tournamentlive.app ↗
-      </a>
+      <div className="flex flex-wrap items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-secondary)] px-3 py-2.5">
+        <span className="text-xs font-medium text-[var(--color-muted)]">Public Website</span>
+        <a href={getTournamentUrl(tournament.slug)} target="_blank" rel="noreferrer" className="truncate text-sm text-[var(--color-primary)] hover:underline">
+          {getTournamentUrl(tournament.slug)}
+        </a>
+        <div className="ml-auto flex items-center gap-2">
+          <a href={getTournamentUrl(tournament.slug)} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] px-3 py-1.5 text-xs font-medium text-[var(--color-text)] hover:bg-[var(--color-surface)]">
+            <ExternalLink size={13} /> Open Public Website
+          </a>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(getTournamentUrl(tournament.slug));
+              setCopied(true);
+              setTimeout(() => setCopied(false), 2000);
+            }}
+            className="flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] px-3 py-1.5 text-xs font-medium text-[var(--color-text)] hover:bg-[var(--color-surface)]"
+          >
+            <Copy size={13} /> {copied ? "Copied!" : "Copy Link"}
+          </button>
+        </div>
+      </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {QUICK_LINKS.map((link) => (
