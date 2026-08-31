@@ -54,9 +54,9 @@ export default function WebsiteSettingsPage() {
     if (!selectedId) return;
     setIsLoading(true);
     Promise.all([
-      supabase.from("website_themes").select("*").eq("tournament_id", selectedId).single(),
-      supabase.from("site_settings").select("*").eq("tournament_id", selectedId).single(),
-      supabase.from("seo_settings").select("*").eq("tournament_id", selectedId).single(),
+      supabase.from("website_themes").select("*").eq("tournament_id", selectedId).maybeSingle(),
+      supabase.from("site_settings").select("*").eq("tournament_id", selectedId).maybeSingle(),
+      supabase.from("seo_settings").select("*").eq("tournament_id", selectedId).maybeSingle(),
     ]).then(([themeRes, siteRes, seoRes]) => {
       if (themeRes.data) setTheme(themeRes.data);
       if (siteRes.data) {
@@ -76,13 +76,18 @@ export default function WebsiteSettingsPage() {
   const save = async () => {
     setIsSaving(true);
     setSaved(false);
-    await Promise.all([
-      supabase.from("website_themes").update(theme).eq("tournament_id", selectedId),
-      supabase.from("site_settings").update({ ...site, homepage_sections: sections }).eq("tournament_id", selectedId),
-      supabase.from("seo_settings").update(seo).eq("tournament_id", selectedId),
+    // upsert, not update: a tournament missing one of these 1:1 rows (e.g.
+    // an older duplicated tournament created before duplicateTournament was
+    // fixed to copy them) would otherwise silently match zero rows on
+    // update() — no error, "Saved" still shows, but nothing persists and the
+    // public site keeps showing stale/default branding forever.
+    const [themeRes, siteRes, seoRes] = await Promise.all([
+      supabase.from("website_themes").upsert({ ...theme, tournament_id: selectedId }, { onConflict: "tournament_id" }),
+      supabase.from("site_settings").upsert({ ...site, homepage_sections: sections, tournament_id: selectedId }, { onConflict: "tournament_id" }),
+      supabase.from("seo_settings").upsert({ ...seo, tournament_id: selectedId }, { onConflict: "tournament_id" }),
     ]);
     setIsSaving(false);
-    setSaved(true);
+    setSaved(!themeRes.error && !siteRes.error && !seoRes.error);
   };
 
   const applyTemplate = (t: { primary: string; secondary: string; accent: string; layout: string }) => {

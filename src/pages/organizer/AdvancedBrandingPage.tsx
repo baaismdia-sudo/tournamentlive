@@ -35,7 +35,7 @@ export default function AdvancedBrandingPage() {
   useEffect(() => {
     if (!selectedId) return;
     setIsLoading(true);
-    supabase.from("website_themes").select("*").eq("tournament_id", selectedId).single().then(({ data }) => {
+    supabase.from("website_themes").select("*").eq("tournament_id", selectedId).maybeSingle().then(({ data }) => {
       if (data) {
         setAdvancedColors(data.advanced_colors ?? {});
         setTypography(data.typography ?? typography);
@@ -56,13 +56,23 @@ export default function AdvancedBrandingPage() {
   const save = async () => {
     setIsSaving(true);
     setSaved(false);
-    await supabase.from("website_themes").update({
-      advanced_colors: advancedColors, typography, button_style: buttonStyle, card_style: cardStyle,
-      theme_mode: themeMode, header_config: headerConfig, footer_config: footerConfig,
-      custom_css: profile?.custom_css_enabled ? customCss : null, newsletter_enabled: newsletterEnabled,
-    }).eq("tournament_id", selectedId);
+    // upsert (not update): if this tournament's website_themes row is ever
+    // missing (e.g. an older duplicated tournament, or any future path that
+    // creates a tournament without going through the normal creation flow),
+    // update() would silently match zero rows — no error, but nothing is
+    // actually saved, while the UI still shows "Branding saved." upsert
+    // self-heals by creating the row if it's missing.
+    const { error } = await supabase.from("website_themes").upsert(
+      {
+        tournament_id: selectedId,
+        advanced_colors: advancedColors, typography, button_style: buttonStyle, card_style: cardStyle,
+        theme_mode: themeMode, header_config: headerConfig, footer_config: footerConfig,
+        custom_css: profile?.custom_css_enabled ? customCss : null, newsletter_enabled: newsletterEnabled,
+      },
+      { onConflict: "tournament_id" }
+    );
     setIsSaving(false);
-    setSaved(true);
+    setSaved(!error);
   };
 
   const addQuickLink = () => setFooterConfig((f) => ({ ...f, quick_links: [...f.quick_links, { label: "", url: "" }] }));
