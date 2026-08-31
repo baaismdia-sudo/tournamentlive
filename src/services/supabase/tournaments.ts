@@ -142,6 +142,61 @@ export async function duplicateTournament(tournamentId: string) {
     .select()
     .single();
   if (insertError) throw insertError;
+
+  // A tournament is meaningless without its five 1:1 config rows (see
+  // createTournament above) — without these, Advanced Branding's .update()
+  // silently matches zero rows (no error, but nothing is ever saved), and
+  // the public site falls back to defaults forever. Duplication must create
+  // the same rows createTournament does, copying values from the original
+  // where sensible so the copy starts branded exactly like its source.
+  const { data: originalTheme } = await supabase.from("website_themes").select("*").eq("tournament_id", tournamentId).maybeSingle();
+  const { data: originalSite } = await supabase.from("site_settings").select("*").eq("tournament_id", tournamentId).maybeSingle();
+  const { data: originalSeo } = await supabase.from("seo_settings").select("*").eq("tournament_id", tournamentId).maybeSingle();
+  const { data: originalTournamentSettings } = await supabase.from("tournament_settings").select("*").eq("tournament_id", tournamentId).maybeSingle();
+
+  await Promise.all([
+    supabase.from("tournament_settings").insert({
+      tournament_id: copy.id,
+      format: originalTournamentSettings?.format ?? "knockout",
+      registration_open: true,
+      registration_deadline: originalTournamentSettings?.registration_deadline ?? null,
+    }),
+    supabase.from("website_themes").insert({
+      tournament_id: copy.id,
+      primary_color: originalTheme?.primary_color ?? "#4F46E5",
+      secondary_color: originalTheme?.secondary_color ?? "#7C3AED",
+      accent_color: originalTheme?.accent_color,
+      font_heading: originalTheme?.font_heading ?? "Inter",
+      font_body: originalTheme?.font_body ?? "Inter",
+      dark_mode_enabled: originalTheme?.dark_mode_enabled ?? false,
+      layout_variant: originalTheme?.layout_variant,
+      advanced_colors: originalTheme?.advanced_colors,
+      typography: originalTheme?.typography,
+      button_style: originalTheme?.button_style,
+      card_style: originalTheme?.card_style,
+      theme_mode: originalTheme?.theme_mode,
+      header_config: originalTheme?.header_config,
+      footer_config: originalTheme?.footer_config,
+      newsletter_enabled: originalTheme?.newsletter_enabled,
+    }),
+    supabase.from("site_settings").insert({
+      tournament_id: copy.id,
+      site_title: copy.name,
+      tagline: originalSite?.tagline,
+      show_sponsors: originalSite?.show_sponsors,
+      show_gallery: originalSite?.show_gallery,
+      show_news: originalSite?.show_news,
+      show_live_stream: originalSite?.show_live_stream,
+      footer_text: originalSite?.footer_text,
+    }),
+    supabase.from("seo_settings").insert({
+      tournament_id: copy.id,
+      meta_title: copy.name,
+      meta_description: originalSeo?.meta_description,
+      og_image_url: originalSeo?.og_image_url,
+    }),
+  ]);
+
   return copy;
 }
 

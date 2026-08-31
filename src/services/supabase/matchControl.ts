@@ -58,31 +58,27 @@ export interface LogEventInput {
  * apart. player_statistics updates itself via the apply_event_statistics
  * trigger — this function doesn't need to know the stat mapping.
  */
+/**
+ * Logs the event and applies its score delta atomically at the database
+ * level (via the log_match_event_atomic RPC), so concurrent/rapid taps
+ * can never overwrite each other's score changes. Do not replace this
+ * with a client-side read-current-score-then-write pattern — that is
+ * what caused scores to get stuck instead of incrementing.
+ */
 export async function logMatchEvent(input: LogEventInput) {
-  const { data: event, error } = await supabase
-    .from("match_events")
-    .insert({
-      match_id: input.matchId,
-      team_id: input.teamId ?? null,
-      player_id: input.playerId ?? null,
-      event_type: input.eventType,
-      minute: input.minute ?? null,
-      description: input.description ?? null,
-      value: input.value ?? 1,
-    })
-    .select()
-    .single();
+  const { data, error } = await supabase.rpc("log_match_event_atomic", {
+    p_match_id: input.matchId,
+    p_team_id: input.teamId ?? null,
+    p_player_id: input.playerId ?? null,
+    p_event_type: input.eventType,
+    p_minute: input.minute ?? null,
+    p_description: input.description ?? null,
+    p_value: input.value ?? 1,
+    p_score_delta: input.scoreDelta ?? null,
+    p_scoring_team: input.scoringTeam ?? null,
+  });
   if (error) throw error;
-
-  if (input.scoreDelta && input.scoringTeam) {
-    const { data: current } = await supabase.from("live_scores").select("home_score, away_score").eq("match_id", input.matchId).single();
-    const homeScore = (current?.home_score ?? 0) + (input.scoringTeam === "home" ? input.scoreDelta : 0);
-    const awayScore = (current?.away_score ?? 0) + (input.scoringTeam === "away" ? input.scoreDelta : 0);
-    await supabase.from("live_scores").update({ home_score: homeScore, away_score: awayScore }).eq("match_id", input.matchId);
-    await supabase.from("matches").update({ home_score: homeScore, away_score: awayScore }).eq("id", input.matchId);
-  }
-
-  return event;
+  return data;
 }
 
 export async function undoEvent(eventId: string) {
