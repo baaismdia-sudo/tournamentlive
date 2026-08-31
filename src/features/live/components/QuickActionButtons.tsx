@@ -19,15 +19,27 @@ export function QuickActionButtons({
   actions: QuickAction[];
   homePlayers: PlayerOption[];
   awayPlayers: PlayerOption[];
-  onAction: (action: QuickAction, team: "home" | "away", playerId?: string, value?: number) => void;
+  onAction: (action: QuickAction, team: "home" | "away", playerId?: string, value?: number) => void | Promise<void>;
 }) {
   const [pending, setPending] = useState<{ action: QuickAction; team: "home" | "away" } | null>(null);
   const [selectedPlayer, setSelectedPlayer] = useState("");
   const [numericValue, setNumericValue] = useState("1");
+  const [submittingKey, setSubmittingKey] = useState<string | null>(null);
+
+  const runAction = async (key: string, action: QuickAction, team: "home" | "away", playerId?: string, value?: number) => {
+    if (submittingKey) return; // guard against double taps while a request is in flight
+    setSubmittingKey(key);
+    try {
+      await onAction(action, team, playerId, value);
+    } finally {
+      setSubmittingKey(null);
+    }
+  };
 
   const confirmPending = () => {
     if (!pending) return;
-    onAction(pending.action, pending.team, selectedPlayer || undefined, pending.action.promptValue ? Number(numericValue) : undefined);
+    const key = `${pending.team}-${pending.action.eventType}-${pending.action.label}`;
+    void runAction(key, pending.action, pending.team, selectedPlayer || undefined, pending.action.promptValue ? Number(numericValue) : undefined);
     setPending(null);
     setSelectedPlayer("");
     setNumericValue("1");
@@ -42,16 +54,25 @@ export function QuickActionButtons({
           <div key={team} className="space-y-2">
             <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">{team} team</p>
             <div className="grid grid-cols-2 gap-1.5">
-              {actions.map((action) => (
-                <button
-                  key={`${team}-${action.eventType}-${action.label}`}
-                  onClick={() => (action.requiresPlayer || action.promptValue ? setPending({ action, team }) : onAction(action, team))}
-                  className={`flex items-center justify-center gap-1 rounded-lg border px-2 py-2 text-xs font-medium transition ${TONE_CLASSES[action.tone ?? "info"]}`}
-                >
-                  <span>{action.icon}</span>
-                  {action.label}
-                </button>
-              ))}
+              {actions.map((action) => {
+                const key = `${team}-${action.eventType}-${action.label}`;
+                const isSubmitting = submittingKey === key;
+                return (
+                  <button
+                    key={key}
+                    disabled={isSubmitting}
+                    onClick={() =>
+                      action.requiresPlayer || action.promptValue
+                        ? setPending({ action, team })
+                        : void runAction(key, action, team)
+                    }
+                    className={`flex items-center justify-center gap-1 rounded-lg border px-2 py-2 text-xs font-medium transition disabled:cursor-not-allowed disabled:opacity-50 ${TONE_CLASSES[action.tone ?? "info"]}`}
+                  >
+                    <span>{action.icon}</span>
+                    {action.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
         ))}
