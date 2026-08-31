@@ -5,8 +5,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        heading: ["Manrope", "sans-serif"],
-        body: ["Inter", "sans-serif"],
+        heading: ["var(--font-heading, 'Manrope')", "sans-serif"],
+        body: ["var(--font-body, 'Inter')", "sans-serif"],
         sans: ["Inter", "sans-serif"],
       },
       spacing: {
