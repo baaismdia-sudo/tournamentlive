@@ -20,6 +20,7 @@ import ContactMessagesPage from "../pages/admin/ContactMessagesPage";
 import SupportTicketsPage from "../pages/admin/SupportTicketsPage";
 import EmailTemplatesPage from "../pages/admin/EmailTemplatesPage";
 import UserManagementPage from "../pages/admin/UserManagementPage";
+import AdminTournamentsPage from "../pages/admin/AdminTournamentsPage";
 import ComingSoonPage from "../pages/admin/ComingSoonPage";
 
 // Every sidebar destination not yet built with real CRUD (see the Prompt 5
@@ -27,7 +28,7 @@ import ComingSoonPage from "../pages/admin/ComingSoonPage";
 const DEFERRED_PATHS = [
   "website-builder", "homepage-builder", "navigation-builder", "footer-builder",
   "subscriptions", "taxes", "payment-settings", "roles", "permissions",
-  "tournaments", "teams", "players", "matches", "live-scores", "news", "gallery",
+  "teams", "players", "matches", "live-scores", "news", "gallery",
   "sponsors", "cms", "blog", "faq", "testimonials", "advertisements", "notifications",
   "analytics", "reports", "media-library", "domains", "api-keys",
   "webhook-logs", "backup",
@@ -62,6 +63,7 @@ export const adminRoutes: RouteObject[] = [
       { path: "support-tickets", element: <SupportTicketsPage /> },
       { path: "email-templates", element: <EmailTemplatesPage /> },
       { path: "users", element: <UserManagementPage /> },
+      { path: "tournaments", element: <AdminTournamentsPage /> },
       ...DEFERRED_PATHS.map((path) => ({ path, element: <ComingSoonPage /> })),
     ],
   },
