@@ -51,6 +51,22 @@ export interface SeoSettingsRow {
  * slug -> tournament_id lookup (and its RLS-scoped visibility check) only
  * happens once per navigation.
  */
+/**
+ * Resolves the tournament + its theme/site/seo config from the :slug route
+ * param. This is the single entry point every public-site page uses so the
+ * slug -> tournament_id lookup (and its RLS-scoped visibility check) only
+ * happens once per navigation.
+ *
+ * Two correctness rules this hook must maintain:
+ * 1. Every state slice is reset at the start of each slug change, before the
+ *    new fetch resolves — otherwise navigating from tournament A to
+ *    tournament B can briefly (or, if B's config row is missing, permanently)
+ *    keep showing A's branding on B's site.
+ * 2. website_themes/site_settings/seo_settings are subscribed to realtime,
+ *    not fetched once — otherwise an organizer's saved branding change never
+ *    appears for a viewer who already has the public site open, and looks
+ *    like "the site is showing old branding" even though the save worked.
+ */
 export function useTournamentSite() {
   const { slug } = useParams<{ slug: string }>();
   const [tournament, setTournament] = useState<SiteTournament | null>(null);
@@ -63,6 +79,17 @@ export function useTournamentSite() {
   useEffect(() => {
     if (!slug) return;
     let mounted = true;
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+
+    // Reset immediately so a previous tournament's branding can never be
+    // shown, even momentarily, while the new tournament's data loads.
+    setTournament(null);
+    setTheme(null);
+    setSiteSettings(null);
+    setSeo(null);
+    setNotFound(false);
+    setIsLoading(true);
+
     supabase
       .from("tournaments")
       .select("id, name, slug, sport, season, description, status, logo_url, cover_image_url, starts_at, ends_at")
@@ -78,18 +105,39 @@ export function useTournamentSite() {
         setTournament(tournamentData);
 
         const [themeRes, siteRes, seoRes] = await Promise.all([
-          supabase.from("website_themes").select("*").eq("tournament_id", tournamentData.id).single(),
-          supabase.from("site_settings").select("*").eq("tournament_id", tournamentData.id).single(),
-          supabase.from("seo_settings").select("*").eq("tournament_id", tournamentData.id).single(),
+          supabase.from("website_themes").select("*").eq("tournament_id", tournamentData.id).maybeSingle(),
+          supabase.from("site_settings").select("*").eq("tournament_id", tournamentData.id).maybeSingle(),
+          supabase.from("seo_settings").select("*").eq("tournament_id", tournamentData.id).maybeSingle(),
         ]);
         if (!mounted) return;
-        if (themeRes.data) setTheme(themeRes.data);
-        if (siteRes.data) setSiteSettings(siteRes.data as unknown as SiteSettingsRow);
-        if (seoRes.data) setSeo(seoRes.data);
+        setTheme(themeRes.data);
+        setSiteSettings(siteRes.data as unknown as SiteSettingsRow | null);
+        setSeo(seoRes.data);
         setIsLoading(false);
+
+        // Live-update branding for anyone with this tournament's site
+        // already open, filtered strictly to this tournament_id so no other
+        // tournament's changes can ever affect this page.
+        channel = supabase
+          .channel(`public-site:${tournamentData.id}`)
+          .on("postgres_changes", { event: "*", schema: "public", table: "website_themes", filter: `tournament_id=eq.${tournamentData.id}` }, (payload) => {
+            if (payload.eventType !== "DELETE") setTheme(payload.new as SiteTheme);
+          })
+          .on("postgres_changes", { event: "*", schema: "public", table: "site_settings", filter: `tournament_id=eq.${tournamentData.id}` }, (payload) => {
+            if (payload.eventType !== "DELETE") setSiteSettings(payload.new as SiteSettingsRow);
+          })
+          .on("postgres_changes", { event: "*", schema: "public", table: "seo_settings", filter: `tournament_id=eq.${tournamentData.id}` }, (payload) => {
+            if (payload.eventType !== "DELETE") setSeo(payload.new as SeoSettingsRow);
+          })
+          .on("postgres_changes", { event: "UPDATE", schema: "public", table: "tournaments", filter: `id=eq.${tournamentData.id}` }, (payload) => {
+            setTournament(payload.new as SiteTournament);
+          })
+          .subscribe();
       });
+
     return () => {
       mounted = false;
+      if (channel) supabase.removeChannel(channel);
     };
   }, [slug]);
 
