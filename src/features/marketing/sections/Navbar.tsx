@@ -20,8 +20,8 @@ export function Navbar({ isDark, onToggleDark }: { isDark: boolean; onToggleDark
     <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-surface)]/80 backdrop-blur">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-center gap-2 text-lg font-semibold text-[var(--color-text)]">
-          <span className="inline-block h-7 w-7 rounded-lg bg-[var(--color-brand)]" />
-          TournamentLive
+          <img src="/branding/scorio-icon.png" alt="" className="h-8 w-8 rounded-lg" />
+          Scorio
         </Link>
 
         <div className="hidden items-center gap-7 lg:flex">

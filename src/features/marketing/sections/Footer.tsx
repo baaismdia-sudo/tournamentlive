@@ -22,10 +22,10 @@ export function Footer() {
           <div className="col-span-2 lg:col-span-1">
             <Link to="/" className="flex items-center gap-2 text-lg font-semibold text-[var(--color-text)]">
               <span className="inline-block h-7 w-7 rounded-lg bg-[var(--color-brand)]" />
-              TournamentLive
+              Scorio
             </Link>
             <p className="mt-3 text-sm text-[var(--color-text-muted)]">
-              Rent a fully branded tournament website in minutes.
+              Where Tournaments Come Alive.
             </p>
             <div className="mt-4 flex gap-3">
               {SOCIALS.map((s) => (
@@ -54,7 +54,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[var(--color-border)] pt-6 sm:flex-row">
           <p className="text-xs text-[var(--color-text-muted)]">
-            © {new Date().getFullYear()} TournamentLive. All rights reserved.
+            © {new Date().getFullYear()} Scorio. All rights reserved.
           </p>
           <p className="text-xs text-[var(--color-text-muted)]">Made for organizers, by organizers.</p>
         </div>
