@@ -21,7 +21,7 @@ interface SeoProps {
   noindex?: boolean;
 }
 
-const SITE_NAME = "TournamentLive";
+const SITE_NAME = "Scorio";
 
 export function Seo({ title, description, path, imageUrl, type = "website", noindex = false }: SeoProps) {
   const baseUrl = getBaseUrl();
