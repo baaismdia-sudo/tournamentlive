@@ -20,10 +20,10 @@ export function Scoreboard({
           {clock.addedTimeFormatted && <span className="text-[var(--color-warning)]">{clock.addedTimeFormatted}</span>}
         </div>
       )}
-      <div className="grid grid-cols-3 items-center gap-4">
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 sm:gap-4">
         <TeamBlock team={homeTeam} />
-        <div className="text-center">
-          <p className="text-4xl font-bold text-[var(--color-heading)] sm:text-5xl">
+        <div className="px-1 text-center">
+          <p className="whitespace-nowrap text-3xl font-bold text-[var(--color-heading)] sm:text-5xl">
             {liveScore?.home_score ?? match.home_score} – {liveScore?.away_score ?? match.away_score}
           </p>
           <p className="mt-1.5 text-xs capitalize text-[var(--color-muted)]">{liveScore?.period ?? match.status.replace("_", " ")}</p>
@@ -36,11 +36,11 @@ export function Scoreboard({
 
 function TeamBlock({ team, align = "left" }: { team: TeamInfo | null; align?: "left" | "right" }) {
   return (
-    <div className={`flex items-center gap-3 ${align === "right" ? "flex-row-reverse text-right" : ""}`}>
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[var(--color-surface-secondary)]">
+    <div className={`flex min-w-0 items-center gap-2 sm:gap-3 ${align === "right" ? "flex-row-reverse text-right" : ""}`}>
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[var(--color-surface-secondary)] sm:h-12 sm:w-12">
         {team?.logo_url ? <img src={team.logo_url} alt="" className="h-full w-full object-cover" /> : "🏳️"}
       </div>
-      <p className="font-medium text-[var(--color-heading)]">{team?.name ?? "TBD"}</p>
+      <p className="min-w-0 truncate text-sm font-medium text-[var(--color-heading)] sm:text-base">{team?.name ?? "TBD"}</p>
     </div>
   );
 }
