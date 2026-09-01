@@ -17,7 +17,7 @@ export function RoleWorkspaceLayout({ label }: { label: string }) {
       <header className="flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 sm:px-6">
         <Link to="/" className="flex items-center gap-2 font-heading font-semibold text-[var(--color-heading)]">
           <span className="inline-block h-7 w-7 rounded-lg" style={{ background: "var(--gradient-brand)" }} />
-          TournamentLive <span className="text-[var(--color-muted)]">· {label}</span>
+          Scorio <span className="text-[var(--color-muted)]">· {label}</span>
         </Link>
         <div className="flex items-center gap-3">
           <span className="hidden text-sm text-[var(--color-muted)] sm:inline">{profile?.full_name}</span>

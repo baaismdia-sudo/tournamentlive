@@ -14,14 +14,14 @@ export function AuthLayout({
 }) {
   return (
     <div className="flex min-h-screen bg-[var(--color-surface)]">
-      <title>{`${seoTitle} · TournamentLive`}</title>
+      <title>{`${seoTitle} · Scorio`}</title>
       <meta name="robots" content="noindex" />
 
       {/* Left: form panel */}
       <div className="flex w-full flex-col justify-center px-6 py-12 sm:px-12 lg:w-1/2 lg:px-20">
         <Link to="/" className="mb-10 inline-flex items-center gap-2 text-lg font-semibold text-[var(--color-text)]">
-          <span className="inline-block h-7 w-7 rounded-lg bg-[var(--color-brand)]" />
-          TournamentLive
+          <img src="/branding/scorio-icon.png" alt="" className="h-7 w-7 rounded-lg" />
+          Scorio
         </Link>
 
         <div className="w-full max-w-sm animate-[fadeIn_0.3s_ease-out]">

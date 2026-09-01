@@ -96,11 +96,8 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <>
       <div className="flex items-center gap-2 border-b border-[var(--color-border)] px-5 py-5">
-        <span
-          className="inline-block h-8 w-8 rounded-lg"
-          style={{ background: "var(--gradient-brand)" }}
-        />
-        <span className="font-heading text-lg font-bold text-[var(--color-heading)]">TournamentLive</span>
+        <img src="/branding/scorio-icon.png" alt="" className="h-8 w-8 rounded-lg" />
+        <span className="font-heading text-lg font-bold text-[var(--color-heading)]">Scorio</span>
       </div>
       <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-5">
         {SIDEBAR_GROUPS.map((group) => (
