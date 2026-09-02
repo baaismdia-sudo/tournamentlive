@@ -23,18 +23,24 @@ import UserManagementPage from "../pages/admin/UserManagementPage";
 import AdminTournamentsPage from "../pages/admin/AdminTournamentsPage";
 import AdminSubscriptionsPage from "../pages/admin/AdminSubscriptionsPage";
 import AdminAnalyticsPage from "../pages/admin/AdminAnalyticsPage";
+import AdminTeamsPage from "../pages/admin/AdminTeamsPage";
+import AdminPlayersPage from "../pages/admin/AdminPlayersPage";
+import AdminMatchesPage from "../pages/admin/AdminMatchesPage";
+import AdminRolesPermissionsPage from "../pages/admin/AdminRolesPermissionsPage";
+import AdminNotificationsPage from "../pages/admin/AdminNotificationsPage";
 import ComingSoonPage from "../pages/admin/ComingSoonPage";
 
 // Every sidebar destination not yet built with real CRUD routes to
 // ComingSoonPage so navigation never dead-ends. "domains" is intentionally
 // absent here — it was a duplicate sidebar entry pointing at a second copy
 // of what custom-domains already covers; the sidebar now points it there
-// directly instead of rendering a placeholder.
+// directly instead of rendering a placeholder. "permissions" is likewise
+// absent — Roles and Permissions were merged into one combined page/route.
 const DEFERRED_PATHS = [
   "website-builder", "homepage-builder", "navigation-builder", "footer-builder",
-  "taxes", "payment-settings", "roles", "permissions",
-  "teams", "players", "matches", "live-scores", "news", "gallery",
-  "sponsors", "cms", "blog", "faq", "testimonials", "advertisements", "notifications",
+  "taxes", "payment-settings",
+  "live-scores", "news", "gallery",
+  "sponsors", "cms", "blog", "faq", "testimonials", "advertisements",
   "reports", "media-library", "api-keys",
   "webhook-logs", "backup",
 ];
@@ -71,6 +77,11 @@ export const adminRoutes: RouteObject[] = [
       { path: "tournaments", element: <AdminTournamentsPage /> },
       { path: "subscriptions", element: <AdminSubscriptionsPage /> },
       { path: "analytics", element: <AdminAnalyticsPage /> },
+      { path: "teams", element: <AdminTeamsPage /> },
+      { path: "players", element: <AdminPlayersPage /> },
+      { path: "matches", element: <AdminMatchesPage /> },
+      { path: "roles", element: <AdminRolesPermissionsPage /> },
+      { path: "notifications", element: <AdminNotificationsPage /> },
       ...DEFERRED_PATHS.map((path) => ({ path, element: <ComingSoonPage /> })),
     ],
   },
