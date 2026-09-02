@@ -4,7 +4,7 @@ import {
   Users, ShieldCheck, KeyRound, Building2, Trophy, Dumbbell, ShieldHalf, User, Swords,
   Radio, Newspaper, Image, Handshake, FileText, BookOpen, HelpCircle, MessageSquareQuote,
   Megaphone, Bell, Mail, Wallet, BadgePercent, Receipt, BarChart3, FileBarChart,
-  LifeBuoy, Inbox, FolderOpen, Link2, ShieldAlert, Flag, Webhook, DatabaseBackup,
+  LifeBuoy, Inbox, FolderOpen, Link2, Flag, Webhook, DatabaseBackup,
   Settings, History, Activity, UserCircle, LogOut, MessageCircle, Paintbrush,
 } from "lucide-react";
 
@@ -98,8 +98,7 @@ export const SIDEBAR_GROUPS: SidebarGroup[] = [
     title: "Platform",
     items: [
       { label: "Media Library", to: "/admin/media-library", icon: FolderOpen },
-      { label: "Domains", to: "/admin/domains", icon: Link2 },
-      { label: "Custom Domains", to: "/admin/custom-domains", icon: ShieldAlert },
+      { label: "Domains", to: "/admin/custom-domains", icon: Link2 },
       { label: "Feature Flags", to: "/admin/feature-flags", icon: Flag },
       { label: "White Label", to: "/admin/white-label", icon: Paintbrush },
       { label: "API Keys", to: "/admin/api-keys", icon: KeyRound },
