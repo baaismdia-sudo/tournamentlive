@@ -49,8 +49,7 @@ export const SIDEBAR_GROUPS: SidebarGroup[] = [
     title: "People & Access",
     items: [
       { label: "Users", to: "/admin/users", icon: Users },
-      { label: "Roles", to: "/admin/roles", icon: ShieldCheck },
-      { label: "Permissions", to: "/admin/permissions", icon: KeyRound },
+      { label: "Roles & Permissions", to: "/admin/roles", icon: ShieldCheck },
       { label: "Customers", to: "/admin/customers", icon: Building2 },
     ],
   },
