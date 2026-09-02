@@ -26,7 +26,6 @@ const Pricing = lazy(() => import("../../features/marketing/sections/Pricing").t
 const Testimonials = lazy(() => import("../../features/marketing/sections/Testimonials").then((m) => ({ default: m.Testimonials })));
 const Faq = lazy(() => import("../../features/marketing/sections/Faq").then((m) => ({ default: m.Faq })));
 const BlogPreview = lazy(() => import("../../features/marketing/sections/BlogPreview").then((m) => ({ default: m.BlogPreview })));
-const Newsletter = lazy(() => import("../../features/marketing/sections/Newsletter").then((m) => ({ default: m.Newsletter })));
 const CtaSection = lazy(() => import("../../features/marketing/sections/CtaSection").then((m) => ({ default: m.CtaSection })));
 
 function SectionFallback() {
@@ -64,7 +63,6 @@ export default function LandingPage() {
         <Suspense fallback={<SectionFallback />}><Testimonials /></Suspense>
         <Suspense fallback={<SectionFallback />}><Faq /></Suspense>
         <Suspense fallback={<SectionFallback />}><BlogPreview /></Suspense>
-        <Suspense fallback={<SectionFallback />}><Newsletter /></Suspense>
         <Suspense fallback={<SectionFallback />}><CtaSection /></Suspense>
       </main>
 
