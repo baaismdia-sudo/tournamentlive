@@ -21,16 +21,21 @@ import SupportTicketsPage from "../pages/admin/SupportTicketsPage";
 import EmailTemplatesPage from "../pages/admin/EmailTemplatesPage";
 import UserManagementPage from "../pages/admin/UserManagementPage";
 import AdminTournamentsPage from "../pages/admin/AdminTournamentsPage";
+import AdminSubscriptionsPage from "../pages/admin/AdminSubscriptionsPage";
+import AdminAnalyticsPage from "../pages/admin/AdminAnalyticsPage";
 import ComingSoonPage from "../pages/admin/ComingSoonPage";
 
-// Every sidebar destination not yet built with real CRUD (see the Prompt 5
-// delivery notes) routes to ComingSoonPage so navigation never dead-ends.
+// Every sidebar destination not yet built with real CRUD routes to
+// ComingSoonPage so navigation never dead-ends. "domains" is intentionally
+// absent here — it was a duplicate sidebar entry pointing at a second copy
+// of what custom-domains already covers; the sidebar now points it there
+// directly instead of rendering a placeholder.
 const DEFERRED_PATHS = [
   "website-builder", "homepage-builder", "navigation-builder", "footer-builder",
-  "subscriptions", "taxes", "payment-settings", "roles", "permissions",
+  "taxes", "payment-settings", "roles", "permissions",
   "teams", "players", "matches", "live-scores", "news", "gallery",
   "sponsors", "cms", "blog", "faq", "testimonials", "advertisements", "notifications",
-  "analytics", "reports", "media-library", "domains", "api-keys",
+  "reports", "media-library", "api-keys",
   "webhook-logs", "backup",
 ];
 
@@ -64,6 +69,8 @@ export const adminRoutes: RouteObject[] = [
       { path: "email-templates", element: <EmailTemplatesPage /> },
       { path: "users", element: <UserManagementPage /> },
       { path: "tournaments", element: <AdminTournamentsPage /> },
+      { path: "subscriptions", element: <AdminSubscriptionsPage /> },
+      { path: "analytics", element: <AdminAnalyticsPage /> },
       ...DEFERRED_PATHS.map((path) => ({ path, element: <ComingSoonPage /> })),
     ],
   },
