@@ -1,16 +1,15 @@
-import { Play, Pause, Square, Plus } from "lucide-react";
+import { Play, Pause, Square } from "lucide-react";
 import { useMatchClock } from "../hooks/useMatchClock";
 import type { LiveScoreRow } from "../hooks/useRealtimeMatch";
 
 export function MatchClockControl({
-  liveScore, onStart, onPause, onResume, onEnd, onAddTime,
+  liveScore, onStart, onPause, onResume, onEnd,
 }: {
   liveScore: LiveScoreRow | null;
   onStart: () => void;
   onPause: (elapsedSeconds: number) => void;
   onResume: () => void;
   onEnd: () => void;
-  onAddTime: (seconds: number) => void;
 }) {
   const clock = useMatchClock(liveScore);
 
@@ -36,9 +35,6 @@ export function MatchClockControl({
             <Play size={15} /> Resume
           </button>
         )}
-        <button onClick={() => onAddTime(60)} className="flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm font-medium hover:bg-[var(--color-surface-secondary)]">
-          <Plus size={15} /> 1 min
-        </button>
         <button onClick={onEnd} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-danger)] px-4 py-2 text-sm font-medium text-white hover:opacity-90">
           <Square size={15} /> End match
         </button>
