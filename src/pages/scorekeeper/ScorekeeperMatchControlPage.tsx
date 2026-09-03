@@ -12,7 +12,7 @@ import { Timeline } from "../../features/live/components/Timeline";
 import { getSportConfig, type QuickAction } from "../../features/live/data/sportEventConfigs";
 import { PageLoader } from "../../components/ui/LoadingSpinner";
 import {
-  startMatch, pauseClock, resumeClock, endMatch, addAddedTime, logMatchEvent, undoEvent, setMatchStatus,
+  startMatch, pauseClock, resumeClock, endMatch, logMatchEvent, undoEvent, setMatchStatus,
 } from "../../services/supabase/matchControl";
 
 interface TeamInfo { id: string; name: string; logo_url: string | null }
@@ -21,7 +21,7 @@ interface PlayerOption { id: string; full_name: string }
 export default function ScorekeeperMatchControlPage() {
   const { id } = useParams<{ id: string }>();
   const { profile } = useAuth();
-  const { match, liveScore, events, isConnected, isLoading } = useRealtimeMatch(id);
+  const { match, liveScore, events, isConnected, isLoading, refetch } = useRealtimeMatch(id);
   const { presentUsers } = useMatchPresence(id, "scorekeeper");
 
   const [sport, setSport] = useState("football");
@@ -29,6 +29,7 @@ export default function ScorekeeperMatchControlPage() {
   const [awayTeam, setAwayTeam] = useState<TeamInfo | null>(null);
   const [homePlayers, setHomePlayers] = useState<PlayerOption[]>([]);
   const [awayPlayers, setAwayPlayers] = useState<PlayerOption[]>([]);
+  const [toast, setToast] = useState<{ message: string; isError: boolean } | null>(null);
 
   useEffect(() => {
     if (!match) return;
@@ -48,22 +49,45 @@ export default function ScorekeeperMatchControlPage() {
   const config = getSportConfig(sport);
   const otherScorekeepers = presentUsers.filter((u) => u.profileId !== profile?.id && u.role === "scorekeeper");
 
+  const notify = (message: string, isError = false) => {
+    setToast({ message, isError });
+    setTimeout(() => setToast(null), isError ? 5000 : 2500);
+  };
+
+  // Every control action goes through this: on failure, the person actually
+  // sees why (RLS denial, network error, etc.) instead of tapping a button
+  // that silently does nothing — the underlying cause of "nothing works."
+  const runAction = async (label: string, action: () => Promise<void>) => {
+    try {
+      await action();
+    } catch (err) {
+      notify(`${label} failed: ${err instanceof Error ? err.message : "Unknown error"}`, true);
+    }
+  };
+
   const handleAction = async (action: QuickAction, team: "home" | "away", playerId?: string, value?: number) => {
-    await logMatchEvent({
-      matchId: match.id,
-      teamId: team === "home" ? match.home_team_id ?? undefined : match.away_team_id ?? undefined,
-      playerId,
-      eventType: action.eventType,
-      minute: liveScore ? Math.floor(liveScore.clock_elapsed_seconds / 60) : undefined,
-      value: value ?? 1,
-      scoreDelta: action.scoreDelta,
-      scoringTeam: action.scoreDelta ? team : undefined,
-    });
+    await runAction(action.label, () =>
+      logMatchEvent({
+        matchId: match.id,
+        teamId: team === "home" ? match.home_team_id ?? undefined : match.away_team_id ?? undefined,
+        playerId,
+        eventType: action.eventType,
+        minute: liveScore ? Math.floor(liveScore.clock_elapsed_seconds / 60) : undefined,
+        value: value ?? 1,
+        scoreDelta: action.scoreDelta,
+        scoringTeam: action.scoreDelta ? team : undefined,
+      })
+    );
   };
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-6">
-      <title>Match Control · TournamentLive</title>
+      <title>Match Control · Scorio</title>
+      {toast && (
+        <div className={`fixed right-4 top-4 z-50 rounded-lg px-4 py-2 text-sm text-white shadow-lg ${toast.isError ? "bg-[var(--color-danger)]" : "bg-[var(--color-heading)]"}`}>
+          {toast.message}
+        </div>
+      )}
       <Link to="/scorekeeper" className="flex items-center gap-1.5 text-sm text-[var(--color-muted)] hover:text-[var(--color-text)]">
         <ArrowLeft size={15} /> Back to matches
       </Link>
@@ -83,18 +107,17 @@ export default function ScorekeeperMatchControlPage() {
 
       <MatchClockControl
         liveScore={liveScore}
-        onStart={() => startMatch(match.id)}
-        onPause={(elapsed) => pauseClock(match.id, elapsed)}
-        onResume={() => resumeClock(match.id)}
-        onEnd={() => endMatch(match.id, liveScore?.home_score ?? match.home_score, liveScore?.away_score ?? match.away_score)}
-        onAddTime={(seconds) => addAddedTime(match.id, seconds)}
+        onStart={() => runAction("Start", () => startMatch(match.id))}
+        onPause={(elapsed) => runAction("Pause", () => pauseClock(match.id, elapsed))}
+        onResume={() => runAction("Resume", () => resumeClock(match.id))}
+        onEnd={() => runAction("End match", () => endMatch(match.id, liveScore?.home_score ?? match.home_score, liveScore?.away_score ?? match.away_score))}
       />
 
       <div className="flex flex-wrap gap-2">
         {config.periods.filter((p, i, arr) => arr.indexOf(p) === i).map((period) => (
           <button
             key={period}
-            onClick={() => setMatchStatus(match.id, period)}
+            onClick={() => runAction("Update status", () => setMatchStatus(match.id, period))}
             className={`rounded-lg border px-3 py-1.5 text-xs font-medium capitalize ${
               match.status === period ? "border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "border-[var(--color-border)] text-[var(--color-muted)]"
             }`}
@@ -111,7 +134,12 @@ export default function ScorekeeperMatchControlPage() {
 
       <section>
         <h2 className="mb-3 font-heading text-sm font-semibold text-[var(--color-heading)]">Timeline</h2>
-        <Timeline events={events} sport={sport} onUndo={(eventId) => undoEvent(eventId)} />
+        <Timeline
+          events={events}
+          sport={sport}
+          onUndo={(eventId) => runAction("Undo", () => undoEvent(eventId))}
+          onChanged={refetch}
+        />
       </section>
     </div>
   );
