@@ -1,42 +1,71 @@
 import { supabase } from "../../lib/supabaseClient";
 
 export async function startMatch(matchId: string) {
-  await supabase.from("matches").update({ status: "live", started_at: new Date().toISOString() }).eq("id", matchId);
-  await supabase.from("live_scores").upsert(
+  const { error: matchErr } = await supabase.from("matches").update({ status: "live", started_at: new Date().toISOString() }).eq("id", matchId);
+  if (matchErr) throw matchErr;
+  const { error: scoreErr } = await supabase.from("live_scores").upsert(
     { match_id: matchId, is_live: true, clock_status: "running", clock_started_at: new Date().toISOString() },
     { onConflict: "match_id" }
   );
+  if (scoreErr) throw scoreErr;
 }
 
 export async function pauseClock(matchId: string, currentElapsedSeconds: number) {
-  await supabase.from("live_scores").update({ clock_status: "paused", clock_elapsed_seconds: currentElapsedSeconds, clock_started_at: null }).eq("match_id", matchId);
+  const { error } = await supabase.from("live_scores").update({ clock_status: "paused", clock_elapsed_seconds: currentElapsedSeconds, clock_started_at: null }).eq("match_id", matchId);
+  if (error) throw error;
 }
 
 export async function resumeClock(matchId: string) {
-  await supabase.from("live_scores").update({ clock_status: "running", clock_started_at: new Date().toISOString() }).eq("match_id", matchId);
+  const { error } = await supabase.from("live_scores").update({ clock_status: "running", clock_started_at: new Date().toISOString() }).eq("match_id", matchId);
+  if (error) throw error;
 }
 
 export async function setMatchStatus(matchId: string, status: string) {
-  await supabase.from("matches").update({ status }).eq("id", matchId);
-  await supabase.from("live_scores").update({ period: status.replace("_", " ") }).eq("match_id", matchId);
+  const { error: matchErr } = await supabase.from("matches").update({ status }).eq("id", matchId);
+  if (matchErr) throw matchErr;
+  const { error: scoreErr } = await supabase.from("live_scores").update({ period: status.replace("_", " ") }).eq("match_id", matchId);
+  if (scoreErr) throw scoreErr;
 }
 
 export async function endMatch(matchId: string, homeScore: number, awayScore: number) {
-  const winnerField =
-    homeScore > awayScore ? { winner_field: "home" } : awayScore > homeScore ? { winner_field: "away" } : { winner_field: null };
-  await supabase.from("matches").update({
+  // Previously computed but never saved (a real bug — matches always ended
+  // with no winner recorded, regardless of the final score).
+  const winnerTeamField =
+    homeScore > awayScore ? "home_team_id" : awayScore > homeScore ? "away_team_id" : null;
+  const { data: matchRow, error: fetchErr } = await supabase.from("matches").select("home_team_id, away_team_id").eq("id", matchId).single();
+  if (fetchErr) throw fetchErr;
+  const winnerTeamId = winnerTeamField ? (matchRow as Record<string, string | null>)[winnerTeamField] : null;
+
+  const { error: matchErr } = await supabase.from("matches").update({
     status: "completed",
     ended_at: new Date().toISOString(),
     home_score: homeScore,
     away_score: awayScore,
+    winner_team_id: winnerTeamId,
   }).eq("id", matchId);
-  await supabase.from("live_scores").update({ is_live: false, clock_status: "stopped" }).eq("match_id", matchId);
-  void winnerField;
+  if (matchErr) throw matchErr;
+
+  const { error: scoreErr } = await supabase.from("live_scores").update({ is_live: false, clock_status: "stopped" }).eq("match_id", matchId);
+  if (scoreErr) throw scoreErr;
 }
 
 export async function addAddedTime(matchId: string, seconds: number) {
-  const { data } = await supabase.from("live_scores").select("added_time_seconds").eq("match_id", matchId).single();
-  await supabase.from("live_scores").update({ added_time_seconds: (data?.added_time_seconds ?? 0) + seconds }).eq("match_id", matchId);
+  const { data, error: fetchErr } = await supabase.from("live_scores").select("added_time_seconds").eq("match_id", matchId).single();
+  if (fetchErr) throw fetchErr;
+  const { error } = await supabase.from("live_scores").update({ added_time_seconds: (data?.added_time_seconds ?? 0) + seconds }).eq("match_id", matchId);
+  if (error) throw error;
+}
+
+/**
+ * Edits an already-logged event's minute/description — for correcting a
+ * mistake (wrong minute, typo) without needing to undo and re-log it,
+ * which would also incorrectly reverse and reapply its score_delta.
+ * Editing never touches score_delta/scoring_team, so it cannot silently
+ * change the score — use undo + re-log for that instead.
+ */
+export async function updateMatchEvent(eventId: string, updates: { minute?: number | null; description?: string | null }) {
+  const { error } = await supabase.from("match_events").update(updates).eq("id", eventId);
+  if (error) throw error;
 }
 
 export interface LogEventInput {
