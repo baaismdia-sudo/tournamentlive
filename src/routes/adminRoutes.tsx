@@ -28,21 +28,30 @@ import AdminPlayersPage from "../pages/admin/AdminPlayersPage";
 import AdminMatchesPage from "../pages/admin/AdminMatchesPage";
 import AdminRolesPermissionsPage from "../pages/admin/AdminRolesPermissionsPage";
 import AdminNotificationsPage from "../pages/admin/AdminNotificationsPage";
+import AdminNewsPage from "../pages/admin/AdminNewsPage";
+import AdminGalleryPage from "../pages/admin/AdminGalleryPage";
+import AdminSponsorsPage from "../pages/admin/AdminSponsorsPage";
+import AdminMediaLibraryPage from "../pages/admin/AdminMediaLibraryPage";
+import AdminWebhookLogsPage from "../pages/admin/AdminWebhookLogsPage";
+import AdminApiKeysPage from "../pages/admin/AdminApiKeysPage";
+import AdminTestimonialsPage from "../pages/admin/AdminTestimonialsPage";
 import ComingSoonPage from "../pages/admin/ComingSoonPage";
 
 // Every sidebar destination not yet built with real CRUD routes to
-// ComingSoonPage so navigation never dead-ends. "domains" is intentionally
-// absent here — it was a duplicate sidebar entry pointing at a second copy
-// of what custom-domains already covers; the sidebar now points it there
-// directly instead of rendering a placeholder. "permissions" is likewise
-// absent — Roles and Permissions were merged into one combined page/route.
+// ComingSoonPage so navigation never dead-ends. "domains" and "permissions"
+// are intentionally absent — see prior notes; they're merged into
+// custom-domains and roles respectively.
+//
+// "blog" and "faq" remain deferred because no backing database tables exist
+// for them yet (no blog_posts / faqs tables) — building real admin CRUD
+// for those requires a schema migration first, which wasn't done silently.
+// "reports" and "backup" have no dedicated table/feature to back them either.
 const DEFERRED_PATHS = [
   "website-builder", "homepage-builder", "navigation-builder", "footer-builder",
   "taxes", "payment-settings",
-  "live-scores", "news", "gallery",
-  "sponsors", "cms", "blog", "faq", "testimonials", "advertisements",
-  "reports", "media-library", "api-keys",
-  "webhook-logs", "backup",
+  "live-scores",
+  "cms", "blog", "faq", "advertisements",
+  "reports", "backup",
 ];
 
 export const adminRoutes: RouteObject[] = [
@@ -82,6 +91,13 @@ export const adminRoutes: RouteObject[] = [
       { path: "matches", element: <AdminMatchesPage /> },
       { path: "roles", element: <AdminRolesPermissionsPage /> },
       { path: "notifications", element: <AdminNotificationsPage /> },
+      { path: "news", element: <AdminNewsPage /> },
+      { path: "gallery", element: <AdminGalleryPage /> },
+      { path: "sponsors", element: <AdminSponsorsPage /> },
+      { path: "testimonials", element: <AdminTestimonialsPage /> },
+      { path: "media-library", element: <AdminMediaLibraryPage /> },
+      { path: "webhook-logs", element: <AdminWebhookLogsPage /> },
+      { path: "api-keys", element: <AdminApiKeysPage /> },
       ...DEFERRED_PATHS.map((path) => ({ path, element: <ComingSoonPage /> })),
     ],
   },
