@@ -9,6 +9,7 @@ import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
 import { loginSchema, type LoginInput } from "../../shared/validators/auth.schema";
 import { loginWithPassword, loginWithGoogle } from "../../services/supabase/auth";
 import { getOwnProfile } from "../../services/supabase/profiles";
+import { homeRouteForRole } from "../../routes/guards";
 
 const MAX_ATTEMPTS_BEFORE_WARNING = 3;
 
@@ -47,9 +48,9 @@ export default function LoginPage() {
         try {
           const profile = await getOwnProfile();
           const role = (profile as unknown as { roles?: { name?: string } })?.roles?.name;
-          target = role === "super_admin" ? "/admin" : "/dashboard";
+          target = homeRouteForRole(role);
         } catch {
-          target = "/dashboard";
+          target = "/account/profile";
         }
       }
       navigate(target, { replace: true });
