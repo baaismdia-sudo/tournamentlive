@@ -16,17 +16,40 @@ interface AssignedMatch {
 export default function CommentatorMatchListPage() {
   const [matches, setMatches] = useState<AssignedMatch[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase
-      .from("matches")
-      .select("id, status, tournaments(name), home:teams!matches_home_team_id_fkey(name), away:teams!matches_away_team_id_fkey(name)")
-      .in("status", ["scheduled", "warm_up", "live", "half_time", "break", "extra_time", "penalty_shootout"])
-      .order("scheduled_at", { ascending: true })
-      .then(({ data }) => {
-        setMatches((data ?? []) as unknown as AssignedMatch[]);
+    let mounted = true;
+    (async () => {
+      // Same fix as ScorekeeperMatchListPage: the matches table's only SELECT
+      // RLS policy is "public read of any publicly-visible tournament," so
+      // without this filter every commentator sees every live match on the
+      // entire platform, not just their own organizer's.
+      const { data: orgId, error: orgErr } = await supabase.rpc("effective_organizer_id");
+      if (!mounted) return;
+      if (orgErr || !orgId) {
+        setError("Couldn't determine which organizer you're assigned to.");
         setIsLoading(false);
-      });
+        return;
+      }
+
+      const { data, error: matchErr } = await supabase
+        .from("matches")
+        .select("id, status, tournaments!inner(name, organizer_id), home:teams!matches_home_team_id_fkey(name), away:teams!matches_away_team_id_fkey(name)")
+        .eq("tournaments.organizer_id", orgId)
+        .in("status", ["scheduled", "warm_up", "live", "half_time", "break", "extra_time", "penalty_shootout"])
+        .order("scheduled_at", { ascending: true });
+      if (!mounted) return;
+      if (matchErr) {
+        setError(matchErr.message);
+      } else {
+        setMatches((data ?? []) as unknown as AssignedMatch[]);
+      }
+      setIsLoading(false);
+    })();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   if (isLoading) return <PageLoader label="Loading matches..." />;
@@ -38,6 +61,9 @@ export default function CommentatorMatchListPage() {
         <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Matches</h1>
         <p className="text-sm text-[var(--color-muted)]">Pick a match to start commentating.</p>
       </div>
+      {error && (
+        <p className="rounded-lg bg-[var(--color-danger)]/10 p-3 text-sm text-[var(--color-danger)]">{error}</p>
+      )}
       {matches.length === 0 ? (
         <EmptyState icon={MessageSquareQuote} title="No matches to commentate right now" />
       ) : (
