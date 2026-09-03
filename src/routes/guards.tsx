@@ -10,6 +10,32 @@ import { PageLoader } from "../components/ui/LoadingSpinner";
  * followed by empty data from a denied query.
  */
 
+/**
+ * Single source of truth for "where does this role actually live." Every
+ * role has its own workspace route — Scorekeeper and Commentator do NOT
+ * share /dashboard with Organizer/Manager, so sending them there (or
+ * anywhere other than their real workspace) causes an immediate
+ * "Access denied" the moment RequireAuth's role check runs. Both the login
+ * redirect and RequireGuest must use this same mapping, or they drift out
+ * of sync exactly like this did before.
+ */
+export function homeRouteForRole(roleName: string | null | undefined): string {
+  switch (roleName) {
+    case "super_admin":
+      return "/admin";
+    case "organizer":
+    case "manager":
+      return "/dashboard";
+    case "scorekeeper":
+      return "/scorekeeper";
+    case "commentator":
+      return "/commentator";
+    default:
+      // viewer, or any role without a dedicated workspace
+      return "/account/profile";
+  }
+}
+
 export function RequireAuth({
   children,
   roles,
@@ -48,7 +74,7 @@ export function RequireAuth({
 export function RequireGuest({ children }: { children: ReactNode }) {
   const { session, isLoading, roleName } = useAuth();
   if (isLoading) return <PageLoader label="Loading..." />;
-  if (session) return <Navigate to={roleName === "super_admin" ? "/admin" : "/dashboard"} replace />;
+  if (session) return <Navigate to={homeRouteForRole(roleName)} replace />;
   return <>{children}</>;
 }
 
