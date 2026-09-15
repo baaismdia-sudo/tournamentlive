@@ -56,11 +56,11 @@ export function RequireAuth({
     return <Navigate to="/verify-email" replace />;
   }
 
-  if (profile?.status === "suspended") {
+  if (profile?.status === "suspended" && roleName !== "super_admin") {
     return <Navigate to="/access-denied" replace state={{ reason: "suspended" }} />;
   }
 
-  if (profile?.status === "pending") {
+  if (profile?.status === "pending" && roleName !== "super_admin") {
     return <Navigate to="/account-pending" replace />;
   }
 
