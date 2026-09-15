@@ -10,6 +10,7 @@ interface SubscriptionRow {
   auto_renew: boolean;
   organizer: { full_name: string; email: string } | null;
   plan: { name: string; price_cents: number; currency: string; duration: string } | null;
+  coupon: { code: string; discount_type: "percentage" | "fixed"; discount_value: number } | null;
 }
 
 const STATUS_STYLE: Record<string, string> = {
@@ -46,7 +47,7 @@ export default function AdminSubscriptionsPage() {
     let query = supabase
       .from("subscriptions")
       .select(
-        "id, status, starts_at, ends_at, auto_renew, organizer:profiles(full_name, email), plan:rental_plans(name, price_cents, currency, duration)",
+        "id, status, starts_at, ends_at, auto_renew, organizer:profiles(full_name, email), plan:rental_plans(name, price_cents, currency, duration), coupon:coupons(code, discount_type, discount_value)",
         { count: "exact" }
       )
       .order("starts_at", { ascending: false })
@@ -114,6 +115,20 @@ export default function AdminSubscriptionsPage() {
           {r.status.replace("_", " ")}
         </span>
       ),
+    },
+    {
+      header: "Coupon",
+      render: (r) =>
+        r.coupon ? (
+          <div>
+            <div className="font-mono text-xs font-medium text-[var(--color-heading)]">{r.coupon.code}</div>
+            <div className="text-xs text-[var(--color-muted)]">
+              {r.coupon.discount_type === "percentage" ? `${r.coupon.discount_value}% off` : formatPrice(r.coupon.discount_value * 100, r.plan?.currency ?? "INR") + " off"}
+            </div>
+          </div>
+        ) : (
+          <span className="text-xs text-[var(--color-muted)]">—</span>
+        ),
     },
     { header: "Started", render: (r) => new Date(r.starts_at).toLocaleDateString() },
     { header: "Renews / Ends", render: (r) => (r.ends_at ? new Date(r.ends_at).toLocaleDateString() : "—") },
