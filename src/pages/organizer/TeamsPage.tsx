@@ -11,6 +11,7 @@ import { QrCodeButton } from "../../features/shared/components/QrCodeButton";
 import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
 import { EmptyState } from "../../features/admin/components/EmptyState";
 import { ShieldHalf, Copy } from "lucide-react";
+import { getErrorMessage } from "../../lib/errors";
 
 interface Team {
   id: string;
@@ -117,7 +118,7 @@ export default function TeamsPage() {
       setDrawerOpen(false);
       load();
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Could not save team");
+      setFormError(getErrorMessage(err));
     } finally {
       setIsSaving(false);
     }

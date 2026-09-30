@@ -10,6 +10,7 @@ import { useOrganizerTournaments } from "../../features/organizer/hooks/useOrgan
 import { ExportMenu } from "../../features/shared/components/ExportMenu";
 import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
 import { EmptyState } from "../../features/admin/components/EmptyState";
+import { getErrorMessage } from "../../lib/errors";
 
 interface Player {
   id: string;
@@ -157,7 +158,7 @@ export default function PlayersPage() {
       setDrawerOpen(false);
       load();
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Could not save player");
+      setFormError(getErrorMessage(err));
     } finally {
       setIsSaving(false);
     }

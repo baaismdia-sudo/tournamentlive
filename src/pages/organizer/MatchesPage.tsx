@@ -11,6 +11,7 @@ import { QrCodeButton } from "../../features/shared/components/QrCodeButton";
 import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
 import { EmptyState } from "../../features/admin/components/EmptyState";
 import { Swords } from "lucide-react";
+import { getErrorMessage } from "../../lib/errors";
 
 interface Match {
   id: string;
@@ -141,7 +142,7 @@ export default function MatchesPage() {
       setDrawerOpen(false);
       load();
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Could not save match");
+      setFormError(getErrorMessage(err));
     } finally {
       setIsSaving(false);
     }

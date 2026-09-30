@@ -7,6 +7,7 @@ import { createTournament, checkSlugAvailable, checkSubdomainAvailable, type Cre
 import { supabase } from "../../lib/supabaseClient";
 import { getTournamentUrl } from "../../lib/publicUrls";
 import { useEffect } from "react";
+import { getErrorMessage } from "../../lib/errors";
 
 const STEPS = ["Basics", "Format", "Dates", "Location", "Branding", "Website", "Review"];
 
@@ -90,7 +91,7 @@ export default function TournamentWizardPage() {
       const tournament = await createTournament(form);
       navigate(`/dashboard/tournaments/${tournament.id}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not create tournament");
+      setError(getErrorMessage(err));
     } finally {
       setIsSaving(false);
     }

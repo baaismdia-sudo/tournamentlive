@@ -9,6 +9,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
 import { EmptyState } from "../../features/admin/components/EmptyState";
 import { Newspaper } from "lucide-react";
+import { getErrorMessage } from "../../lib/errors";
 
 interface NewsArticle {
   id: string;
@@ -77,7 +78,7 @@ export default function NewsPage() {
       setDrawerOpen(false);
       load();
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Could not save article");
+      setFormError(getErrorMessage(err));
     } finally {
       setIsSaving(false);
     }

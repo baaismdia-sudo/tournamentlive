@@ -5,6 +5,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { TextField, TextAreaField, SelectField } from "../../features/admin/components/FormField";
 import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
 import { submitRentalEnquiry } from "../../services/supabase/rentalEnquiries";
+import { getErrorMessage } from "../../lib/errors";
 
 interface Plan { id: string; name: string; duration: string; price_cents: number; currency: string }
 interface TournamentOption { id: string; name: string; sport: string }
@@ -65,7 +66,7 @@ export default function RentalEnquiryPage() {
       setSubmitted(true);
       window.open(whatsappUrl, "_blank");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not submit enquiry");
+      setError(getErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }
