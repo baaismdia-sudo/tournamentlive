@@ -14,6 +14,7 @@ import { PageLoader } from "../../components/ui/LoadingSpinner";
 import {
   startMatch, pauseClock, resumeClock, endMatch, logMatchEvent, undoEvent, setMatchStatus,
 } from "../../services/supabase/matchControl";
+import { getErrorMessage } from "../../lib/errors";
 
 interface TeamInfo { id: string; name: string; logo_url: string | null }
 interface PlayerOption { id: string; full_name: string }
@@ -61,7 +62,7 @@ export default function ScorekeeperMatchControlPage() {
     try {
       await action();
     } catch (err) {
-      notify(`${label} failed: ${err instanceof Error ? err.message : "Unknown error"}`, true);
+      notify(`${label} failed: ${getErrorMessage(err)}`, true);
     }
   };
 
