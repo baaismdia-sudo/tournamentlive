@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { ButtonSpinner } from "./LoadingSpinner";
+import { getErrorMessage } from "../../lib/errors";
 
 interface AvatarUploadProps {
   currentUrl: string | null;
@@ -62,7 +63,7 @@ export function AvatarUpload({ currentUrl, fallbackInitial, onUpload, onDelete }
       setPreview(URL.createObjectURL(processed));
       await onUpload(processed);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed");
+      setError(getErrorMessage(err));
     } finally {
       setIsUploading(false);
     }
