@@ -5,6 +5,7 @@ import { useSiteContext } from "../../features/publicSite/hooks/useSiteContext";
 import { SectionHeading } from "../../features/publicSite/components/FadeInSection";
 import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
 import { SuccessBanner } from "../../components/ui/ErrorState";
+import { getErrorMessage } from "../../lib/errors";
 
 const CATEGORIES = [
   { value: "general", label: "General Enquiry" },
@@ -38,7 +39,7 @@ export default function ContactPage() {
       if (insertError) throw insertError;
       setSubmitted(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not send message");
+      setError(getErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }
