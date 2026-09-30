@@ -11,6 +11,7 @@ import {
   getActiveSessions,
   signOut,
 } from "../../services/supabase/auth";
+import { getErrorMessage } from "../../lib/errors";
 
 interface SessionRow {
   id: string;
@@ -55,7 +56,7 @@ export default function AccountSettingsPage() {
       setPasswordSaved(true);
       setNewPassword("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not update password");
+      setError(getErrorMessage(err));
     } finally {
       setIsSavingPassword(false);
     }
@@ -73,7 +74,7 @@ export default function AccountSettingsPage() {
       await updateEmail(newEmail);
       setEmailRequested(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not update email");
+      setError(getErrorMessage(err));
     } finally {
       setIsSavingEmail(false);
     }
@@ -97,7 +98,7 @@ export default function AccountSettingsPage() {
       await deleteOwnAccount();
       navigate("/login");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not delete account");
+      setError(getErrorMessage(err));
       setIsDeleting(false);
     }
   };
