@@ -5,6 +5,7 @@ import { supabase } from "../../lib/supabaseClient";
 import { getTournamentUrl } from "../../lib/publicUrls";
 import { PageLoader } from "../../components/ui/LoadingSpinner";
 import { ErrorState } from "../../components/ui/ErrorState";
+import { getErrorMessage } from "../../lib/errors";
 
 interface TournamentDetail {
   id: string;
@@ -35,10 +36,11 @@ const QUICK_LINKS = [
 
 function StaffAssignmentsPanel({ tournamentId }: { tournamentId: string }) {
   const [assignments, setAssignments] = useState<StaffAssignment[]>([]);
-  const [staffOptions, setStaffOptions] = useState<{ id: string; full_name: string; role: string }[]>([]);
-  const [selectedProfileId, setSelectedProfileId] = useState("");
+  const [email, setEmail] = useState("");
   const [selectedRole, setSelectedRole] = useState<"manager" | "scorekeeper" | "commentator">("scorekeeper");
   const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const load = async () => {
     const { data } = await supabase
@@ -50,23 +52,27 @@ function StaffAssignmentsPanel({ tournamentId }: { tournamentId: string }) {
 
   useEffect(() => {
     load();
-    // Staff = profiles whose organizer_id points at the current organizer
-    // (invited manager/scorekeeper/commentator accounts).
-    supabase.auth.getUser().then(async ({ data }) => {
-      if (!data.user) return;
-      const { data: staff } = await supabase.from("profiles").select("id, full_name, roles(name)").eq("organizer_id", data.user.id);
-      setStaffOptions(((staff ?? []) as unknown as { id: string; full_name: string; roles: { name: string } | null }[]).map((s) => ({ id: s.id, full_name: s.full_name, role: s.roles?.name ?? "" })));
-    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tournamentId]);
 
-  const assign = async () => {
-    if (!selectedProfileId) return;
+  const invite = async () => {
+    if (!email.trim()) return;
     setIsSaving(true);
+    setError(null);
+    setSuccess(null);
     try {
-      await supabase.from("tournament_staff_assignments").insert({ tournament_id: tournamentId, profile_id: selectedProfileId, role_in_tournament: selectedRole });
-      setSelectedProfileId("");
+      const { data, error: rpcError } = await supabase.rpc("invite_tournament_staff", {
+        p_email: email.trim(),
+        p_role: selectedRole,
+        p_tournament_id: tournamentId,
+      });
+      if (rpcError) throw rpcError;
+      const result = data as { full_name: string; role: string } | null;
+      setSuccess(`${result?.full_name ?? email} is now assigned as ${selectedRole} on this tournament.`);
+      setEmail("");
       load();
+    } catch (err) {
+      setError(getErrorMessage(err));
     } finally {
       setIsSaving(false);
     }
@@ -81,31 +87,34 @@ function StaffAssignmentsPanel({ tournamentId }: { tournamentId: string }) {
     <section className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
       <h2 className="font-heading text-sm font-semibold text-[var(--color-heading)]">Assigned staff</h2>
       <p className="mt-1 text-xs text-[var(--color-muted)]">
-        Invited managers, scorekeepers, and commentators — reflected here for visibility. Any staff account
-        you've invited can already access all of your tournaments' matches; this list doesn't further restrict
-        that.
+        Invite a manager, scorekeeper, or commentator by the email address of their existing TournamentLive account.
+        They must sign up first — inviting them here links their account to your business and gives them access to
+        this tournament.
       </p>
 
       <div className="mt-3 flex flex-wrap gap-2">
-        <select value={selectedProfileId} onChange={(e) => setSelectedProfileId(e.target.value)} className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)]">
-          <option value="">Select staff member</option>
-          {staffOptions.map((s) => <option key={s.id} value={s.id}>{s.full_name} ({s.role})</option>)}
-        </select>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="their-email@example.com"
+          className="min-w-[220px] flex-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)]"
+        />
         <select value={selectedRole} onChange={(e) => setSelectedRole(e.target.value as typeof selectedRole)} className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)]">
           <option value="manager">Manager</option>
           <option value="scorekeeper">Scorekeeper</option>
           <option value="commentator">Commentator</option>
         </select>
-        <button onClick={assign} disabled={isSaving || !selectedProfileId} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
-          <UserPlus size={14} /> Assign
+        <button onClick={invite} disabled={isSaving || !email.trim()} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <UserPlus size={14} /> Invite
         </button>
       </div>
 
-      {staffOptions.length === 0 && (
-        <p className="mt-3 text-xs text-[var(--color-muted)]">
-          No staff accounts yet — invite managers, scorekeepers, or commentators from Settings, or have them sign
-          up and share their account for you to link.
-        </p>
+      {error && <p className="mt-2 text-xs text-[var(--color-danger)]">{error}</p>}
+      {success && <p className="mt-2 text-xs text-[var(--color-success)]">{success}</p>}
+
+      {assignments.length === 0 && !error && (
+        <p className="mt-3 text-xs text-[var(--color-muted)]">No staff assigned to this tournament yet.</p>
       )}
 
       <ul className="mt-4 space-y-2">
