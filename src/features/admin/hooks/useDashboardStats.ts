@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
+import { getErrorMessage } from "../../../lib/errors";
 
 export interface DashboardStats {
   total_users: number;
@@ -54,7 +55,7 @@ export function useDashboardStats() {
         );
         setPopularSports((sportsRes.data ?? []) as { sport: string; tournament_count: number }[]);
       } catch (err) {
-        if (mounted) setError(err instanceof Error ? err.message : "Could not load dashboard data");
+        if (mounted) setError(getErrorMessage(err));
       } finally {
         if (mounted) setIsLoading(false);
       }

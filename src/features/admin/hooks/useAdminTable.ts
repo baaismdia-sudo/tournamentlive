@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { fetchTable, createRow, updateRow, deleteRow } from "../../../services/supabase/adminContent";
+import { getErrorMessage } from "../../../lib/errors";
 
 const PAGE_SIZE = 15;
 
@@ -19,7 +20,7 @@ export function useAdminTable<T extends { id: string }>(table: string, searchCol
       setRows(result.rows);
       setTotal(result.total);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not load data");
+      setError(getErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
