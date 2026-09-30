@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { MatchEventRow } from "../hooks/useRealtimeMatch";
 import { getSportConfig } from "../data/sportEventConfigs";
 import { updateMatchEvent } from "../../../services/supabase/matchControl";
+import { getErrorMessage } from "../../../lib/errors";
 
 export function Timeline({
   events, sport, onUndo, onChanged,
@@ -42,7 +43,7 @@ export function Timeline({
       setEditingId(null);
       onChanged?.();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save changes");
+      setError(getErrorMessage(err));
     } finally {
       setIsSaving(false);
     }
