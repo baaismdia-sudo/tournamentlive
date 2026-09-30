@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchOrganizerStats, type OrganizerStats } from "../../../services/supabase/organizerDashboard";
+import { getErrorMessage } from "../../../lib/errors";
 
 export function useOrganizerStats() {
   const [stats, setStats] = useState<OrganizerStats | null>(null);
@@ -13,7 +14,7 @@ export function useOrganizerStats() {
         if (mounted) setStats(s);
       })
       .catch((err) => {
-        if (mounted) setError(err instanceof Error ? err.message : "Could not load stats");
+        if (mounted) setError(getErrorMessage(err));
       })
       .finally(() => {
         if (mounted) setIsLoading(false);
