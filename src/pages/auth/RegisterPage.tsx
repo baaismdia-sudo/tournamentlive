@@ -6,6 +6,7 @@ import { GoogleButton } from "../../components/ui/GoogleButton";
 import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
 import { InlineFieldError } from "../../components/ui/ErrorState";
 import { registerUser, loginWithGoogle, isUsernameAvailable } from "../../services/supabase/auth";
+import { getErrorMessage } from "../../lib/errors";
 
 interface FormState {
   name: string;
@@ -89,7 +90,7 @@ export default function RegisterPage() {
       });
       navigate("/verify-email", { state: { email: form.email } });
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Registration failed";
+      const message = getErrorMessage(err);
       if (message.toLowerCase().includes("already registered")) {
         setServerError("An account with this email already exists.");
       } else {
@@ -105,7 +106,7 @@ export default function RegisterPage() {
     try {
       await loginWithGoogle();
     } catch (err) {
-      setServerError(err instanceof Error ? err.message : "Google sign-up failed");
+      setServerError(getErrorMessage(err));
       setIsGoogleLoading(false);
     }
   };

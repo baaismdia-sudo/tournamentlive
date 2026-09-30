@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthLayout } from "../../layouts/AuthLayout";
 import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
+import { getErrorMessage } from "../../lib/errors";
 
 /**
  * Future-ready 2FA verification screen. Supabase supports TOTP MFA via
@@ -41,7 +42,7 @@ export default function TwoFactorAuthPage() {
       // await supabase.auth.mfa.verify({ factorId, challengeId: challenge.id, code });
       navigate("/dashboard");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Invalid code, try again");
+      setError(getErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }

@@ -4,6 +4,7 @@ import { AuthLayout } from "../../layouts/AuthLayout";
 import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
 import { resendVerificationEmail } from "../../services/supabase/auth";
 import { supabase } from "../../lib/supabaseClient";
+import { getErrorMessage } from "../../lib/errors";
 
 const RESEND_COOLDOWN_SECONDS = 60;
 
@@ -43,7 +44,7 @@ export default function VerifyEmailPage() {
       setMessage("Verification email resent.");
       setCooldown(RESEND_COOLDOWN_SECONDS);
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Could not resend email");
+      setMessage(getErrorMessage(err));
     } finally {
       setIsResending(false);
     }

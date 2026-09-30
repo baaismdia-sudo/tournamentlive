@@ -4,6 +4,7 @@ import { AuthLayout } from "../../layouts/AuthLayout";
 import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
 import { SuccessBanner } from "../../components/ui/ErrorState";
 import { requestPasswordReset } from "../../services/supabase/auth";
+import { getErrorMessage } from "../../lib/errors";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -23,7 +24,7 @@ export default function ForgotPasswordPage() {
       await requestPasswordReset(email);
       setSent(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      setError(getErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }

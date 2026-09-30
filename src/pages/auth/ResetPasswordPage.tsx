@@ -6,6 +6,7 @@ import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
 import { ErrorState } from "../../components/ui/ErrorState";
 import { updatePassword } from "../../services/supabase/auth";
 import { supabase } from "../../lib/supabaseClient";
+import { getErrorMessage } from "../../lib/errors";
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export default function ResetPasswordPage() {
       setDone(true);
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not reset password");
+      setError(getErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }

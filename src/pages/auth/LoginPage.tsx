@@ -10,6 +10,7 @@ import { loginSchema, type LoginInput } from "../../shared/validators/auth.schem
 import { loginWithPassword, loginWithGoogle } from "../../services/supabase/auth";
 import { getOwnProfile } from "../../services/supabase/profiles";
 import { homeRouteForRole } from "../../routes/guards";
+import { getErrorMessage } from "../../lib/errors";
 
 const MAX_ATTEMPTS_BEFORE_WARNING = 3;
 
@@ -56,7 +57,7 @@ export default function LoginPage() {
       navigate(target, { replace: true });
     } catch (err) {
       setAttempts((a) => a + 1);
-      const message = err instanceof Error ? err.message : "Something went wrong";
+      const message = getErrorMessage(err);
       if (message.toLowerCase().includes("email not confirmed")) {
         navigate("/verify-email", { state: { email: values.email } });
         return;
@@ -76,7 +77,7 @@ export default function LoginPage() {
     try {
       await loginWithGoogle();
     } catch (err) {
-      setServerError(err instanceof Error ? err.message : "Google sign-in failed");
+      setServerError(getErrorMessage(err));
       setIsGoogleLoading(false);
     }
   };
