@@ -42,7 +42,10 @@ export interface MatchEventRow {
   minute: number | null;
   description: string | null;
   value: number;
+  score_delta?: number | null;
+  scoring_team?: string | null;
   undone: boolean;
+  metadata?: Record<string, unknown>;
   created_at: string;
 }
 
