@@ -9,6 +9,7 @@ import { Scoreboard } from "../../features/live/components/Scoreboard";
 import { MatchClockControl } from "../../features/live/components/MatchClockControl";
 import { QuickActionButtons } from "../../features/live/components/QuickActionButtons";
 import { Timeline } from "../../features/live/components/Timeline";
+import { CricketScorerPanel } from "../../features/live/components/CricketScorerPanel";
 import { getSportConfig, type QuickAction } from "../../features/live/data/sportEventConfigs";
 import { PageLoader } from "../../components/ui/LoadingSpinner";
 import {
@@ -48,6 +49,7 @@ export default function ScorekeeperMatchControlPage() {
   if (isLoading || !match) return <PageLoader label="Loading match control room..." />;
 
   const config = getSportConfig(sport);
+  const isCricket = sport.toLowerCase() === "cricket";
   const otherScorekeepers = presentUsers.filter((u) => u.profileId !== profile?.id && u.role === "scorekeeper");
 
   const notify = (message: string, isError = false) => {
@@ -104,44 +106,72 @@ export default function ScorekeeperMatchControlPage() {
         </div>
       )}
 
-      <Scoreboard match={match} liveScore={liveScore} homeTeam={homeTeam} awayTeam={awayTeam} />
+      {!isCricket && (
+        <>
+          <Scoreboard match={match} liveScore={liveScore} homeTeam={homeTeam} awayTeam={awayTeam} />
 
-      <MatchClockControl
-        liveScore={liveScore}
-        onStart={() => runAction("Start", () => startMatch(match.id))}
-        onPause={(elapsed) => runAction("Pause", () => pauseClock(match.id, elapsed))}
-        onResume={() => runAction("Resume", () => resumeClock(match.id))}
-        onEnd={() => runAction("End match", () => endMatch(match.id, liveScore?.home_score ?? match.home_score, liveScore?.away_score ?? match.away_score))}
-      />
+          <MatchClockControl
+            liveScore={liveScore}
+            onStart={() => runAction("Start", () => startMatch(match.id))}
+            onPause={(elapsed) => runAction("Pause", () => pauseClock(match.id, elapsed))}
+            onResume={() => runAction("Resume", () => resumeClock(match.id))}
+            onEnd={() => runAction("End match", () => endMatch(match.id, liveScore?.home_score ?? match.home_score, liveScore?.away_score ?? match.away_score))}
+          />
 
-      <div className="flex flex-wrap gap-2">
-        {config.periods.filter((p, i, arr) => arr.indexOf(p) === i).map((period) => (
-          <button
-            key={period}
-            onClick={() => runAction("Update status", () => setMatchStatus(match.id, period))}
-            className={`rounded-lg border px-3 py-1.5 text-xs font-medium capitalize ${
-              match.status === period ? "border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "border-[var(--color-border)] text-[var(--color-muted)]"
-            }`}
-          >
-            {period.replace("_", " ")}
-          </button>
-        ))}
-      </div>
+          <div className="flex flex-wrap gap-2">
+            {config.periods.filter((p, i, arr) => arr.indexOf(p) === i).map((period) => (
+              <button
+                key={period}
+                onClick={() => runAction("Update status", () => setMatchStatus(match.id, period))}
+                className={`rounded-lg border px-3 py-1.5 text-xs font-medium capitalize ${
+                  match.status === period ? "border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "border-[var(--color-border)] text-[var(--color-muted)]"
+                }`}
+              >
+                {period.replace("_", " ")}
+              </button>
+            ))}
+          </div>
 
-      <section>
-        <h2 className="mb-3 font-heading text-sm font-semibold text-[var(--color-heading)]">Quick actions</h2>
-        <QuickActionButtons actions={config.quickActions} homePlayers={homePlayers} awayPlayers={awayPlayers} onAction={handleAction} />
-      </section>
+          <section>
+            <h2 className="mb-3 font-heading text-sm font-semibold text-[var(--color-heading)]">Quick actions</h2>
+            <QuickActionButtons actions={config.quickActions} homePlayers={homePlayers} awayPlayers={awayPlayers} onAction={handleAction} />
+          </section>
 
-      <section>
-        <h2 className="mb-3 font-heading text-sm font-semibold text-[var(--color-heading)]">Timeline</h2>
-        <Timeline
-          events={events}
-          sport={sport}
-          onUndo={(eventId) => runAction("Undo", () => undoEvent(eventId))}
-          onChanged={refetch}
-        />
-      </section>
+          <section>
+            <h2 className="mb-3 font-heading text-sm font-semibold text-[var(--color-heading)]">Timeline</h2>
+            <Timeline
+              events={events}
+              sport={sport}
+              onUndo={(eventId) => runAction("Undo", () => undoEvent(eventId))}
+              onChanged={refetch}
+            />
+          </section>
+        </>
+      )}
+
+      {isCricket && (
+        <>
+          {match.status === "scheduled" && (
+            <button
+              onClick={() => runAction("Start", () => startMatch(match.id))}
+              className="w-full rounded-card bg-[var(--color-primary)] py-3 text-sm font-bold text-white"
+            >
+              Start match
+            </button>
+          )}
+          <CricketScorerPanel
+            match={match}
+            liveScore={liveScore}
+            events={events}
+            homeTeam={homeTeam}
+            awayTeam={awayTeam}
+            homePlayers={homePlayers}
+            awayPlayers={awayPlayers}
+            notify={notify}
+            refetch={refetch}
+          />
+        </>
+      )}
     </div>
   );
 }
