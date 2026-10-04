@@ -3,33 +3,10 @@ import { Undo2, Zap, ChevronDown, X } from "lucide-react";
 import { supabase } from "../../../lib/supabaseClient";
 import { getErrorMessage } from "../../../lib/errors";
 import type { MatchRow, LiveScoreRow, MatchEventRow } from "../hooks/useRealtimeMatch";
+import { type CricketState, ballDot } from "../cricket/cricketState";
 
 interface TeamInfo { id: string; name: string; logo_url: string | null }
 interface PlayerOption { id: string; full_name: string }
-
-interface CricketState {
-  innings: number;
-  batting_team_id: string;
-  bowling_team_id: string;
-  striker_id: string | null;
-  non_striker_id: string | null;
-  bowler_id: string | null;
-  total_overs: number | null;
-  over: number;
-  ball: number;
-  runs: number;
-  wickets: number;
-  extras: { wide: number; no_ball: number; bye: number; leg_bye: number };
-  target: number | null;
-  free_hit: boolean;
-  awaiting_new_batter: boolean;
-  awaiting_new_bowler: boolean;
-  innings_complete: boolean;
-  current_over_balls: { label: string; runs: number; type: string; wicket: boolean }[];
-  batters: Record<string, { runs: number; balls: number; fours: number; sixes: number; out: boolean }>;
-  bowlers: Record<string, { balls: number; runs: number; wickets: number; maidens: number }>;
-  innings_totals?: Record<string, { runs: number; wickets: number; overs: string }>;
-}
 
 const WICKET_TYPES = [
   { value: "bowled", label: "Bowled" },
@@ -43,16 +20,6 @@ const WICKET_TYPES = [
 ];
 
 const MORE_ACTIONS = ["DRS Review", "Retired Hurt", "Retired Out", "Injury", "Penalty Runs", "Overthrow", "Other"];
-
-function ballDot(b: { type: string; runs: number; wicket: boolean }) {
-  if (b.wicket) return { text: "W", cls: "bg-[var(--color-danger)] text-white" };
-  if (b.type === "wide") return { text: "wd", cls: "bg-[var(--color-warning)]/20 text-[var(--color-warning)]" };
-  if (b.type === "no_ball") return { text: "nb", cls: "bg-[var(--color-warning)]/20 text-[var(--color-warning)]" };
-  if (b.type === "bye" || b.type === "leg_bye") return { text: String(b.runs), cls: "bg-[var(--color-info)]/15 text-[var(--color-info)]" };
-  if (b.runs === 4) return { text: "4", cls: "bg-[var(--color-success)]/15 text-[var(--color-success)] font-bold" };
-  if (b.runs === 6) return { text: "6", cls: "bg-[var(--color-primary)]/15 text-[var(--color-primary)] font-bold" };
-  return { text: String(b.runs), cls: "bg-[var(--color-surface-secondary)] text-[var(--color-text)]" };
-}
 
 export function CricketScorerPanel({
   match, liveScore, events, homeTeam, awayTeam, homePlayers, awayPlayers, notify, refetch,
@@ -143,23 +110,56 @@ export function CricketScorerPanel({
     setMoreOpen(false);
   });
 
-  // ---- No innings started yet ----
+  // ---- No toss recorded yet ----
   if (!state) {
     return (
-      <InningsSetup
-        homeTeam={homeTeam} awayTeam={awayTeam} homePlayers={homePlayers} awayPlayers={awayPlayers}
-        innings={1} isBusy={isBusy}
-        onStart={(form) => run("Start innings", async () => {
-          const { error } = await supabase.rpc("start_cricket_innings", {
-            p_match_id: match.id, p_innings: 1,
-            p_batting_team_id: form.battingTeamId, p_bowling_team_id: form.bowlingTeamId,
-            p_striker_id: form.strikerId, p_non_striker_id: form.nonStrikerId, p_bowler_id: form.bowlerId,
-            p_total_overs: form.totalOvers,
+      <TossStep
+        homeTeam={homeTeam} awayTeam={awayTeam} isBusy={isBusy}
+        onConfirm={(form) => run("Record toss", async () => {
+          const { error } = await supabase.rpc("record_cricket_toss", {
+            p_match_id: match.id,
+            p_toss_winner_team_id: form.winnerTeamId,
+            p_toss_call: form.call,
+            p_toss_result: form.result,
+            p_decision: form.decision,
+            p_home_team_id: homeTeam?.id, p_away_team_id: awayTeam?.id,
           });
           if (error) throw error;
           refetch();
         })}
       />
+    );
+  }
+
+  // ---- Toss done, innings 1 not started yet ----
+  if (state.phase === "toss_done" && !state.innings) {
+    const tossBattingTeam = state.batting_team_id === homeTeam?.id ? homeTeam : awayTeam;
+    return (
+      <div className="space-y-4">
+        <TossSummary state={state} homeTeam={homeTeam} awayTeam={awayTeam}
+          onRedo={() => run("Redo toss", async () => {
+            const { error } = await supabase.from("live_scores").delete().eq("match_id", match.id);
+            if (error) throw error;
+            refetch();
+          })}
+        />
+        <InningsSetup
+          homeTeam={homeTeam} awayTeam={awayTeam} homePlayers={homePlayers} awayPlayers={awayPlayers}
+          innings={1} isBusy={isBusy}
+          forcedBattingTeamId={state.batting_team_id} forcedBowlingTeamId={state.bowling_team_id}
+          battingTeamLabel={tossBattingTeam?.name}
+          onStart={(form) => run("Start innings", async () => {
+            const { error } = await supabase.rpc("start_cricket_innings", {
+              p_match_id: match.id, p_innings: 1,
+              p_batting_team_id: form.battingTeamId, p_bowling_team_id: form.bowlingTeamId,
+              p_striker_id: form.strikerId, p_non_striker_id: form.nonStrikerId, p_bowler_id: form.bowlerId,
+              p_total_overs: form.totalOvers,
+            });
+            if (error) throw error;
+            refetch();
+          })}
+        />
+      </div>
     );
   }
 
@@ -269,31 +269,51 @@ export function CricketScorerPanel({
 
       {!state.awaiting_new_batter && !state.awaiting_new_bowler && (
         <>
-          {/* BATTERS */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-card border-2 border-[var(--color-primary)] bg-[var(--color-primary)]/5 p-3">
-              <p className="text-[10px] font-bold uppercase tracking-wide text-[var(--color-primary)]">Striker ⭐</p>
-              <p className="truncate font-heading text-sm font-bold text-[var(--color-heading)]">{nameOf(state.striker_id)}</p>
-              <p className="text-lg font-black text-[var(--color-heading)]">{striker?.runs ?? 0}* <span className="text-xs font-normal text-[var(--color-muted)]">({striker?.balls ?? 0})</span></p>
-              <p className="text-[11px] text-[var(--color-muted)]">4s: {striker?.fours ?? 0} · 6s: {striker?.sixes ?? 0}</p>
-            </div>
-            <div className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-3">
-              <p className="text-[10px] font-bold uppercase tracking-wide text-[var(--color-muted)]">Non-striker</p>
-              <p className="truncate font-heading text-sm font-bold text-[var(--color-heading)]">{nameOf(state.non_striker_id)}</p>
-              <p className="text-lg font-black text-[var(--color-heading)]">{nonStriker?.runs ?? 0}* <span className="text-xs font-normal text-[var(--color-muted)]">({nonStriker?.balls ?? 0})</span></p>
-              <p className="text-[11px] text-[var(--color-muted)]">4s: {nonStriker?.fours ?? 0} · 6s: {nonStriker?.sixes ?? 0}</p>
-            </div>
+          {/* OUT / BYE / UNDO — the three most-reached-for controls, together up top */}
+          <div className="grid grid-cols-3 gap-2">
+            <button disabled={isBusy} onClick={() => setWicketOpen(true)} className="rounded-card bg-[var(--color-danger)] py-3 text-sm font-bold text-white disabled:opacity-50">
+              OUT
+            </button>
+            <button disabled={isBusy} onClick={() => setExtraOpen("bye")} className="rounded-card bg-[var(--color-warning)] py-3 text-sm font-bold text-white disabled:opacity-50">
+              BYE
+            </button>
+            <button disabled={isBusy || events.filter((e) => e.event_type === "cricket_delivery" && !e.undone).length === 0} onClick={undo} className="flex items-center justify-center gap-1.5 rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] py-3 text-sm font-semibold text-[var(--color-text)] disabled:opacity-40">
+              <Undo2 size={15} /> UNDO
+            </button>
           </div>
 
-          {/* BOWLER */}
-          <div className="flex items-center justify-between rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-3">
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-wide text-[var(--color-muted)]">Current bowler</p>
-              <p className="font-heading text-sm font-bold text-[var(--color-heading)]">{nameOf(state.bowler_id)}</p>
+          {/* CHOOSE BATTERS & BOWLER — compact tap-switcher */}
+          <div className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-3">
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-[var(--color-muted)]">Batter · Non-striker · Bowler</p>
+            <div className="grid grid-cols-3 gap-2">
+              <div className="rounded-lg border-2 border-[var(--color-primary)] bg-[var(--color-primary)]/5 p-2 text-center">
+                <p className="text-[9px] font-bold uppercase text-[var(--color-primary)]">Striker ⭐</p>
+                <p className="truncate text-xs font-bold text-[var(--color-heading)]">{nameOf(state.striker_id)}</p>
+                <p className="text-[11px] text-[var(--color-muted)]">{striker?.runs ?? 0} ({striker?.balls ?? 0})</p>
+              </div>
+              <div className="rounded-lg border border-[var(--color-border)] p-2 text-center">
+                <p className="text-[9px] font-bold uppercase text-[var(--color-muted)]">Non-striker</p>
+                <p className="truncate text-xs font-bold text-[var(--color-heading)]">{nameOf(state.non_striker_id)}</p>
+                <p className="text-[11px] text-[var(--color-muted)]">{nonStriker?.runs ?? 0} ({nonStriker?.balls ?? 0})</p>
+              </div>
+              <div className="rounded-lg border border-[var(--color-border)] p-2 text-center">
+                <p className="text-[9px] font-bold uppercase text-[var(--color-muted)]">Bowler</p>
+                <p className="truncate text-xs font-bold text-[var(--color-heading)]">{nameOf(state.bowler_id)}</p>
+                <p className="text-[11px] text-[var(--color-muted)]">{bowler?.wickets ?? 0}-{bowler?.runs ?? 0} ({Math.floor(ballsFaced / 6)}.{ballsFaced % 6})</p>
+              </div>
             </div>
-            <p className="text-xs text-[var(--color-muted)]">
-              {Math.floor(ballsFaced / 6)}.{ballsFaced % 6} ov · {bowler?.runs ?? 0} runs · {bowler?.wickets ?? 0} wkts · Econ {economy}
-            </p>
+            <button
+              disabled={isBusy}
+              onClick={() => run("Swap ends", async () => {
+                const { error } = await supabase.rpc("swap_cricket_strike", { p_match_id: match.id });
+                if (error) throw error;
+                refetch();
+              })}
+              className="mt-2 w-full rounded-lg border border-[var(--color-border)] py-2 text-xs font-semibold text-[var(--color-text)] disabled:opacity-50"
+            >
+              ⇄ Swap striker / non-striker
+            </button>
+            <p className="mt-1.5 text-center text-[10px] text-[var(--color-muted)]">Economy {economy} · auto-swaps on 1 or 3 runs</p>
           </div>
 
           {/* MAIN KEYPAD */}
@@ -312,9 +332,9 @@ export function CricketScorerPanel({
             ))}
           </div>
 
-          {/* EXTRAS */}
-          <div className="grid grid-cols-4 gap-2">
-            {(["wide", "no_ball", "bye", "leg_bye"] as const).map((t) => (
+          {/* REMAINING EXTRAS */}
+          <div className="grid grid-cols-3 gap-2">
+            {(["wide", "no_ball", "leg_bye"] as const).map((t) => (
               <button
                 key={t}
                 disabled={isBusy}
@@ -324,16 +344,6 @@ export function CricketScorerPanel({
                 {t.replace("_", " ")}
               </button>
             ))}
-          </div>
-
-          {/* WICKET + UNDO */}
-          <div className="grid grid-cols-2 gap-2">
-            <button disabled={isBusy} onClick={() => setWicketOpen(true)} className="rounded-card bg-[var(--color-danger)] py-3.5 text-sm font-bold text-white disabled:opacity-50">
-              🔴 WICKET
-            </button>
-            <button disabled={isBusy || events.filter((e) => e.event_type === "cricket_delivery" && !e.undone).length === 0} onClick={undo} className="flex items-center justify-center gap-2 rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] py-3.5 text-sm font-semibold text-[var(--color-text)] disabled:opacity-40">
-              <Undo2 size={16} /> Undo last ball
-            </button>
           </div>
 
           {/* MORE ACTIONS */}
@@ -511,11 +521,103 @@ function ExtraRunsDialog({ kind, isBusy, onClose, onConfirm }: { kind: "wide" | 
   );
 }
 
+function TossStep({
+  homeTeam, awayTeam, isBusy, onConfirm,
+}: {
+  homeTeam: TeamInfo | null; awayTeam: TeamInfo | null; isBusy: boolean;
+  onConfirm: (form: { winnerTeamId: string; call: string; result: string; decision: "bat" | "bowl" }) => void;
+}) {
+  const [callingTeamId, setCallingTeamId] = useState(homeTeam?.id ?? "");
+  const [call, setCall] = useState<"heads" | "tails">("heads");
+  const [flipping, setFlipping] = useState(false);
+  const [result, setResult] = useState<"heads" | "tails" | null>(null);
+
+  const otherTeam = callingTeamId === homeTeam?.id ? awayTeam : homeTeam;
+  const callingTeam = callingTeamId === homeTeam?.id ? homeTeam : awayTeam;
+  const winnerTeam = result ? (result === call ? callingTeam : otherTeam) : null;
+
+  const flip = () => {
+    setFlipping(true);
+    setTimeout(() => {
+      setResult(Math.random() < 0.5 ? "heads" : "tails");
+      setFlipping(false);
+    }, 800);
+  };
+
+  if (!result) {
+    return (
+      <div className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-5 text-center">
+        <h3 className="mb-4 font-heading text-lg font-bold text-[var(--color-heading)]">Match Toss</h3>
+        <label className="mb-1 block text-left text-xs font-medium text-[var(--color-muted)]">Calling team</label>
+        <select value={callingTeamId} onChange={(e) => setCallingTeamId(e.target.value)} className="mb-3 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm">
+          {homeTeam && <option value={homeTeam.id}>{homeTeam.name}</option>}
+          {awayTeam && <option value={awayTeam.id}>{awayTeam.name}</option>}
+        </select>
+        <label className="mb-1 block text-left text-xs font-medium text-[var(--color-muted)]">Call</label>
+        <div className="mb-5 grid grid-cols-2 gap-2">
+          <button onClick={() => setCall("heads")} className={`rounded-lg border py-2 text-sm font-semibold capitalize ${call === "heads" ? "border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "border-[var(--color-border)] text-[var(--color-text)]"}`}>Heads</button>
+          <button onClick={() => setCall("tails")} className={`rounded-lg border py-2 text-sm font-semibold capitalize ${call === "tails" ? "border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "border-[var(--color-border)] text-[var(--color-text)]"}`}>Tails</button>
+        </div>
+        <button
+          disabled={flipping || !callingTeamId}
+          onClick={flip}
+          className={`mx-auto flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-b from-yellow-300 to-yellow-600 font-heading text-sm font-black uppercase text-yellow-900 shadow-lg transition disabled:opacity-60 ${flipping ? "animate-spin" : ""}`}
+        >
+          {flipping ? "" : "Flip coin"}
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-5 text-center">
+      <div className="mb-3 flex justify-end">
+        <button onClick={() => setResult(null)} className="text-xs font-medium text-[var(--color-muted)] hover:text-[var(--color-text)]">↻ Redo</button>
+      </div>
+      <div className="mx-auto mb-3 flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-b from-yellow-300 to-yellow-600 font-heading text-base font-black uppercase text-yellow-900 shadow-lg">
+        {result}
+      </div>
+      <p className="font-heading text-lg font-bold text-[var(--color-heading)]">{winnerTeam?.name} won the toss</p>
+      <p className="mt-1 text-xs text-[var(--color-muted)]">Landed on {result} · Called {call}</p>
+
+      <p className="mb-2 mt-4 text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">Choose</p>
+      <div className="grid grid-cols-2 gap-2">
+        <button
+          disabled={isBusy || !winnerTeam}
+          onClick={() => winnerTeam && onConfirm({ winnerTeamId: winnerTeam.id, call, result, decision: "bat" })}
+          className="rounded-lg border border-[var(--color-primary)] bg-[var(--color-primary)]/10 py-3 text-sm font-bold text-[var(--color-primary)] disabled:opacity-50"
+        >
+          Bat first
+        </button>
+        <button
+          disabled={isBusy || !winnerTeam}
+          onClick={() => winnerTeam && onConfirm({ winnerTeamId: winnerTeam.id, call, result, decision: "bowl" })}
+          className="rounded-lg border border-[var(--color-border)] py-3 text-sm font-bold text-[var(--color-text)] disabled:opacity-50"
+        >
+          Bowl first
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function TossSummary({ state, homeTeam, awayTeam, onRedo }: { state: CricketState; homeTeam: TeamInfo | null; awayTeam: TeamInfo | null; onRedo: () => void }) {
+  const winnerTeam = state.toss?.winner_team_id === homeTeam?.id ? homeTeam : awayTeam;
+  return (
+    <div className="flex items-center justify-between rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3">
+      <p className="text-sm text-[var(--color-text)]">
+        <b>{winnerTeam?.name}</b> won the toss and chose to <b>{state.toss?.decision}</b> first
+      </p>
+      <button onClick={onRedo} className="whitespace-nowrap text-xs font-medium text-[var(--color-muted)] hover:text-[var(--color-text)]">↻ Redo toss</button>
+    </div>
+  );
+}
+
 function InningsSetup({
-  homeTeam, awayTeam, homePlayers, awayPlayers, innings, forcedBattingTeamId, forcedBowlingTeamId, totalOvers, isBusy, onStart,
+  homeTeam, awayTeam, homePlayers, awayPlayers, innings, forcedBattingTeamId, forcedBowlingTeamId, battingTeamLabel, totalOvers, isBusy, onStart,
 }: {
   homeTeam: TeamInfo | null; awayTeam: TeamInfo | null; homePlayers: PlayerOption[]; awayPlayers: PlayerOption[];
-  innings: number; forcedBattingTeamId?: string; forcedBowlingTeamId?: string; totalOvers?: number | null; isBusy: boolean;
+  innings: number; forcedBattingTeamId?: string; forcedBowlingTeamId?: string; battingTeamLabel?: string; totalOvers?: number | null; isBusy: boolean;
   onStart: (form: { battingTeamId: string; bowlingTeamId: string; strikerId: string; nonStrikerId: string; bowlerId: string; totalOvers: number | null }) => void;
 }) {
   const [battingTeamId, setBattingTeamId] = useState(forcedBattingTeamId ?? homeTeam?.id ?? "");
@@ -531,6 +633,12 @@ function InningsSetup({
   return (
     <div className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
       <h3 className="mb-3 font-heading text-base font-bold text-[var(--color-heading)]">Start innings {innings}</h3>
+
+      {forcedBattingTeamId && battingTeamLabel && (
+        <p className="mb-3 rounded-lg bg-[var(--color-primary)]/10 px-3 py-2 text-sm text-[var(--color-primary)]">
+          <b>{battingTeamLabel}</b> bats first
+        </p>
+      )}
 
       {!forcedBattingTeamId && (
         <>
