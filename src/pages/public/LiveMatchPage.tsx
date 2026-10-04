@@ -4,6 +4,7 @@ import { MapPin, Cloud, Users as UsersIcon } from "lucide-react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRealtimeMatch } from "../../features/live/hooks/useRealtimeMatch";
 import { Scoreboard } from "../../features/live/components/Scoreboard";
+import { CricketUmpireView } from "../../features/live/components/CricketUmpireView";
 import { Timeline } from "../../features/live/components/Timeline";
 import { CommentaryFeed } from "../../features/live/components/CommentaryFeed";
 import { ShareBar } from "../../features/live/components/ShareBar";
@@ -28,6 +29,7 @@ export default function LiveMatchPage() {
   const [homeTeam, setHomeTeam] = useState<TeamInfo | null>(null);
   const [awayTeam, setAwayTeam] = useState<TeamInfo | null>(null);
   const [lineups, setLineups] = useState<LineupRow[]>([]);
+  const [teamPlayers, setTeamPlayers] = useState<{ id: string; full_name: string }[]>([]);
   const [stream, setStream] = useState<StreamInfo | null>(null);
   const [venueDetail, setVenueDetail] = useState<{ name: string; city: string | null; google_maps_url: string | null } | null>(null);
 
@@ -41,6 +43,10 @@ export default function LiveMatchPage() {
     if (match.away_team_id) supabase.from("teams").select("id, name, logo_url").eq("id", match.away_team_id).single().then(({ data }) => setAwayTeam(data));
     supabase.from("match_lineups").select("player_id, is_starting, position, team_id, players(full_name)").eq("match_id", match.id).then(({ data }) => setLineups((data ?? []) as unknown as LineupRow[]));
     supabase.from("live_streams").select("stream_url, provider, is_active").eq("match_id", match.id).eq("is_active", true).maybeSingle().then(({ data }) => setStream(data));
+    const teamIds = [match.home_team_id, match.away_team_id].filter(Boolean) as string[];
+    if (teamIds.length) {
+      supabase.from("players").select("id, full_name").in("team_id", teamIds).then(({ data }) => setTeamPlayers(data ?? []));
+    }
   }, [match]);
 
   useEffect(() => {
@@ -70,7 +76,11 @@ export default function LiveMatchPage() {
 
       <p className="text-center text-xs font-medium uppercase tracking-wide text-[var(--color-muted)]">{tournamentName} {match.round && `· ${match.round}`}</p>
 
-      <Scoreboard match={match} liveScore={liveScore} homeTeam={homeTeam} awayTeam={awayTeam} />
+      {sport.toLowerCase() === "cricket" ? (
+        <CricketUmpireView liveScore={liveScore} homeTeam={homeTeam} awayTeam={awayTeam} players={teamPlayers} />
+      ) : (
+        <Scoreboard match={match} liveScore={liveScore} homeTeam={homeTeam} awayTeam={awayTeam} />
+      )}
 
       {stream?.is_active && <StreamEmbed streamUrl={stream.stream_url} provider={stream.provider} />}
 
