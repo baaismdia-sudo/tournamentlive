@@ -31,6 +31,7 @@ export interface LiveScoreRow {
   clock_started_at: string | null;
   clock_elapsed_seconds: number;
   added_time_seconds: number;
+  updated_at?: string;
 }
 
 export interface MatchEventRow {
