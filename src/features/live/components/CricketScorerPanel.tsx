@@ -214,8 +214,8 @@ export function CricketScorerPanel({
   const striker = state.striker_id ? state.batters[state.striker_id] : null;
   const nonStriker = state.non_striker_id ? state.batters[state.non_striker_id] : null;
   const bowler = state.bowler_id ? state.bowlers[state.bowler_id] : null;
-  const bowlerBalls = bowler ? bowler.balls : 0;
-  const economy = bowler && bowlerBalls > 0 ? (bowler.runs / (bowlerBalls / 6)).toFixed(2) : "0.00";
+  const ballsFaced = bowler ? bowler.balls : 0;
+  const economy = bowler && ballsFaced > 0 ? (bowler.runs / (ballsFaced / 6)).toFixed(2) : "0.00";
   const oversStr = `${state.over}.${state.ball}`;
   const crr = state.over * 6 + state.ball > 0 ? (state.runs / ((state.over * 6 + state.ball) / 6)).toFixed(2) : "0.00";
   const ballsRemaining = state.total_overs ? state.total_overs * 6 - (state.over * 6 + state.ball) : null;
@@ -302,7 +302,7 @@ export function CricketScorerPanel({
               <div className="rounded-lg border border-[var(--color-border)] p-2 text-center">
                 <p className="text-[9px] font-bold uppercase text-[var(--color-muted)]">Bowler</p>
                 <p className="truncate text-xs font-bold text-[var(--color-heading)]">{nameOf(state.bowler_id)}</p>
-                <p className="text-[11px] text-[var(--color-muted)]">{bowler?.wickets ?? 0}-{bowler?.runs ?? 0} ({Math.floor(bowlerBalls / 6)}.{bowlerBalls % 6})</p>
+                <p className="text-[11px] text-[var(--color-muted)]">{bowler?.wickets ?? 0}-{bowler?.runs ?? 0} ({Math.floor(ballsFaced / 6)}.{ballsFaced % 6})</p>
               </div>
             </div>
             <button
@@ -464,7 +464,6 @@ function WicketDialog({
   const [fielderId, setFielderId] = useState("");
   const [runs, setRuns] = useState(0);
   const needsFielder = wicketType === "caught" || wicketType === "run_out" || wicketType === "stumped";
-  const canConfirm = !isBusy && !!dismissedId && (!needsFielder || !!fielderId);
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center" onClick={onClose}>
@@ -502,7 +501,7 @@ function WicketDialog({
         )}
 
         <button
-          disabled={!canConfirm}
+          disabled={isBusy || !dismissedId}
           onClick={() => onConfirm(wicketType, dismissedId, fielderId || undefined, runs)}
           className="w-full rounded-lg bg-[var(--color-danger)] py-3 text-sm font-bold text-white disabled:opacity-50"
         >
@@ -514,11 +513,7 @@ function WicketDialog({
 }
 
 function ExtraRunsDialog({ kind, isBusy, onClose, onConfirm }: { kind: "wide" | "no_ball" | "bye" | "leg_bye"; isBusy: boolean; onClose: () => void; onConfirm: (runs: number) => void }) {
-  const label = kind === "wide"
-    ? "Wide — total runs to record"
-    : kind === "no_ball"
-      ? "No Ball — runs to record (including the no-ball extra)"
-      : kind.replace("_", " ") + " runs";
+  const label = kind === "wide" ? "Wide — additional runs run" : kind === "no_ball" ? "No Ball — runs off the bat" : kind.replace("_", " ") + " runs";
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center" onClick={onClose}>
       <div className="w-full max-w-sm rounded-t-2xl bg-[var(--color-surface)] p-5 sm:rounded-2xl" onClick={(e) => e.stopPropagation()}>
@@ -528,7 +523,7 @@ function ExtraRunsDialog({ kind, isBusy, onClose, onConfirm }: { kind: "wide" | 
         </div>
         <p className="mb-2 text-xs text-[var(--color-muted)]">{label}</p>
         <div className="grid grid-cols-5 gap-2">
-          {(kind === "wide" ? [1, 2, 3, 4, 5, 6] : kind === "no_ball" ? [0, 1, 2, 3, 4, 5, 6] : [1, 2, 3, 4]).map((r) => (
+          {[0, 1, 2, 3, 4].map((r) => (
             <button key={r} disabled={isBusy} onClick={() => onConfirm(r)} className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-secondary)] py-3 text-sm font-bold text-[var(--color-heading)] disabled:opacity-50">
               {r}
             </button>
