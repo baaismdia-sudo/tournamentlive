@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
-import { Radio } from "lucide-react";
+import { Radio, HelpCircle } from "lucide-react";
 import type { LiveScoreRow } from "../hooks/useRealtimeMatch";
 import { type CricketState, ballDot, oversDisplay, runRate } from "../cricket/cricketState";
+import { GuidedTour, useTourAutoLaunch, type TourStep } from "../../../components/ui/GuidedTour";
+
+const UMPIRE_VIEW_TOUR: TourStep[] = [
+  { target: "uv-score", title: "Live scoreboard", description: "Updates instantly as the scorekeeper records each ball — current runs, wickets, overs, and the target score if a team is chasing." },
+  { target: "uv-over", title: "This over", description: "Every ball bowled this over, color-coded: a four, a six, a wicket, or an extra are all easy to spot." },
+];
 
 interface TeamInfo { id: string; name: string; logo_url: string | null }
 interface PlayerName { id: string; full_name: string }
@@ -25,6 +31,7 @@ export function CricketUmpireView({
 }) {
   const state = (liveScore?.sport_state ?? null) as unknown as CricketState | null;
   const [, forceTick] = useState(0);
+  const tour = useTourAutoLaunch("cricket_umpire_tour_seen");
 
   // Re-render every few seconds so "Updated Xs ago" stays current without needing new data.
   useEffect(() => {
@@ -89,7 +96,7 @@ export function CricketUmpireView({
         </p>
       </div>
 
-      <div className="mx-4 mb-3 flex items-center justify-between rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3">
+      <div data-tour="uv-score" className="mx-4 mb-3 flex items-center justify-between rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3">
         <div>
           <p className="font-heading text-3xl font-black">
             <span className="text-[var(--color-success)]">{state.runs}</span>
@@ -109,7 +116,7 @@ export function CricketUmpireView({
         </div>
       )}
 
-      <div className="mx-4 mb-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-3">
+      <div data-tour="uv-over" className="mx-4 mb-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-3">
         <div className="mb-2 flex items-center justify-between text-xs text-[var(--color-muted)]">
           <span>{state.current_over_balls.length} of 6 balls</span>
           <span className="font-semibold text-[var(--color-heading)]">Over {state.over + 1}</span>
@@ -123,6 +130,15 @@ export function CricketUmpireView({
         </div>
         <p className="mt-2 text-[11px] text-[var(--color-muted)]">CRR {runRate(state)}</p>
       </div>
+
+      <button
+        onClick={() => tour.setOpen(true)}
+        aria-label="How to read this scoreboard"
+        className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)] text-white shadow-lg"
+      >
+        <HelpCircle size={20} />
+      </button>
+      {tour.open && <GuidedTour steps={UMPIRE_VIEW_TOUR} onClose={tour.close} />}
     </div>
   );
 }

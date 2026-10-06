@@ -1,9 +1,11 @@
 import { useMemo, useState } from "react";
-import { Undo2, Zap, ChevronDown, X } from "lucide-react";
+import { Undo2, Zap, ChevronDown, X, HelpCircle } from "lucide-react";
 import { supabase } from "../../../lib/supabaseClient";
 import { getErrorMessage } from "../../../lib/errors";
 import type { MatchRow, LiveScoreRow, MatchEventRow } from "../hooks/useRealtimeMatch";
 import { type CricketState, ballDot } from "../cricket/cricketState";
+import { GuidedTour, useTourAutoLaunch } from "../../../components/ui/GuidedTour";
+import { CRICKET_SCORER_TOUR } from "../cricket/cricketTourSteps";
 
 interface TeamInfo { id: string; name: string; logo_url: string | null }
 interface PlayerOption { id: string; full_name: string }
@@ -39,6 +41,7 @@ export function CricketScorerPanel({
   const [wicketOpen, setWicketOpen] = useState(false);
   const [extraOpen, setExtraOpen] = useState<"wide" | "no_ball" | "bye" | "leg_bye" | null>(null);
   const [moreOpen, setMoreOpen] = useState(false);
+  const tour = useTourAutoLaunch("cricket_scorer_tour_seen");
   const [flash, setFlash] = useState<string | null>(null);
 
   const allPlayers = useMemo(() => [...homePlayers, ...awayPlayers], [homePlayers, awayPlayers]);
@@ -222,7 +225,7 @@ export function CricketScorerPanel({
   return (
     <div className="space-y-5">
       {/* TOP MATCH STATUS */}
-      <div className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+      <div data-tour="status-bar" className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
         <div className="flex items-center justify-between">
           <span className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-danger)]">
             <span className="h-2 w-2 animate-pulse rounded-full bg-[var(--color-danger)]" /> LIVE
@@ -270,7 +273,7 @@ export function CricketScorerPanel({
       {!state.awaiting_new_batter && !state.awaiting_new_bowler && (
         <>
           {/* OUT / BYE / UNDO — the three most-reached-for controls, together up top */}
-          <div className="grid grid-cols-3 gap-2">
+          <div data-tour="out-bye-undo" className="grid grid-cols-3 gap-2">
             <button disabled={isBusy} onClick={() => setWicketOpen(true)} className="rounded-card bg-[var(--color-danger)] py-3 text-sm font-bold text-white disabled:opacity-50">
               OUT
             </button>
@@ -283,7 +286,7 @@ export function CricketScorerPanel({
           </div>
 
           {/* CHOOSE BATTERS & BOWLER — compact tap-switcher */}
-          <div className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-3">
+          <div data-tour="batter-bowler-switcher" className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-3">
             <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-[var(--color-muted)]">Batter · Non-striker · Bowler</p>
             <div className="grid grid-cols-3 gap-2">
               <div className="rounded-lg border-2 border-[var(--color-primary)] bg-[var(--color-primary)]/5 p-2 text-center">
@@ -317,7 +320,7 @@ export function CricketScorerPanel({
           </div>
 
           {/* MAIN KEYPAD */}
-          <div className="grid grid-cols-3 gap-2">
+          <div data-tour="keypad" className="grid grid-cols-3 gap-2">
             {[0, 1, 2, 3, 4, 6].map((r) => (
               <button
                 key={r}
@@ -333,7 +336,7 @@ export function CricketScorerPanel({
           </div>
 
           {/* REMAINING EXTRAS */}
-          <div className="grid grid-cols-3 gap-2">
+          <div data-tour="extras" className="grid grid-cols-3 gap-2">
             {(["wide", "no_ball", "leg_bye"] as const).map((t) => (
               <button
                 key={t}
@@ -364,7 +367,7 @@ export function CricketScorerPanel({
           </div>
 
           {/* OVER CONTROL */}
-          <div>
+          <div data-tour="over-balls">
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">This over</p>
             <div className="flex flex-wrap gap-1.5">
               {state.current_over_balls.length === 0 && <span className="text-xs text-[var(--color-muted)]">No balls yet</span>}
@@ -378,7 +381,7 @@ export function CricketScorerPanel({
       )}
 
       {/* TIMELINE */}
-      <div>
+      <div data-tour="timeline">
         <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">Ball-by-ball</p>
         <ul className="max-h-72 space-y-1 overflow-y-auto rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-2">
           {[...events].filter((e) => e.event_type === "cricket_delivery").reverse().slice(0, 30).map((e) => {
@@ -419,6 +422,16 @@ export function CricketScorerPanel({
           }}
         />
       )}
+
+      {/* HELP / GUIDED TOUR */}
+      <button
+        onClick={() => tour.setOpen(true)}
+        aria-label="How to use this screen"
+        className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)] text-white shadow-lg"
+      >
+        <HelpCircle size={20} />
+      </button>
+      {tour.open && <GuidedTour steps={CRICKET_SCORER_TOUR} onClose={tour.close} />}
     </div>
   );
 }
