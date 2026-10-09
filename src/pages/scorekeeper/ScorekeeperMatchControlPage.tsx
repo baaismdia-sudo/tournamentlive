@@ -150,27 +150,17 @@ export default function ScorekeeperMatchControlPage() {
       )}
 
       {isCricket && (
-        <>
-          {match.status === "scheduled" && (
-            <button
-              onClick={() => runAction("Start", () => startMatch(match.id))}
-              className="w-full rounded-card bg-[var(--color-primary)] py-3 text-sm font-bold text-white"
-            >
-              Start match
-            </button>
-          )}
-          <CricketScorerPanel
-            match={match}
-            liveScore={liveScore}
-            events={events}
-            homeTeam={homeTeam}
-            awayTeam={awayTeam}
-            homePlayers={homePlayers}
-            awayPlayers={awayPlayers}
-            notify={notify}
-            refetch={refetch}
-          />
-        </>
+        <CricketScorerPanel
+          match={match}
+          liveScore={liveScore}
+          events={events}
+          homeTeam={homeTeam}
+          awayTeam={awayTeam}
+          homePlayers={homePlayers}
+          awayPlayers={awayPlayers}
+          notify={notify}
+          refetch={refetch}
+        />
       )}
     </div>
   );
