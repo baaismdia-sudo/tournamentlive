@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Undo2, Zap, ChevronDown, X, HelpCircle } from "lucide-react";
 import { supabase } from "../../../lib/supabaseClient";
 import { getErrorMessage } from "../../../lib/errors";
+import { endMatch } from "../../../services/supabase/matchControl";
 import type { MatchRow, LiveScoreRow, MatchEventRow } from "../hooks/useRealtimeMatch";
 import { type CricketState, ballDot } from "../cricket/cricketState";
 import { GuidedTour, useTourAutoLaunch } from "../../../components/ui/GuidedTour";
@@ -36,7 +37,12 @@ export function CricketScorerPanel({
   notify: (message: string, isError?: boolean) => void;
   refetch: () => void;
 }) {
-  const state = (liveScore?.sport_state ?? null) as unknown as CricketState | null;
+  const rawState = (liveScore?.sport_state ?? null) as unknown as CricketState | null;
+  // A well-formed cricket state always has either an innings number (live scoring)
+  // or a toss phase (pre-innings). Anything else — null, {}, or a shape some other
+  // code path wrote to this row — is treated as "not started" rather than risking
+  // a render crash on a missing field like current_over_balls.
+  const state = rawState && (rawState.innings != null || rawState.phase === "toss_done") ? rawState : null;
   const [isBusy, setIsBusy] = useState(false);
   const [wicketOpen, setWicketOpen] = useState(false);
   const [extraOpen, setExtraOpen] = useState<"wide" | "no_ball" | "bye" | "leg_bye" | null>(null);
@@ -201,12 +207,27 @@ export function CricketScorerPanel({
         ? `${battingTeam?.name} won`
         : `${bowlingTeam?.name} won by ${state.target - state.runs - 1} runs`
       : "Match complete";
+    const isCompleted = match.status === "completed";
     return (
       <div className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-center">
         <p className="font-heading text-xl font-bold text-[var(--color-heading)]">{result}</p>
         <p className="mt-2 text-sm text-[var(--color-muted)]">
           {battingTeam?.name} {state.runs}/{state.wickets} ({state.over}.{state.ball})
         </p>
+        {isCompleted ? (
+          <p className="mt-4 text-sm font-semibold text-[var(--color-success)]">Match completed and result saved</p>
+        ) : (
+          <button
+            disabled={isBusy}
+            onClick={() => run("Finish match", async () => {
+              await endMatch(match.id, liveScore?.home_score ?? 0, liveScore?.away_score ?? 0);
+              refetch();
+            })}
+            className="mt-4 w-full rounded-lg bg-[var(--color-primary)] py-3 text-sm font-bold text-white disabled:opacity-50"
+          >
+            Finish match &amp; save result
+          </button>
+        )}
       </div>
     );
   }
@@ -422,6 +443,22 @@ export function CricketScorerPanel({
           }}
         />
       )}
+
+      {/* END / ABANDON MATCH */}
+      <button
+        disabled={isBusy}
+        onClick={() => {
+          if (window.confirm("End this match now? The current score will be saved as the final result.")) {
+            run("End match", async () => {
+              await endMatch(match.id, liveScore?.home_score ?? 0, liveScore?.away_score ?? 0);
+              refetch();
+            });
+          }
+        }}
+        className="w-full rounded-lg border border-[var(--color-danger)]/40 py-2.5 text-xs font-semibold text-[var(--color-danger)] disabled:opacity-50"
+      >
+        End match early
+      </button>
 
       {/* HELP / GUIDED TOUR */}
       <button

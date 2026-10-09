@@ -29,7 +29,8 @@ export function CricketUmpireView({
   awayTeam: TeamInfo | null;
   players: PlayerName[];
 }) {
-  const state = (liveScore?.sport_state ?? null) as unknown as CricketState | null;
+  const rawState = (liveScore?.sport_state ?? null) as unknown as CricketState | null;
+  const state = rawState && (rawState.innings != null || rawState.phase === "toss_done") ? rawState : null;
   const [, forceTick] = useState(0);
   const tour = useTourAutoLaunch("cricket_umpire_tour_seen");
 
