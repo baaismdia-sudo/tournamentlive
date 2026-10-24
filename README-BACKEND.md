@@ -1,4 +1,4 @@
-# TournamentLive — Backend Foundation (Prompt 2)
+# Scorio — Backend Foundation (Prompt 2)
 
 Continuation of the Prompt 1 architecture. This prompt covers **database, auth, storage,
 permissions, and backend configuration only** — no dashboard pages. Backend is
