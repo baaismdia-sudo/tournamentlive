@@ -5,6 +5,22 @@ const LIGHT_BASE = { background: "#F8FAFC", surface: "#FFFFFF", surfaceSecondary
 const DARK_BASE = { background: "#0B0D12", surface: "#14171F", surfaceSecondary: "#1C202B", border: "#2A2F3B", heading: "#F8FAFC", text: "#CBD5E1", muted: "#94A3B8" };
 
 /**
+ * Pick black-ish or white text for a given fill colour by WCAG contrast, so a
+ * button painted with ANY organizer-chosen primary colour stays readable
+ * (organizers can choose very light or very dark brand colours).
+ */
+function readableOn(hex: string): string {
+  const m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return "#FFFFFF";
+  const h = m[1].length === 3 ? m[1].split("").map((c) => c + c).join("") : m[1];
+  const lin = (v: number) => { const c = v / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+  const L = 0.2126 * lin(parseInt(h.slice(0, 2), 16)) + 0.7152 * lin(parseInt(h.slice(2, 4), 16)) + 0.0722 * lin(parseInt(h.slice(4, 6), 16));
+  const contrastWhite = 1.05 / (L + 0.05);
+  const contrastDark = (L + 0.05) / 0.055; // vs #0A0F1D (L≈0.005)
+  return contrastWhite >= contrastDark ? "#FFFFFF" : "#0A0F1D";
+}
+
+/**
  * Per-tournament theming, scoped to the public site subtree only — this is
  * intentionally separate from the SaaS platform's ThemeContext (dashboard
  * dark mode) per the branding-separation rule: a viewer toggling dark mode
@@ -54,9 +70,12 @@ export function usePublicSiteTheme(theme: SiteTheme | null) {
     return {
       "--color-primary": primary,
       "--color-primary-hover": primary,
+      "--color-on-primary": readableOn(primary),
+      "--color-primary-ink": primary,
       "--color-secondary": secondary,
       "--color-accent": accent,
       "--color-success": "#10B981",
+      "--color-on-success": readableOn("#10B981"),
       "--color-warning": "#F59E0B",
       "--color-danger": "#EF4444",
       "--color-info": "#3B82F6",
