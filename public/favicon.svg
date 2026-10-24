@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256"><title>Scorio</title><rect width="256" height="256" rx="56" fill="#0A0F1D"/><g transform="translate(35.84 35.84) scale(0.72)">
+  
+  <!-- Upper Turf Ribbon - Small Cut -->
+  <path d="M 206 94 L 172 94 C 172 74 158 62 138 62 L 96 62 C 72 62 66 74 66 94 C 66 112 78 124 102 130 L 160 144 L 146 170 L 88 154 C 54 144 40 122 40 94 C 40 52 66 38 96 38 L 138 38 C 184 38 206 58 206 94 Z" fill="#00E575" />
+  <!-- Lower Turf Ribbon - Small Cut -->
+  <path d="M 50 162 L 84 162 C 84 182 98 194 118 194 L 160 194 C 184 194 190 182 190 162 C 190 144 178 132 154 126 L 96 112 L 110 86 L 168 102 C 202 112 216 134 216 162 C 216 204 190 218 160 218 L 118 218 C 72 218 50 198 50 162 Z" fill="#00E575" />
+</g></svg>
