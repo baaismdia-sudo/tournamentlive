@@ -60,7 +60,7 @@ export default function LiveMatchPage() {
 
   const config = getSportConfig(sport);
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";
-  const shareText = `${homeTeam?.name ?? "Home"} vs ${awayTeam?.name ?? "Away"} — live on TournamentLive`;
+  const shareText = `${homeTeam?.name ?? "Home"} vs ${awayTeam?.name ?? "Away"} — live on Scorio`;
 
   const TABS: { key: Tab; label: string }[] = [
     { key: "summary", label: "Summary" },
@@ -86,7 +86,7 @@ export default function LiveMatchPage() {
 
       <div className="flex flex-wrap items-center gap-4 text-xs text-[var(--color-muted)]">
         {venueDetail && (
-          <a href={venueDetail.google_maps_url ?? "#"} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-[var(--color-primary)]">
+          <a href={venueDetail.google_maps_url ?? "#"} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-[var(--color-primary-ink)]">
             <MapPin size={13} /> {venueDetail.name}{venueDetail.city && `, ${venueDetail.city}`}
           </a>
         )}
@@ -111,7 +111,7 @@ export default function LiveMatchPage() {
             key={t.key}
             onClick={() => setTab(t.key)}
             className={`shrink-0 border-b-2 px-3 py-2 text-sm font-medium transition-colors ${
-              tab === t.key ? "border-[var(--color-primary)] text-[var(--color-primary)]" : "border-transparent text-[var(--color-muted)] hover:text-[var(--color-text)]"
+              tab === t.key ? "border-[var(--color-primary)] text-[var(--color-primary-ink)]" : "border-transparent text-[var(--color-muted)] hover:text-[var(--color-text)]"
             }`}
           >
             {t.label}
