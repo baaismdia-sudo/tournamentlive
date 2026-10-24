@@ -5,6 +5,7 @@ import { supabase } from "../../lib/supabaseClient";
 import { StatCard } from "../../features/admin/components/StatCard";
 import { StatCardSkeleton } from "../../features/admin/components/StatCardSkeleton";
 import { ErrorState } from "../../components/ui/ErrorState";
+import { getErrorMessage } from "../../lib/errors";
 
 interface BusinessStats {
   total_customers: number; active_customers: number; inactive_customers: number; pending_rental_requests: number;
@@ -30,7 +31,7 @@ export default function BusinessDashboardPage() {
         setStats(statsRes.data as BusinessStats);
         setExpiring((expiringRes.data ?? []) as ExpiringRow[]);
       })
-      .catch((err) => setError(err instanceof Error ? err.message : "Could not load business stats"))
+      .catch((err) => setError(getErrorMessage(err)))
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -38,13 +39,13 @@ export default function BusinessDashboardPage() {
 
   return (
     <div className="space-y-8 p-6">
-      <title>Business Dashboard · TournamentLive Admin</title>
+      <title>Business Dashboard · Scorio Admin</title>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-heading text-2xl font-bold text-[var(--color-heading)]">Business Dashboard</h1>
           <p className="text-sm text-[var(--color-muted)]">Customers, rentals, and revenue at a glance.</p>
         </div>
-        <Link to="/admin/rental-enquiries" className="rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)]">
+        <Link to="/admin/rental-enquiries" className="rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)]">
           Review rental enquiries
         </Link>
       </div>

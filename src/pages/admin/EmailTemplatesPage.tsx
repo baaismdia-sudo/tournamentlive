@@ -55,7 +55,7 @@ export default function EmailTemplatesPage() {
 
   return (
     <div className="space-y-5 p-6">
-      <title>Email Templates · TournamentLive Admin</title>
+      <title>Email Templates · Scorio Admin</title>
       <div>
         <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Email Templates</h1>
         <p className="text-sm text-[var(--color-muted)]">Transactional emails sent to users and organizers.</p>
@@ -68,7 +68,7 @@ export default function EmailTemplatesPage() {
             onClick={() => openEdit(t)}
             className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-4 text-left transition-shadow hover:shadow-[var(--shadow-md)]"
           >
-            <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+            <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary-ink)]">
               <Mail size={16} />
             </div>
             <p className="font-medium text-[var(--color-heading)]">{t.subject}</p>
@@ -93,7 +93,7 @@ export default function EmailTemplatesPage() {
             <button
               onClick={save}
               disabled={isSaving}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60"
             >
               {isSaving && <ButtonSpinner />}
               Save template

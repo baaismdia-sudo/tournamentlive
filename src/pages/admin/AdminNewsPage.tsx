@@ -69,15 +69,15 @@ export default function AdminNewsPage() {
   };
 
   const columns: Column<NewsRow>[] = [
-    { header: "Title", render: (r) => <div className="font-medium text-[var(--color-heading)]">{r.title}{r.is_featured && <span className="ml-2 rounded-full bg-[var(--color-warning)]/10 px-1.5 py-0.5 text-[10px] font-semibold text-[var(--color-warning)]">FEATURED</span>}</div> },
+    { header: "Title", render: (r) => <div className="font-medium text-[var(--color-heading)]">{r.title}{r.is_featured && <span className="ml-2 rounded-full bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] px-1.5 py-0.5 text-[10px] font-semibold text-[var(--color-warning)]">FEATURED</span>}</div> },
     { header: "Tournament", render: (r) => r.tournament?.name ?? "—" },
-    { header: "Status", render: (r) => <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${r.is_published ? "bg-[var(--color-success)]/10 text-[var(--color-success)]" : "bg-[var(--color-muted)]/10 text-[var(--color-muted)]"}`}>{r.is_published ? "Published" : "Draft"}</span> },
+    { header: "Status", render: (r) => <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${r.is_published ? "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]" : "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]"}`}>{r.is_published ? "Published" : "Draft"}</span> },
     { header: "Published", render: (r) => (r.published_at ? new Date(r.published_at).toLocaleDateString() : "—") },
     {
       header: "Actions",
       render: (r) => (
         <div className="flex items-center gap-2 text-xs font-medium">
-          <button onClick={() => togglePublish(r)} aria-label="Toggle publish" className="text-[var(--color-muted)] hover:text-[var(--color-primary)]">
+          <button onClick={() => togglePublish(r)} aria-label="Toggle publish" className="text-[var(--color-muted)] hover:text-[var(--color-primary-ink)]">
             {r.is_published ? <EyeOff size={14} /> : <Eye size={14} />}
           </button>
           {!r.deleted_at ? (
@@ -93,7 +93,7 @@ export default function AdminNewsPage() {
   return (
     <>
       <title>News · Scorio Admin</title>
-      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-white shadow-lg">{toast}</div>}
+      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-[var(--color-background)] shadow-lg">{toast}</div>}
       <AdminDataTable title="News" description="Every article published across every tournament." columns={columns} rows={rows} isLoading={isLoading} error={error} search={search} onSearchChange={(v) => { setPage(1); setSearch(v); }} page={page} totalPages={Math.max(1, Math.ceil(total / PAGE_SIZE))} onPageChange={setPage} emptyLabel="No articles found" />
     </>
   );

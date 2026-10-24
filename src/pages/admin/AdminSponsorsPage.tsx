@@ -14,10 +14,10 @@ interface SponsorRow {
 }
 
 const TIER_STYLE: Record<string, string> = {
-  platinum: "bg-[var(--color-muted)]/10 text-[var(--color-heading)]",
-  gold: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-  silver: "bg-[var(--color-muted)]/10 text-[var(--color-muted)]",
-  bronze: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
+  platinum: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-heading)]",
+  gold: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+  silver: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]",
+  bronze: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
 };
 
 const PAGE_SIZE = 20;
@@ -83,7 +83,7 @@ export default function AdminSponsorsPage() {
     { header: "Tournament", render: (s) => s.tournament?.name ?? "—" },
     { header: "Tier", render: (s) => (s.tier ? <span className={`rounded-full px-2 py-0.5 text-xs font-medium capitalize ${TIER_STYLE[s.tier] ?? ""}`}>{s.tier}</span> : "—") },
     { header: "On homepage", render: (s) => (
-      <button onClick={() => toggleVisible(s)} className={`rounded-full px-2 py-0.5 text-xs font-medium ${s.homepage_visible ? "bg-[var(--color-success)]/10 text-[var(--color-success)]" : "bg-[var(--color-muted)]/10 text-[var(--color-muted)]"}`}>
+      <button onClick={() => toggleVisible(s)} className={`rounded-full px-2 py-0.5 text-xs font-medium ${s.homepage_visible ? "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]" : "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]"}`}>
         {s.homepage_visible ? "Visible" : "Hidden"}
       </button>
     ) },
@@ -95,7 +95,7 @@ export default function AdminSponsorsPage() {
   return (
     <>
       <title>Sponsors · Scorio Admin</title>
-      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-white shadow-lg">{toast}</div>}
+      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-[var(--color-background)] shadow-lg">{toast}</div>}
       <AdminDataTable title="Sponsors" description="Every sponsor across every tournament." columns={columns} rows={rows} isLoading={isLoading} error={error} search={search} onSearchChange={(v) => { setPage(1); setSearch(v); }} page={page} totalPages={Math.max(1, Math.ceil(total / PAGE_SIZE))} onPageChange={setPage} emptyLabel="No sponsors found" />
     </>
   );

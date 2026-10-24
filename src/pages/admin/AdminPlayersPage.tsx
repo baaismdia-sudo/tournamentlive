@@ -15,9 +15,9 @@ interface PlayerRow {
 }
 
 const STATUS_STYLE: Record<string, string> = {
-  active: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-  injured: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-  suspended: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
+  active: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+  injured: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+  suspended: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
 };
 
 const PAGE_SIZE = 20;
@@ -125,7 +125,7 @@ export default function AdminPlayersPage() {
   return (
     <>
       <title>Players · Scorio Admin</title>
-      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-white shadow-lg">{toast}</div>}
+      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-[var(--color-background)] shadow-lg">{toast}</div>}
       <AdminDataTable
         title="Players"
         description="Every player registered across every team and tournament."

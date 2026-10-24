@@ -43,9 +43,9 @@ export default function AuditLogsPage() {
   }, [page, search]);
 
   const actionColor: Record<string, string> = {
-    insert: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-    update: "bg-[var(--color-info)]/10 text-[var(--color-info)]",
-    delete: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
+    insert: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+    update: "bg-[color:color-mix(in_srgb,var(--color-info)_10%,transparent)] text-[var(--color-info)]",
+    delete: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
   };
 
   const columns: Column<AuditLog>[] = [
@@ -57,7 +57,7 @@ export default function AuditLogsPage() {
 
   return (
     <>
-      <title>Audit Logs · TournamentLive Admin</title>
+      <title>Audit Logs · Scorio Admin</title>
       <AdminDataTable
         title="Audit Logs"
         description="Every insert, update, and delete on tournaments, payments, and subscriptions."

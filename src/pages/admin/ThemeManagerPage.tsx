@@ -59,7 +59,7 @@ export default function ThemeManagerPage() {
 
   return (
     <>
-      <title>Theme Manager · TournamentLive Admin</title>
+      <title>Theme Manager · Scorio Admin</title>
       <AdminDataTable
         title="Theme Manager"
         description="Built-in themes available to every organizer's Website Builder — the same 10 named templates (Classic, Modern, Sports, Minimal, Dark, Light, Professional, Football, Cricket, Esports) are hardcoded as a fallback in the organizer UI, and any rows here extend that list."
@@ -76,7 +76,7 @@ export default function ThemeManagerPage() {
             <div><label className="mb-1.5 block text-sm font-medium">Accent</label><input type="color" value={form.accent_color} onChange={(e) => setForm((f) => ({ ...f, accent_color: e.target.value }))} className="h-10 w-full rounded-lg border border-[var(--color-border)]" /></div>
           </div>
           <SelectField label="Layout" value={form.layout_variant} onChange={(v) => setForm((f) => ({ ...f, layout_variant: v }))} options={[{ value: "classic", label: "Classic" }, { value: "modern", label: "Modern" }, { value: "minimal", label: "Minimal" }]} />
-          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSaving && <ButtonSpinner />}
             {editing ? "Save changes" : "Create theme"}
           </button>

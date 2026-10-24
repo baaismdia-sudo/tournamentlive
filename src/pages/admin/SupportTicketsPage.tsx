@@ -59,10 +59,10 @@ export default function SupportTicketsPage() {
   };
 
   const priorityColor: Record<string, string> = {
-    low: "bg-[var(--color-muted)]/10 text-[var(--color-muted)]",
-    medium: "bg-[var(--color-info)]/10 text-[var(--color-info)]",
-    high: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-    urgent: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
+    low: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]",
+    medium: "bg-[color:color-mix(in_srgb,var(--color-info)_10%,transparent)] text-[var(--color-info)]",
+    high: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+    urgent: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
   };
 
   const columns: Column<Ticket>[] = [
@@ -74,7 +74,7 @@ export default function SupportTicketsPage() {
 
   return (
     <>
-      <title>Support Tickets · TournamentLive Admin</title>
+      <title>Support Tickets · Scorio Admin</title>
       <AdminDataTable
         title="Support Tickets"
         description="User support requests, assignable and trackable through resolution."
@@ -124,7 +124,7 @@ export default function SupportTicketsPage() {
             <button
               onClick={saveTicket}
               disabled={isSaving}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60"
             >
               {isSaving && <ButtonSpinner />}
               Save

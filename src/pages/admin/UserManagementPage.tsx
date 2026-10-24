@@ -10,6 +10,7 @@ import {
   exportUsersToCsv,
   type UserListFilters,
 } from "../../services/supabase/adminUsers";
+import { getErrorMessage } from "../../lib/errors";
 
 interface UserRow {
   id: string;
@@ -51,7 +52,7 @@ export default function UserManagementPage() {
       setUsers(result.users as unknown as UserRow[]);
       setTotal(result.total);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not load users");
+      setError(getErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
@@ -121,7 +122,7 @@ export default function UserManagementPage() {
 
   return (
     <div className="space-y-6 p-6">
-      <title>User Management · TournamentLive Admin</title>
+      <title>User Management · Scorio Admin</title>
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold text-[var(--color-text)]">Users</h1>
@@ -196,7 +197,7 @@ export default function UserManagementPage() {
             </thead>
             <tbody className="divide-y divide-[var(--color-border)]">
               {users.map((u) => (
-                <tr key={u.id} className="hover:bg-[var(--color-surface-alt)]/50">
+                <tr key={u.id} className="hover:bg-[color:color-mix(in_srgb,var(--color-surface-alt)_50%,transparent)]">
                   <td className="px-4 py-3">
                     <input type="checkbox" checked={selected.has(u.id)} onChange={() => toggleSelected(u.id)} />
                   </td>

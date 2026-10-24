@@ -4,6 +4,7 @@ import { Drawer } from "../../features/admin/components/Drawer";
 import { TextField, SelectField, CheckboxField } from "../../features/admin/components/FormField";
 import { useAdminTable } from "../../features/admin/hooks/useAdminTable";
 import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
+import { getErrorMessage } from "../../lib/errors";
 
 interface Coupon {
   id: string;
@@ -61,7 +62,7 @@ export default function CouponsPage() {
       else await table.create(values);
       setDrawerOpen(false);
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Could not save coupon");
+      setFormError(getErrorMessage(err));
     } finally {
       setIsSaving(false);
     }
@@ -75,7 +76,7 @@ export default function CouponsPage() {
     {
       header: "Status",
       render: (c) => (
-        <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${c.is_active ? "bg-[var(--color-success)]/10 text-[var(--color-success)]" : "bg-[var(--color-muted)]/10 text-[var(--color-muted)]"}`}>
+        <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${c.is_active ? "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]" : "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]"}`}>
           {c.is_active ? "Active" : "Disabled"}
         </span>
       ),
@@ -84,7 +85,7 @@ export default function CouponsPage() {
 
   return (
     <>
-      <title>Coupons · TournamentLive Admin</title>
+      <title>Coupons · Scorio Admin</title>
       <AdminDataTable
         title="Coupons"
         description="Discount codes redeemable at checkout."
@@ -112,7 +113,7 @@ export default function CouponsPage() {
           <TextField label="Max redemptions (blank = unlimited)" type="number" value={form.max_redemptions} onChange={(v) => setForm((f) => ({ ...f, max_redemptions: v }))} />
           <TextField label="Valid until" type="date" value={form.valid_until} onChange={(v) => setForm((f) => ({ ...f, valid_until: v }))} />
           <CheckboxField label="Active" checked={form.is_active} onChange={(v) => setForm((f) => ({ ...f, is_active: v }))} />
-          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSaving && <ButtonSpinner />}
             {editing ? "Save changes" : "Create coupon"}
           </button>

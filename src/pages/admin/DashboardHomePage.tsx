@@ -24,10 +24,10 @@ export default function DashboardHomePage() {
 
   return (
     <div className="space-y-8 p-6">
-      <title>Dashboard · TournamentLive Admin</title>
+      <title>Dashboard · Scorio Admin</title>
       <div>
         <h1 className="font-heading text-2xl font-bold text-[var(--color-heading)]">Platform overview</h1>
-        <p className="text-sm text-[var(--color-muted)]">Everything happening across TournamentLive, right now.</p>
+        <p className="text-sm text-[var(--color-muted)]">Everything happening across Scorio, right now.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">

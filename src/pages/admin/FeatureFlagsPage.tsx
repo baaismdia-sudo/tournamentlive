@@ -46,7 +46,7 @@ export default function FeatureFlagsPage() {
 
   return (
     <div className="space-y-5 p-6">
-      <title>Feature Flags · TournamentLive Admin</title>
+      <title>Feature Flags · Scorio Admin</title>
       <div>
         <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Feature Flags</h1>
         <p className="text-sm text-[var(--color-muted)]">Turn platform-wide features on or off without a deploy.</p>
@@ -56,7 +56,7 @@ export default function FeatureFlagsPage() {
         {flags.map((flag) => (
           <div key={flag.id} className="flex flex-wrap items-center justify-between gap-4 p-5">
             <div className="flex items-start gap-3">
-              <div className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+              <div className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-lg bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary-ink)]">
                 <Flag size={16} />
               </div>
               <div>

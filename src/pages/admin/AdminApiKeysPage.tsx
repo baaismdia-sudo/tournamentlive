@@ -79,7 +79,7 @@ export default function AdminApiKeysPage() {
       render: (k) => {
         const expired = k.expires_at && new Date(k.expires_at) < new Date();
         const label = k.revoked_at ? "Revoked" : expired ? "Expired" : "Active";
-        const style = k.revoked_at || expired ? "bg-[var(--color-danger)]/10 text-[var(--color-danger)]" : "bg-[var(--color-success)]/10 text-[var(--color-success)]";
+        const style = k.revoked_at || expired ? "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]" : "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]";
         return <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${style}`}>{label}</span>;
       },
     },
@@ -96,7 +96,7 @@ export default function AdminApiKeysPage() {
   return (
     <>
       <title>API Keys · Scorio Admin</title>
-      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-white shadow-lg">{toast}</div>}
+      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-[var(--color-background)] shadow-lg">{toast}</div>}
       <AdminDataTable title="API Keys" description="Every API key issued across every organizer account." columns={columns} rows={rows} isLoading={isLoading} error={error} search={search} onSearchChange={(v) => { setPage(1); setSearch(v); }} page={page} totalPages={Math.max(1, Math.ceil(total / PAGE_SIZE))} onPageChange={setPage} emptyLabel="No API keys found" />
     </>
   );

@@ -101,7 +101,7 @@ export default function AdminAnalyticsPage() {
         </button>
       </div>
 
-      {error && <p className="mb-4 rounded-lg bg-[var(--color-danger)]/10 p-3 text-sm text-[var(--color-danger)]">{error}</p>}
+      {error && <p className="mb-4 rounded-lg bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] p-3 text-sm text-[var(--color-danger)]">{error}</p>}
 
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
         {[

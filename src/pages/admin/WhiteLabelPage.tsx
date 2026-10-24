@@ -65,7 +65,7 @@ export default function WhiteLabelPage() {
 
   return (
     <>
-      <title>White Label · TournamentLive Admin</title>
+      <title>White Label · Scorio Admin</title>
       <AdminDataTable
         title="White Label & Custom CSS Access"
         description="Per-organizer feature gates. Both are off by default and must be explicitly enabled here."

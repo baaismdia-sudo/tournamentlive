@@ -67,7 +67,7 @@ export default function SystemSettingsPage() {
 
   return (
     <div className="space-y-8 p-6">
-      <title>System Settings · TournamentLive Admin</title>
+      <title>System Settings · Scorio Admin</title>
       <div>
         <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">System Settings</h1>
         <p className="text-sm text-[var(--color-muted)]">Platform-wide configuration. Changes apply instantly across the SaaS site.</p>
@@ -92,7 +92,7 @@ export default function SystemSettingsPage() {
                 <button
                   onClick={() => save(key)}
                   disabled={savingKey === key}
-                  className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60"
+                  className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60"
                 >
                   {savingKey === key && <ButtonSpinner />}
                   Save

@@ -85,9 +85,9 @@ export default function AdminRolesPermissionsPage() {
   return (
     <>
       <title>Roles &amp; Permissions · Scorio Admin</title>
-      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-white shadow-lg">{toast}</div>}
+      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-[var(--color-background)] shadow-lg">{toast}</div>}
 
-      {error && <p className="mb-4 rounded-lg bg-[var(--color-danger)]/10 p-3 text-sm text-[var(--color-danger)]">{error}</p>}
+      {error && <p className="mb-4 rounded-lg bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] p-3 text-sm text-[var(--color-danger)]">{error}</p>}
 
       {isLoading ? (
         <p className="text-sm text-[var(--color-muted)]">Loading…</p>
@@ -110,7 +110,7 @@ export default function AdminRolesPermissionsPage() {
               {categories.map((cat) => (
                 <Fragment key={cat}>
                   <tr>
-                    <td colSpan={roles.length + 1} className="bg-[var(--color-surface-secondary)]/50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">
+                    <td colSpan={roles.length + 1} className="bg-[color:color-mix(in_srgb,var(--color-surface-secondary)_50%,transparent)] px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">
                       {cat}
                     </td>
                   </tr>
@@ -132,7 +132,7 @@ export default function AdminRolesPermissionsPage() {
                               title={isSuperAdmin ? "Super Admin always has every permission" : undefined}
                               className={`mx-auto flex h-5 w-5 items-center justify-center rounded border transition disabled:cursor-not-allowed ${
                                 checked || isSuperAdmin
-                                  ? "border-[var(--color-primary)] bg-[var(--color-primary)] text-white"
+                                  ? "border-[var(--color-primary)] bg-[var(--color-primary)] text-[var(--color-on-primary)]"
                                   : "border-[var(--color-border)] hover:border-[var(--color-primary)]"
                               }`}
                             >

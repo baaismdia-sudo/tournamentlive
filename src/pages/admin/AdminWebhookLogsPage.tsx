@@ -14,9 +14,9 @@ interface WebhookLogRow {
 }
 
 const STATUS_STYLE: Record<string, string> = {
-  received: "bg-[var(--color-muted)]/10 text-[var(--color-muted)]",
-  processed: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-  failed: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
+  received: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]",
+  processed: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+  failed: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
 };
 
 const PAGE_SIZE = 25;
@@ -56,7 +56,7 @@ export default function AdminWebhookLogsPage() {
     { header: "Event", render: (r) => r.event_type },
     { header: "Status", render: (r) => <span className={`rounded-full px-2 py-0.5 text-xs font-medium capitalize ${STATUS_STYLE[r.status]}`}>{r.status}</span> },
     { header: "Received", render: (r) => new Date(r.created_at).toLocaleString() },
-    { header: "", render: (r) => <button onClick={() => setSelected(r)} className="text-xs font-medium text-[var(--color-primary)] hover:underline">View payload</button> },
+    { header: "", render: (r) => <button onClick={() => setSelected(r)} className="text-xs font-medium text-[var(--color-primary-ink)] hover:underline">View payload</button> },
   ];
 
   return (
@@ -68,7 +68,7 @@ export default function AdminWebhookLogsPage() {
           <button
             key={s || "all"}
             onClick={() => { setPage(1); setStatusFilter(s); }}
-            className={`rounded-full border px-3 py-1.5 text-xs font-medium capitalize transition ${statusFilter === s ? "border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "border-[var(--color-border)] text-[var(--color-muted)] hover:bg-[var(--color-surface-secondary)]"}`}
+            className={`rounded-full border px-3 py-1.5 text-xs font-medium capitalize transition ${statusFilter === s ? "border-[var(--color-primary)] bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary-ink)]" : "border-[var(--color-border)] text-[var(--color-muted)] hover:bg-[var(--color-surface-secondary)]"}`}
           >
             {s || "All"}
           </button>
@@ -79,7 +79,7 @@ export default function AdminWebhookLogsPage() {
 
       <Drawer open={!!selected} onClose={() => setSelected(null)} title={`${selected?.source ?? ""} — ${selected?.event_type ?? ""}`}>
         {selected?.error_message && (
-          <p className="mb-3 rounded-lg bg-[var(--color-danger)]/10 p-3 text-sm text-[var(--color-danger)]">{selected.error_message}</p>
+          <p className="mb-3 rounded-lg bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] p-3 text-sm text-[var(--color-danger)]">{selected.error_message}</p>
         )}
         <pre className="max-h-[60vh] overflow-auto rounded-lg bg-[var(--color-surface-secondary)] p-3 text-xs">
           {JSON.stringify(selected?.payload, null, 2)}

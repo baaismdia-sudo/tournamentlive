@@ -20,11 +20,11 @@ const TARGET_OPTIONS = [
 ];
 
 const TYPE_STYLE: Record<string, string> = {
-  info: "bg-[var(--color-primary)]/10 text-[var(--color-primary)]",
-  warning: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-  success: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-  error: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
-  system: "bg-[var(--color-muted)]/10 text-[var(--color-muted)]",
+  info: "bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary-ink)]",
+  warning: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+  success: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+  error: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
+  system: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]",
 };
 
 /**
@@ -115,7 +115,7 @@ export default function AdminNotificationsPage() {
   return (
     <>
       <title>Notifications · Scorio Admin</title>
-      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-white shadow-lg">{toast}</div>}
+      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-[var(--color-background)] shadow-lg">{toast}</div>}
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr_1fr]">
         <div className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
@@ -140,7 +140,7 @@ export default function AdminNotificationsPage() {
           <label className="mb-1.5 block text-sm font-medium">Link (optional)</label>
           <input value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} placeholder="https://..." className="mb-5 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-primary)]" />
 
-          <button onClick={send} disabled={isSending} className="w-full rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white disabled:opacity-50">
+          <button onClick={send} disabled={isSending} className="w-full rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] disabled:opacity-50">
             {isSending ? "Sending..." : "Send notification"}
           </button>
         </div>

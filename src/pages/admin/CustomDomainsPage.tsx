@@ -41,7 +41,7 @@ export default function CustomDomainsPage() {
     setBusyId(null);
   };
 
-  const statusColor: Record<string, string> = { verified: "bg-[var(--color-success)]/10 text-[var(--color-success)]", pending: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]", failed: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]" };
+  const statusColor: Record<string, string> = { verified: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]", pending: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]", failed: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]" };
 
   const columns: Column<Domain>[] = [
     { header: "Domain", render: (d) => <span className="font-mono text-sm font-medium text-[var(--color-heading)]">{d.domain_name}</span> },
@@ -63,7 +63,7 @@ export default function CustomDomainsPage() {
 
   return (
     <>
-      <title>Custom Domains · TournamentLive Admin</title>
+      <title>Custom Domains · Scorio Admin</title>
       <AdminDataTable title="Custom Domains" description="Review and approve organizer-connected custom domains." columns={columns} rows={rows} isLoading={isLoading} error={error} search="" onSearchChange={() => {}} page={1} totalPages={1} onPageChange={() => {}} emptyLabel="No custom domain requests yet" />
     </>
   );

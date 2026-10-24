@@ -50,7 +50,7 @@ export default function ActivityLogsPage() {
 
   return (
     <>
-      <title>Activity Logs · TournamentLive Admin</title>
+      <title>Activity Logs · Scorio Admin</title>
       <AdminDataTable
         title="Activity Logs"
         description="A running feed of significant actions across the platform (admin actions, logins, and more)."

@@ -4,6 +4,7 @@ import { Drawer } from "../../features/admin/components/Drawer";
 import { TextField, TextAreaField, SelectField } from "../../features/admin/components/FormField";
 import { useAdminTable } from "../../features/admin/hooks/useAdminTable";
 import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
+import { getErrorMessage } from "../../lib/errors";
 
 interface Sport {
   id: string;
@@ -56,7 +57,7 @@ export default function SportsPage() {
       else await table.create(form);
       setDrawerOpen(false);
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Could not save sport");
+      setFormError(getErrorMessage(err));
     } finally {
       setIsSaving(false);
     }
@@ -69,7 +70,7 @@ export default function SportsPage() {
     {
       header: "Status",
       render: (s) => (
-        <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${s.status === "active" ? "bg-[var(--color-success)]/10 text-[var(--color-success)]" : "bg-[var(--color-muted)]/10 text-[var(--color-muted)]"}`}>
+        <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${s.status === "active" ? "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]" : "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]"}`}>
           {s.status}
         </span>
       ),
@@ -78,7 +79,7 @@ export default function SportsPage() {
 
   return (
     <>
-      <title>Sports · TournamentLive Admin</title>
+      <title>Sports · Scorio Admin</title>
       <AdminDataTable
         title="Sports"
         description="Sports available when organizers create a tournament."
@@ -107,7 +108,7 @@ export default function SportsPage() {
           <TextAreaField label="Rules" value={form.rules_text} onChange={(v) => setForm((f) => ({ ...f, rules_text: v }))} />
           <TextField label="Scoring system" value={form.scoring_system} onChange={(v) => setForm((f) => ({ ...f, scoring_system: v }))} />
           <SelectField label="Status" value={form.status} onChange={(v) => setForm((f) => ({ ...f, status: v }))} options={[{ value: "active", label: "Active" }, { value: "inactive", label: "Inactive" }]} />
-          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSaving && <ButtonSpinner />}
             {editing ? "Save changes" : "Create sport"}
           </button>

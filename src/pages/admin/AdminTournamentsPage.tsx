@@ -26,14 +26,14 @@ interface TournamentRow {
 }
 
 const STATUS_STYLE: Record<string, string> = {
-  draft: "bg-[var(--color-muted)]/10 text-[var(--color-muted)]",
-  pending_payment: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-  active: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-  paused: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-  completed: "bg-[var(--color-primary)]/10 text-[var(--color-primary)]",
-  expiring: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-  archived: "bg-[var(--color-muted)]/10 text-[var(--color-muted)]",
-  suspended: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
+  draft: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]",
+  pending_payment: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+  active: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+  paused: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+  completed: "bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary-ink)]",
+  expiring: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+  archived: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]",
+  suspended: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
 };
 
 const PAGE_SIZE = 15;
@@ -177,10 +177,10 @@ export default function AdminTournamentsPage() {
       header: "Public Website",
       render: (t) => (
         <div className="flex items-center gap-2">
-          <a href={getTournamentUrl(t.slug)} target="_blank" rel="noreferrer" className="text-[var(--color-primary)] hover:underline" aria-label="Open public website">
+          <a href={getTournamentUrl(t.slug)} target="_blank" rel="noreferrer" className="text-[var(--color-primary-ink)] hover:underline" aria-label="Open public website">
             <ExternalLink size={14} />
           </a>
-          <button onClick={() => copyLink(t)} aria-label="Copy link" className="text-[var(--color-muted)] hover:text-[var(--color-primary)]">
+          <button onClick={() => copyLink(t)} aria-label="Copy link" className="text-[var(--color-muted)] hover:text-[var(--color-primary-ink)]">
             <Copy size={14} />
           </button>
         </div>
@@ -191,7 +191,7 @@ export default function AdminTournamentsPage() {
       header: "Actions",
       render: (t) => (
         <div className="flex flex-wrap items-center gap-2">
-          <button onClick={() => openReassign(t)} className="text-xs font-medium text-[var(--color-primary)] hover:underline">
+          <button onClick={() => openReassign(t)} className="text-xs font-medium text-[var(--color-primary-ink)] hover:underline">
             Reassign
           </button>
           {t.status === "active" && (
@@ -204,7 +204,7 @@ export default function AdminTournamentsPage() {
             <button onClick={() => suspend(t)} aria-label="Suspend" title="Suspend" className="text-[var(--color-danger)] hover:opacity-75"><Ban size={15} /></button>
           )}
           {t.status !== "completed" && t.status !== "archived" && (
-            <button onClick={() => complete(t)} aria-label="Mark complete" title="Mark complete" className="text-[var(--color-primary)] hover:opacity-75"><CheckCircle2 size={15} /></button>
+            <button onClick={() => complete(t)} aria-label="Mark complete" title="Mark complete" className="text-[var(--color-primary-ink)] hover:opacity-75"><CheckCircle2 size={15} /></button>
           )}
           {!t.deleted_at ? (
             <button onClick={() => archive(t)} aria-label="Archive" title="Archive" className="text-[var(--color-muted)] hover:opacity-75"><Archive size={15} /></button>
@@ -218,9 +218,9 @@ export default function AdminTournamentsPage() {
 
   return (
     <>
-      <title>Tournaments · TournamentLive Admin</title>
+      <title>Tournaments · Scorio Admin</title>
       {toast && (
-        <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-white shadow-lg">{toast}</div>
+        <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-[var(--color-background)] shadow-lg">{toast}</div>
       )}
 
       <div className="mb-4 flex flex-wrap items-center gap-3">
@@ -270,7 +270,7 @@ export default function AdminTournamentsPage() {
           )}
           <div className="flex justify-end gap-2 pt-2">
             <button onClick={() => setEditing(null)} className="rounded-lg border border-[var(--color-border)] px-4 py-2 text-sm">Cancel</button>
-            <button onClick={saveReassign} disabled={isSaving || !reassignTo} className="rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm text-white disabled:opacity-50">
+            <button onClick={saveReassign} disabled={isSaving || !reassignTo} className="rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm text-[var(--color-on-primary)] disabled:opacity-50">
               {isSaving ? "Saving..." : "Save"}
             </button>
           </div>

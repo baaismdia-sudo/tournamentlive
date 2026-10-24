@@ -10,15 +10,14 @@ interface SubscriptionRow {
   auto_renew: boolean;
   organizer: { full_name: string; email: string } | null;
   plan: { name: string; price_cents: number; currency: string; duration: string } | null;
-  coupon: { code: string; discount_type: "percentage" | "fixed"; discount_value: number } | null;
 }
 
 const STATUS_STYLE: Record<string, string> = {
-  trialing: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-  active: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-  past_due: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
-  cancelled: "bg-[var(--color-muted)]/10 text-[var(--color-muted)]",
-  expired: "bg-[var(--color-muted)]/10 text-[var(--color-muted)]",
+  trialing: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+  active: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+  past_due: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
+  cancelled: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]",
+  expired: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]",
 };
 
 const PAGE_SIZE = 15;
@@ -47,7 +46,7 @@ export default function AdminSubscriptionsPage() {
     let query = supabase
       .from("subscriptions")
       .select(
-        "id, status, starts_at, ends_at, auto_renew, organizer:profiles(full_name, email), plan:rental_plans(name, price_cents, currency, duration), coupon:coupons(code, discount_type, discount_value)",
+        "id, status, starts_at, ends_at, auto_renew, organizer:profiles(full_name, email), plan:rental_plans(name, price_cents, currency, duration)",
         { count: "exact" }
       )
       .order("starts_at", { ascending: false })
@@ -116,20 +115,6 @@ export default function AdminSubscriptionsPage() {
         </span>
       ),
     },
-    {
-      header: "Coupon",
-      render: (r) =>
-        r.coupon ? (
-          <div>
-            <div className="font-mono text-xs font-medium text-[var(--color-heading)]">{r.coupon.code}</div>
-            <div className="text-xs text-[var(--color-muted)]">
-              {r.coupon.discount_type === "percentage" ? `${r.coupon.discount_value}% off` : formatPrice(r.coupon.discount_value * 100, r.plan?.currency ?? "INR") + " off"}
-            </div>
-          </div>
-        ) : (
-          <span className="text-xs text-[var(--color-muted)]">—</span>
-        ),
-    },
     { header: "Started", render: (r) => new Date(r.starts_at).toLocaleDateString() },
     { header: "Renews / Ends", render: (r) => (r.ends_at ? new Date(r.ends_at).toLocaleDateString() : "—") },
     { header: "Auto-renew", render: (r) => (r.auto_renew ? "Yes" : "No") },
@@ -151,7 +136,7 @@ export default function AdminSubscriptionsPage() {
   return (
     <>
       <title>Subscriptions · Scorio Admin</title>
-      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-white shadow-lg">{toast}</div>}
+      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-[var(--color-background)] shadow-lg">{toast}</div>}
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
         {["", "trialing", "active", "past_due", "cancelled", "expired"].map((s) => (
@@ -160,7 +145,7 @@ export default function AdminSubscriptionsPage() {
             onClick={() => { setPage(1); setStatusFilter(s); }}
             className={`rounded-full border px-3 py-1.5 text-xs font-medium capitalize transition ${
               statusFilter === s
-                ? "border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]"
+                ? "border-[var(--color-primary)] bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary-ink)]"
                 : "border-[var(--color-border)] text-[var(--color-muted)] hover:bg-[var(--color-surface-secondary)]"
             }`}
           >

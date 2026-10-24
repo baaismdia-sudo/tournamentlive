@@ -16,13 +16,13 @@ interface MatchRow {
 }
 
 const STATUS_STYLE: Record<string, string> = {
-  scheduled: "bg-[var(--color-muted)]/10 text-[var(--color-muted)]",
-  live: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
-  half_time: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-  completed: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-  postponed: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-  cancelled: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
-  abandoned: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
+  scheduled: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]",
+  live: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
+  half_time: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+  completed: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+  postponed: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+  cancelled: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
+  abandoned: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
 };
 
 const PAGE_SIZE = 20;
@@ -85,7 +85,7 @@ export default function AdminMatchesPage() {
     {
       header: "Live page",
       render: (m) => (
-        <a href={getLiveMatchUrl(m.id)} target="_blank" rel="noreferrer" className="text-[var(--color-primary)] hover:underline" aria-label="Open live page">
+        <a href={getLiveMatchUrl(m.id)} target="_blank" rel="noreferrer" className="text-[var(--color-primary-ink)] hover:underline" aria-label="Open live page">
           <ExternalLink size={14} />
         </a>
       ),
@@ -103,7 +103,7 @@ export default function AdminMatchesPage() {
             onClick={() => { setPage(1); setStatusFilter(s); }}
             className={`rounded-full border px-3 py-1.5 text-xs font-medium capitalize transition ${
               statusFilter === s
-                ? "border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]"
+                ? "border-[var(--color-primary)] bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary-ink)]"
                 : "border-[var(--color-border)] text-[var(--color-muted)] hover:bg-[var(--color-surface-secondary)]"
             }`}
           >

@@ -51,7 +51,7 @@ export default function ContactMessagesPage() {
 
   return (
     <div className="flex h-[calc(100vh-4rem)]">
-      <title>Contact Messages · TournamentLive Admin</title>
+      <title>Contact Messages · Scorio Admin</title>
       <div className="w-full max-w-sm overflow-y-auto border-r border-[var(--color-border)]">
         <div className="border-b border-[var(--color-border)] p-4">
           <h1 className="font-heading text-lg font-bold text-[var(--color-heading)]">Inbox</h1>
@@ -68,7 +68,7 @@ export default function ContactMessagesPage() {
                 markRead(msg);
               }}
               className={`block w-full border-b border-[var(--color-border)] p-4 text-left transition-colors hover:bg-[var(--color-surface-secondary)] ${
-                selected?.id === msg.id ? "bg-[var(--color-primary)]/5" : ""
+                selected?.id === msg.id ? "bg-[color:color-mix(in_srgb,var(--color-primary)_5%,transparent)]" : ""
               } ${msg.status === "archived" ? "opacity-50" : ""}`}
             >
               <div className="flex items-center justify-between">
@@ -108,7 +108,7 @@ export default function ContactMessagesPage() {
             </p>
             <a
               href={`mailto:${selected.email}`}
-              className="inline-block rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)]"
+              className="inline-block rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)]"
             >
               Reply via email
             </a>

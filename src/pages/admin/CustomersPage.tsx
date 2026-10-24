@@ -42,7 +42,7 @@ export default function CustomersPage() {
   }, [page, search]);
 
   const columns: Column<Customer>[] = [
-    { header: "Customer", render: (c) => <Link to={`/admin/customers/${c.id}`} className="font-medium text-[var(--color-heading)] hover:text-[var(--color-primary)]">{c.full_name}</Link> },
+    { header: "Customer", render: (c) => <Link to={`/admin/customers/${c.id}`} className="font-medium text-[var(--color-heading)] hover:text-[var(--color-primary-ink)]">{c.full_name}</Link> },
     { header: "Email", render: (c) => c.email },
     { header: "Account Status", render: (c) => <AccountStatusBadge status={c.status as "active" | "suspended" | "pending"} /> },
     { header: "Subscription", render: (c) => c.subscription_status ? <span className="capitalize">{c.subscription_status.replace("_", " ")}</span> : <span className="text-[var(--color-muted)]">None</span> },
@@ -51,7 +51,7 @@ export default function CustomersPage() {
 
   return (
     <>
-      <title>Customers · TournamentLive Admin</title>
+      <title>Customers · Scorio Admin</title>
       <AdminDataTable title="Customers" description="Every organizer account and their subscription status." columns={columns} rows={rows} isLoading={isLoading} error={null} search={search} onSearchChange={(v) => { setPage(1); setSearch(v); }} page={page} totalPages={Math.max(1, Math.ceil(total / PAGE_SIZE))} onPageChange={setPage} emptyLabel="No customers yet" />
     </>
   );

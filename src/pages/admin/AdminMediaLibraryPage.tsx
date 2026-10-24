@@ -57,11 +57,11 @@ export default function AdminMediaLibraryPage() {
   return (
     <>
       <title>Media Library · Scorio Admin</title>
-      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-white shadow-lg">{toast}</div>}
+      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-[var(--color-background)] shadow-lg">{toast}</div>}
       <p className="mb-4 text-sm text-[var(--color-muted)]">
         Most recent 100 files across every organizer — {formatBytes(totalSize)} shown below.
       </p>
-      {error && <p className="mb-4 rounded-lg bg-[var(--color-danger)]/10 p-3 text-sm text-[var(--color-danger)]">{error}</p>}
+      {error && <p className="mb-4 rounded-lg bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] p-3 text-sm text-[var(--color-danger)]">{error}</p>}
       {isLoading ? (
         <p className="text-sm text-[var(--color-muted)]">Loading…</p>
       ) : rows.length === 0 ? (

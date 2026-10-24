@@ -80,7 +80,7 @@ export default function AdminTestimonialsPage() {
       header: "Actions",
       render: (t) => (
         <div className="flex items-center gap-2">
-          <button onClick={() => togglePublish(t)} aria-label="Toggle publish" className="text-[var(--color-muted)] hover:text-[var(--color-primary)]">
+          <button onClick={() => togglePublish(t)} aria-label="Toggle publish" className="text-[var(--color-muted)] hover:text-[var(--color-primary-ink)]">
             {t.is_published ? <Eye size={14} /> : <EyeOff size={14} />}
           </button>
           <button onClick={() => remove(t)} aria-label="Remove" className="text-[var(--color-muted)] hover:text-[var(--color-danger)]"><Trash2 size={14} /></button>
@@ -92,7 +92,7 @@ export default function AdminTestimonialsPage() {
   return (
     <>
       <title>Testimonials · Scorio Admin</title>
-      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-white shadow-lg">{toast}</div>}
+      {toast && <div className="fixed right-4 top-4 z-50 rounded-lg bg-[var(--color-heading)] px-4 py-2 text-sm text-[var(--color-background)] shadow-lg">{toast}</div>}
       <AdminDataTable title="Testimonials" description="Fan and participant testimonials submitted across every tournament." columns={columns} rows={rows} isLoading={isLoading} error={error} search="" onSearchChange={() => {}} page={page} totalPages={Math.max(1, Math.ceil(total / PAGE_SIZE))} onPageChange={setPage} emptyLabel="No testimonials found" />
     </>
   );

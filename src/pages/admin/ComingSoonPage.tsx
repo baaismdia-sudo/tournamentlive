@@ -16,8 +16,8 @@ export default function ComingSoonPage() {
 
   return (
     <div className="flex min-h-[70vh] flex-col items-center justify-center gap-4 p-6 text-center">
-      <title>{`${match?.label ?? "Coming soon"} · TournamentLive Admin`}</title>
-      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+      <title>{`${match?.label ?? "Coming soon"} · Scorio Admin`}</title>
+      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary-ink)]">
         <Construction size={24} />
       </div>
       <div>

@@ -4,6 +4,7 @@ import { AdminDataTable, type Column } from "../../features/admin/components/Adm
 import { Drawer } from "../../features/admin/components/Drawer";
 import { useAdminTable } from "../../features/admin/hooks/useAdminTable";
 import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
+import { getErrorMessage } from "../../lib/errors";
 
 interface RentalPlan {
   id: string;
@@ -99,7 +100,7 @@ export default function RentalPlansPage() {
       }
       setDrawerOpen(false);
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Could not save plan");
+      setFormError(getErrorMessage(err));
     } finally {
       setIsSaving(false);
     }
@@ -113,7 +114,7 @@ export default function RentalPlansPage() {
     {
       header: "Status",
       render: (p) => (
-        <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${p.is_active ? "bg-[var(--color-success)]/10 text-[var(--color-success)]" : "bg-[var(--color-muted)]/10 text-[var(--color-muted)]"}`}>
+        <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${p.is_active ? "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]" : "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]"}`}>
           {p.is_active ? "Active" : "Disabled"}
         </span>
       ),
@@ -121,7 +122,7 @@ export default function RentalPlansPage() {
     {
       header: "Duplicate",
       render: (p) => (
-        <button onClick={() => duplicate(p)} className="text-[var(--color-muted)] hover:text-[var(--color-primary)]" aria-label="Duplicate plan">
+        <button onClick={() => duplicate(p)} className="text-[var(--color-muted)] hover:text-[var(--color-primary-ink)]" aria-label="Duplicate plan">
           <Copy size={15} />
         </button>
       ),
@@ -130,7 +131,7 @@ export default function RentalPlansPage() {
 
   return (
     <>
-      <title>Rental Plans · TournamentLive Admin</title>
+      <title>Rental Plans · Scorio Admin</title>
       <AdminDataTable
         title="Rental Plans"
         description="The pricing tiers organizers see at checkout and on the landing page."
@@ -180,7 +181,7 @@ export default function RentalPlansPage() {
           <button
             type="submit"
             disabled={isSaving}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60"
           >
             {isSaving && <ButtonSpinner />}
             {editing ? "Save changes" : "Create plan"}
@@ -199,7 +200,7 @@ function TextField({ label, value, onChange, type = "text" }: { label: string; v
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20"
+        className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[color:color-mix(in_srgb,var(--color-primary)_20%,transparent)]"
       />
     </div>
   );

@@ -67,7 +67,7 @@ export default function CustomerProfilePage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-6">
-      <title>{`${customer.full_name} · TournamentLive Admin`}</title>
+      <title>{`${customer.full_name} · Scorio Admin`}</title>
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
         <div>
           <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">{customer.full_name}</h1>
