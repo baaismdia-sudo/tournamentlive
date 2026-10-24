@@ -77,13 +77,14 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Oversized tonal wordmark — flat colour, no gradient (brand rule). */}
-      <p
-        aria-hidden="true"
-        className="-mb-6 select-none text-center font-display text-[22vw] font-bold leading-none tracking-tight text-white/[0.06] sm:-mb-10 sm:text-[14vw]"
-      >
-        SCORIO
-      </p>
-    </footer>
-  );
-}
+
+{/* Oversized tonal wordmark using the official Scorio brand asset. */}
+<div className="-mb-6 flex justify-center sm:-mb-10">
+  <img
+    src="/brand/scorio-horizontal-white.svg"
+    alt=""
+    aria-hidden="true"
+    className="h-auto w-[70vw] select-none opacity-[0.06] sm:w-[55vw]"
+  />
+</div>
+      
