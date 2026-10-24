@@ -63,7 +63,7 @@ export default function StatisticsPage() {
               <ol className="space-y-2">
                 {board.rows.map((r, i) => (
                   <li key={r.player_id} className="flex items-center justify-between text-sm">
-                    <Link to={`/tournament/${tournament.slug}/players/${r.player_id}`} className="flex items-center gap-2 text-[var(--color-text)] hover:text-[var(--color-primary)]">
+                    <Link to={`/tournament/${tournament.slug}/players/${r.player_id}`} className="flex items-center gap-2 text-[var(--color-text)] hover:text-[var(--color-primary-ink)]">
                       <span className="w-4 text-xs text-[var(--color-muted)]">{i + 1}</span> {r.full_name}
                     </Link>
                     <span className="font-semibold text-[var(--color-heading)]">{r.total}</span>

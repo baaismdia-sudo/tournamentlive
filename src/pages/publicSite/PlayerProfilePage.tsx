@@ -54,7 +54,7 @@ export default function PublicPlayerProfilePage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">{player.full_name}</h1>
-            {player.is_captain && <span className="rounded bg-[var(--color-accent)]/10 px-2 py-0.5 text-xs font-semibold text-[var(--color-accent)]">Captain</span>}
+            {player.is_captain && <span className="rounded bg-[color:color-mix(in_srgb,var(--color-accent)_10%,transparent)] px-2 py-0.5 text-xs font-semibold text-[var(--color-accent)]">Captain</span>}
           </div>
           {player.nickname && <p className="text-sm text-[var(--color-muted)]">"{player.nickname}"</p>}
           <p className="mt-1 text-sm text-[var(--color-text)]">{player.teams?.name} {player.jersey_number && `· #${player.jersey_number}`} {player.position && `· ${player.position}`}</p>
@@ -88,7 +88,7 @@ export default function PublicPlayerProfilePage() {
         <section className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
           <h2 className="font-heading text-sm font-semibold text-[var(--color-heading)]">Awards</h2>
           <ul className="mt-2 flex flex-wrap gap-2">
-            {player.awards.map((a) => <li key={a} className="rounded-full bg-[var(--color-warning)]/10 px-3 py-1 text-xs font-medium text-[var(--color-warning)]">🏅 {a}</li>)}
+            {player.awards.map((a) => <li key={a} className="rounded-full bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] px-3 py-1 text-xs font-medium text-[var(--color-warning)]">🏅 {a}</li>)}
           </ul>
         </section>
       )}

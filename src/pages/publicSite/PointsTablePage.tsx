@@ -49,7 +49,7 @@ export default function PointsTablePage() {
                   <td className="px-4 py-3 font-medium text-[var(--color-heading)]">{r.teams?.name}</td>
                   <td className="px-4 py-3">{r.played}</td><td className="px-4 py-3">{r.won}</td><td className="px-4 py-3">{r.drawn}</td><td className="px-4 py-3">{r.lost}</td>
                   <td className="px-4 py-3">{r.goal_difference}</td>
-                  <td className="px-4 py-3 font-semibold text-[var(--color-primary)]">{r.points}</td>
+                  <td className="px-4 py-3 font-semibold text-[var(--color-primary-ink)]">{r.points}</td>
                 </tr>
               ))}
             </tbody>

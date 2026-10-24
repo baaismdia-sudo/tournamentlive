@@ -79,7 +79,7 @@ export default function ContactPage() {
             <label className="mb-1.5 block text-sm font-medium text-[var(--color-text)]">Message</label>
             <textarea value={form.message} onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))} rows={4} className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-primary)]" />
           </div>
-          <button type="submit" disabled={isSubmitting} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button type="submit" disabled={isSubmitting} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSubmitting && <ButtonSpinner />}
             Send message
           </button>
@@ -87,7 +87,7 @@ export default function ContactPage() {
       )}
 
       <div className="flex flex-wrap gap-4 text-sm text-[var(--color-muted)]">
-        <a href="mailto:hello@tournamentlive.app" className="flex items-center gap-1.5 hover:text-[var(--color-primary)]"><Mail size={14} /> hello@tournamentlive.app</a>
+        <a href="mailto:hello@scorio.app" className="flex items-center gap-1.5 hover:text-[var(--color-primary-ink)]"><Mail size={14} /> hello@scorio.app</a>
       </div>
     </div>
   );

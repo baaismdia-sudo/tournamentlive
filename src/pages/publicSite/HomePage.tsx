@@ -66,7 +66,7 @@ export default function HomePage() {
                 <div className="mt-6"><CountdownTimer target={tournament.starts_at} /></div>
               )}
               <div className="mt-6 flex gap-3">
-                <Link to={`/tournament/${tournament.slug}/fixtures`} className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-[var(--color-primary)] hover:opacity-90">Explore Fixtures</Link>
+                <Link to={`/tournament/${tournament.slug}/fixtures`} className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-[var(--color-primary-ink)] hover:opacity-90">Explore Fixtures</Link>
                 <Link to={`/tournament/${tournament.slug}/live`} className="rounded-lg border border-white/40 px-4 py-2 text-sm font-medium text-white hover:bg-white/10">Live Matches</Link>
               </div>
             </div>
@@ -83,35 +83,35 @@ export default function HomePage() {
       case "live_matches":
         return liveMatches.length > 0 ? (
           <FadeInSection key={key}>
-            <SectionHeading title="Live now" action={<Link to={`/tournament/${tournament.slug}/live`} className="text-sm text-[var(--color-primary)] hover:underline">View all</Link>} />
+            <SectionHeading title="Live now" action={<Link to={`/tournament/${tournament.slug}/live`} className="text-sm text-[var(--color-primary-ink)] hover:underline">View all</Link>} />
             <div className="grid gap-3 sm:grid-cols-2">{liveMatches.map((m) => <MatchCard key={m.id} match={m} />)}</div>
           </FadeInSection>
         ) : null;
       case "upcoming_matches":
         return upcomingMatches.length > 0 ? (
           <FadeInSection key={key}>
-            <SectionHeading title="Upcoming matches" action={<Link to={`/tournament/${tournament.slug}/fixtures`} className="text-sm text-[var(--color-primary)] hover:underline">View all</Link>} />
+            <SectionHeading title="Upcoming matches" action={<Link to={`/tournament/${tournament.slug}/fixtures`} className="text-sm text-[var(--color-primary-ink)] hover:underline">View all</Link>} />
             <div className="grid gap-3 sm:grid-cols-2">{upcomingMatches.map((m) => <MatchCard key={m.id} match={m} />)}</div>
           </FadeInSection>
         ) : null;
       case "latest_results":
         return results.length > 0 ? (
           <FadeInSection key={key}>
-            <SectionHeading title="Latest results" action={<Link to={`/tournament/${tournament.slug}/results`} className="text-sm text-[var(--color-primary)] hover:underline">View all</Link>} />
+            <SectionHeading title="Latest results" action={<Link to={`/tournament/${tournament.slug}/results`} className="text-sm text-[var(--color-primary-ink)] hover:underline">View all</Link>} />
             <div className="grid gap-3 sm:grid-cols-2">{results.map((m) => <MatchCard key={m.id} match={m} />)}</div>
           </FadeInSection>
         ) : null;
       case "featured_teams":
         return teams.length > 0 ? (
           <FadeInSection key={key}>
-            <SectionHeading title="Teams" action={<Link to={`/tournament/${tournament.slug}/teams`} className="text-sm text-[var(--color-primary)] hover:underline">View all</Link>} />
+            <SectionHeading title="Teams" action={<Link to={`/tournament/${tournament.slug}/teams`} className="text-sm text-[var(--color-primary-ink)] hover:underline">View all</Link>} />
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">{teams.map((t, i) => <TeamCard key={t.id} team={t} slug={tournament.slug} index={i} />)}</div>
           </FadeInSection>
         ) : null;
       case "featured_players":
         return players.length > 0 ? (
           <FadeInSection key={key}>
-            <SectionHeading title="Players" action={<Link to={`/tournament/${tournament.slug}/players`} className="text-sm text-[var(--color-primary)] hover:underline">View all</Link>} />
+            <SectionHeading title="Players" action={<Link to={`/tournament/${tournament.slug}/players`} className="text-sm text-[var(--color-primary-ink)] hover:underline">View all</Link>} />
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{players.map((p, i) => <PlayerCard key={p.id} player={p} slug={tournament.slug} index={i} />)}</div>
           </FadeInSection>
         ) : null;
@@ -125,14 +125,14 @@ export default function HomePage() {
       case "news":
         return siteSettings?.show_news !== false && news.length > 0 ? (
           <FadeInSection key={key}>
-            <SectionHeading title="Latest news" action={<Link to={`/tournament/${tournament.slug}/news`} className="text-sm text-[var(--color-primary)] hover:underline">View all</Link>} />
+            <SectionHeading title="Latest news" action={<Link to={`/tournament/${tournament.slug}/news`} className="text-sm text-[var(--color-primary-ink)] hover:underline">View all</Link>} />
             <div className="grid gap-4 sm:grid-cols-3">{news.map((n) => <NewsCard key={n.id} article={n} slug={tournament.slug} />)}</div>
           </FadeInSection>
         ) : null;
       case "gallery":
         return siteSettings?.show_gallery !== false && galleryImages.length > 0 ? (
           <FadeInSection key={key}>
-            <SectionHeading title="Gallery" action={<Link to={`/tournament/${tournament.slug}/gallery`} className="text-sm text-[var(--color-primary)] hover:underline">View all</Link>} />
+            <SectionHeading title="Gallery" action={<Link to={`/tournament/${tournament.slug}/gallery`} className="text-sm text-[var(--color-primary-ink)] hover:underline">View all</Link>} />
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
               {galleryImages.slice(0, 8).map((g) => (
                 <div key={g.id} className="aspect-square overflow-hidden rounded-lg">

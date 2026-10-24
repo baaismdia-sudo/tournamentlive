@@ -7,7 +7,7 @@ export default function AboutPage() {
     <div className="mx-auto max-w-2xl space-y-6">
       <SectionHeading title={`About ${tournament.name}`} />
       <div className="space-y-4 text-sm leading-relaxed text-[var(--color-text)]">
-        <p>{tournament.description || `${tournament.name} is a ${tournament.sport} tournament${tournament.season ? ` for the ${tournament.season} season` : ""}, organized and run on TournamentLive.`}</p>
+        <p>{tournament.description || `${tournament.name} is a ${tournament.sport} tournament${tournament.season ? ` for the ${tournament.season} season` : ""}, organized and run on Scorio.`}</p>
         {tournament.starts_at && (
           <p>
             The tournament {new Date(tournament.starts_at) > new Date() ? "starts" : "started"} on{" "}
