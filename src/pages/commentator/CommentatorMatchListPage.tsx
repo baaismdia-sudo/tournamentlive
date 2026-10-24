@@ -56,13 +56,13 @@ export default function CommentatorMatchListPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-6">
-      <title>Commentator · TournamentLive</title>
+      <title>Commentator · Scorio</title>
       <div>
         <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Matches</h1>
         <p className="text-sm text-[var(--color-muted)]">Pick a match to start commentating.</p>
       </div>
       {error && (
-        <p className="rounded-lg bg-[var(--color-danger)]/10 p-3 text-sm text-[var(--color-danger)]">{error}</p>
+        <p className="rounded-lg bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] p-3 text-sm text-[var(--color-danger)]">{error}</p>
       )}
       {matches.length === 0 ? (
         <EmptyState icon={MessageSquareQuote} title="No matches to commentate right now" />

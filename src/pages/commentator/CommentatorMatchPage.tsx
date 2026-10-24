@@ -69,13 +69,13 @@ export default function CommentatorMatchPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">
-      <title>Commentary · TournamentLive</title>
+      <title>Commentary · Scorio</title>
       <Link to="/commentator" className="flex items-center gap-1.5 text-sm text-[var(--color-muted)] hover:text-[var(--color-text)]">
         <ArrowLeft size={15} /> Back to matches
       </Link>
 
       {otherCommentators.length > 0 && (
-        <div className="rounded-lg bg-[var(--color-info)]/10 px-3 py-2 text-sm text-[var(--color-info)]">
+        <div className="rounded-lg bg-[color:color-mix(in_srgb,var(--color-info)_10%,transparent)] px-3 py-2 text-sm text-[var(--color-info)]">
           {otherCommentators.map((u) => u.fullName).join(", ")} also commentating live.
         </div>
       )}
@@ -112,7 +112,7 @@ export default function CommentatorMatchPage() {
           <button
             onClick={send}
             disabled={isSending || !message.trim()}
-            className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60"
+            className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60"
           >
             <Send size={14} /> Post
           </button>
