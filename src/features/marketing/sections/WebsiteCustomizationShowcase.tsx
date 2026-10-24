@@ -11,7 +11,7 @@ export function WebsiteCustomizationShowcase() {
   const [dark, setDark] = useState(false);
 
   return (
-    <section className="bg-[var(--color-surface-alt)]/40 px-6 py-24">
+    <section className="bg-[color:color-mix(in_srgb,var(--color-surface-alt)_40%,transparent)] px-6 py-24">
       <div className="mx-auto max-w-6xl">
         <SectionTitle eyebrow="Website Builder" title="Make it unmistakably yours" subtitle="Try it — every control here maps to a real setting in your dashboard." />
 

@@ -4,7 +4,7 @@ import { SPORTS } from "../data/content";
 
 export function SupportedSports() {
   return (
-    <section id="sports" className="bg-[var(--color-surface-alt)]/40 px-6 py-24">
+    <section id="sports" className="bg-[color:color-mix(in_srgb,var(--color-surface-alt)_40%,transparent)] px-6 py-24">
       <div className="mx-auto max-w-6xl">
         <SectionTitle eyebrow="Sports" title="Built for every sport" subtitle="Configurable scoring and formats for each." />
         <div className="mt-12 grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-7">

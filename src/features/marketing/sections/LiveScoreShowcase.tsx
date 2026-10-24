@@ -26,7 +26,7 @@ export function LiveScoreShowcase() {
               key={s}
               onClick={() => setSport(s)}
               className={`rounded-lg px-3.5 py-2 text-sm font-medium transition ${
-                sport === s ? "bg-[var(--color-brand)] text-white" : "bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]"
+                sport === s ? "bg-[var(--color-brand)] text-[var(--color-on-primary)]" : "bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]"
               }`}
             >
               {s}
@@ -48,7 +48,7 @@ export function LiveScoreShowcase() {
             </p>
             <div className="mt-3 flex items-center justify-between text-lg font-semibold text-[var(--color-text)]">
               <span>{widget.home}</span>
-              <span className="text-2xl text-[var(--color-brand)]">{widget.score}</span>
+              <span className="text-2xl text-[var(--color-primary-ink)]">{widget.score}</span>
               <span>{widget.away}</span>
             </div>
             <p className="mt-2 text-center text-xs text-[var(--color-text-muted)]">{widget.detail}</p>

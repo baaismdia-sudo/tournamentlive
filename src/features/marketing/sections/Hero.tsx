@@ -1,74 +1,86 @@
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "../components/Button";
-import { AnimatedBackground } from "../components/AnimatedBackground";
-import { FloatingCard } from "../components/FloatingCard";
 import { StatsCounter } from "../components/StatsCounter";
 import { STATS } from "../data/content";
+import { TurfStripes } from "../../../components/brand/TurfStripes";
+import { LiveScoreCard } from "../../../components/brand/LiveScoreCard";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden px-6 pb-20 pt-16 sm:pt-24">
-      <AnimatedBackground />
-      <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
+    <section className="relative overflow-hidden pb-16 pt-12 sm:pb-24 sm:pt-20">
+      <TurfStripes />
+      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
         <div>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 font-display text-xs font-semibold uppercase tracking-[0.14em] text-[var(--color-muted)]"
+          >
+            <span className="h-2 w-2 rounded-full bg-[var(--color-danger)]" />
+            Live scores &amp; tournament management
+          </motion.p>
+
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl font-semibold tracking-tight text-[var(--color-text)] sm:text-5xl lg:text-6xl"
+            transition={{ duration: 0.55, delay: 0.05 }}
+            className="mt-6 font-display text-[2.6rem] font-bold leading-[1.02] tracking-tight text-[var(--color-heading)] sm:text-6xl lg:text-7xl"
           >
             Your tournament,
             <br />
-            <span className="text-[var(--color-brand)]">live in minutes.</span>
+            <span className="mt-1 inline-block rounded-lg bg-[var(--color-primary)] px-3 pb-1 text-[var(--color-on-primary)]">
+              live in minutes.
+            </span>
           </motion.h1>
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="mt-6 max-w-lg text-lg text-[var(--color-text-muted)]"
+            transition={{ duration: 0.55, delay: 0.12 }}
+            className="mt-6 max-w-xl text-base leading-relaxed text-[var(--color-muted)] sm:text-lg"
           >
-            Rent a fully branded tournament website with live scores, fixtures, and standings —
-            no code, no developer, no waiting.
+            Rent a fully branded tournament website with live scores, fixtures, and standings — score every ball from
+            your phone and watch it update for everyone, instantly. No code, no developer, no waiting.
           </motion.p>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8 flex flex-wrap gap-3"
+            transition={{ duration: 0.55, delay: 0.2 }}
+            className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
           >
-            <Button to="/register" size="lg">Start free</Button>
-            <Button to="/demo" variant="ghost" size="lg">Watch demo</Button>
-            <Button href="/contact" variant="secondary" size="lg">Request demo</Button>
+            <Button to="/register" size="lg" className="w-full sm:w-auto">Start free</Button>
+            <Button to="/demo" variant="ghost" size="lg" className="w-full sm:w-auto">Watch demo</Button>
+            <Link to="/contact" className="group inline-flex items-center justify-center gap-1.5 px-2 py-2 font-display text-sm font-semibold text-[var(--color-primary-ink)]">
+              Request a guided demo <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+            </Link>
           </motion.div>
 
-          <div className="mt-14 grid grid-cols-2 gap-6 sm:grid-cols-4">
+          <div className="mt-12 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-[var(--color-border)] pt-8 sm:grid-cols-4">
             {STATS.map((s) => (
-              <StatsCounter key={s.label} value={s.value} suffix={s.suffix} label={s.label} />
+              <StatsCounter key={s.label} value={s.value} suffix={s.suffix} label={s.label} align="left" />
             ))}
           </div>
         </div>
 
-        <div className="relative hidden h-[420px] lg:block">
-          <FloatingCard className="absolute left-0 top-4 w-56" delay={0}>
-            <p className="text-xs text-[var(--color-text-muted)]">Kodungallur Premier Cup</p>
-            <p className="mt-1 flex items-center justify-between text-2xl font-semibold text-[var(--color-text)]">
-              <span>FC Kodungallur</span>
-            </p>
-            <p className="text-3xl font-bold text-[var(--color-brand)]">2 – 1</p>
-            <p className="mt-1 text-xs text-[var(--color-success)]">● Live · 67'</p>
-          </FloatingCard>
-          <FloatingCard className="absolute right-0 top-40 w-52" delay={0.6}>
-            <p className="text-xs text-[var(--color-text-muted)]">Points Table</p>
-            <div className="mt-2 space-y-1 text-xs">
-              <div className="flex justify-between"><span>Thrissur Titans</span><span className="font-semibold">9 pts</span></div>
-              <div className="flex justify-between"><span>Cochin Crusaders</span><span className="font-semibold">7 pts</span></div>
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.25 }}
+          className="relative mx-auto w-full max-w-md pb-10 lg:max-w-none"
+        >
+          <LiveScoreCard />
+          <div className="absolute bottom-0 right-4 hidden w-52 rounded-card border border-[var(--color-border)] bg-[var(--color-surface-secondary)] p-4 shadow-premium sm:block">
+            <p className="font-display text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">Points table</p>
+            <div className="mt-2 space-y-1.5 text-xs">
+              <div className="flex justify-between text-[var(--color-heading)]"><span>Thrissur Titans</span><span className="score font-bold">9</span></div>
+              <div className="flex justify-between text-[var(--color-text)]"><span>Cochin Crusaders</span><span className="score font-bold">7</span></div>
             </div>
-          </FloatingCard>
-          <FloatingCard className="absolute bottom-0 left-10 w-48" delay={1.1}>
-            <p className="text-xs text-[var(--color-text-muted)]">New sponsor</p>
-            <p className="mt-1 font-semibold text-[var(--color-text)]">Chocolush 🍫</p>
-          </FloatingCard>
-        </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

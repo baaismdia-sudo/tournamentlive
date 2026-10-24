@@ -1,4 +1,5 @@
 import { SectionTitle } from "../components/SectionTitle";
+import { MarketingIcon } from "../components/IconWrapper";
 import { Button } from "../components/Button";
 import { motion } from "framer-motion";
 import { FEATURES } from "../data/content";
@@ -31,10 +32,10 @@ export function Features() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.4, delay: Math.min(i * 0.04, 0.4) }}
-              className="mb-5 break-inside-avoid rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 transition-shadow hover:shadow-lg hover:shadow-[var(--color-brand)]/5"
+              className="mb-5 break-inside-avoid rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 transition-shadow hover:shadow-lg hover:shadow-[color:color-mix(in_srgb,var(--color-brand)_5%,transparent)]"
             >
-              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--color-brand)]/10 text-xl text-[var(--color-brand)]">
-                {f.icon}
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[color:color-mix(in_srgb,var(--color-brand)_10%,transparent)] text-xl text-[var(--color-primary-ink)]">
+                <MarketingIcon icon={f.icon} />
               </div>
               <h3 className="font-semibold text-[var(--color-text)]">{f.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">{f.description}</p>

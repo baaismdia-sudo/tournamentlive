@@ -25,7 +25,7 @@ export function LiveDemo() {
               onClick={() => setDevice(d.id)}
               className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
                 device === d.id
-                  ? "bg-[var(--color-brand)] text-white"
+                  ? "bg-[var(--color-brand)] text-[var(--color-on-primary)]"
                   : "bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:bg-[var(--color-border)]"
               }`}
             >
@@ -46,7 +46,7 @@ export function LiveDemo() {
             <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
             <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
           </div>
-          <div className="flex h-[calc(100%-2.25rem)] flex-col items-center justify-center gap-3 bg-gradient-to-br from-[var(--color-brand)]/5 to-[var(--color-accent)]/5 p-6 text-center">
+          <div className="flex h-[calc(100%-2.25rem)] flex-col items-center justify-center gap-3 bg-gradient-to-br from-[color:color-mix(in_srgb,var(--color-brand)_5%,transparent)] to-[color:color-mix(in_srgb,var(--color-accent)_5%,transparent)] p-6 text-center">
             <p className="text-sm text-[var(--color-text-muted)]">Kodungallur Premier Cup 2026</p>
             <p className="text-4xl font-bold text-[var(--color-text)]">FC Kodungallur 2 – 1 Thrissur Titans</p>
             <p className="text-xs font-medium text-[var(--color-success)]">● Live · 67' Second Half</p>

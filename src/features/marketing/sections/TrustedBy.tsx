@@ -3,7 +3,7 @@ import { TRUSTED_BY } from "../data/content";
 
 export function TrustedBy() {
   return (
-    <section className="border-y border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 px-6 py-10">
+    <section className="border-y border-[var(--color-border)] bg-[color:color-mix(in_srgb,var(--color-surface-alt)_40%,transparent)] px-6 py-10">
       <div className="mx-auto max-w-6xl">
         <p className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">
           Trusted by organizers across India

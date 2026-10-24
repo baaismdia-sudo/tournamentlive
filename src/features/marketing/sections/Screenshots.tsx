@@ -8,9 +8,9 @@ export function Screenshots() {
   const shot = SCREENSHOTS[index];
 
   return (
-    <section className="bg-[var(--color-surface-alt)]/40 px-6 py-24">
+    <section className="bg-[color:color-mix(in_srgb,var(--color-surface-alt)_40%,transparent)] px-6 py-24">
       <div className="mx-auto max-w-4xl">
-        <SectionTitle eyebrow="See it in action" title="A look inside TournamentLive" />
+        <SectionTitle eyebrow="See it in action" title="A look inside Scorio" />
 
         <motion.div
           key={shot.title}
