@@ -17,7 +17,7 @@ export const FEATURES = [
   { icon: "🗓️", title: "Rental Plans", description: "Rent by the day, week, or month — pay only for the time you need." },
   { icon: "💳", title: "Payment Integration", description: "Secure checkout with Razorpay and Stripe support." },
   { icon: "🔄", title: "Realtime Updates", description: "Every visitor sees the same live state, no refresh needed." },
-  { icon: "⚽", title: "Multi Sport Support", description: "Football, cricket, kabaddi, esports, and more — one platform." },
+  { icon: "🏅", title: "Multi Sport Support", description: "Football, cricket, kabaddi, esports, and more — one platform." },
   { icon: "🛡️", title: "Role Management", description: "Organizer, manager, scorekeeper, and commentator roles out of the box." },
 ];
 
