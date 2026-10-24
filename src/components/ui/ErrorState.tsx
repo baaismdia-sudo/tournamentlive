@@ -8,7 +8,7 @@ export function ErrorState({ title = "Something went wrong", message, onRetry }:
   return (
     <div
       role="alert"
-      className="flex flex-col items-center gap-3 rounded-xl border border-[var(--color-danger)]/30 bg-[var(--color-danger)]/5 p-6 text-center"
+      className="flex flex-col items-center gap-3 rounded-xl border border-[color:color-mix(in_srgb,var(--color-danger)_30%,transparent)] bg-[color:color-mix(in_srgb,var(--color-danger)_5%,transparent)] p-6 text-center"
     >
       <p className="font-semibold text-[var(--color-danger)]">{title}</p>
       <p className="text-sm text-[var(--color-text-muted)]">{message}</p>
@@ -37,7 +37,7 @@ export function SuccessBanner({ message }: { message: string }) {
   return (
     <div
       role="status"
-      className="rounded-xl border border-[var(--color-success)]/30 bg-[var(--color-success)]/10 px-4 py-3 text-sm text-[var(--color-success)]"
+      className="rounded-xl border border-[color:color-mix(in_srgb,var(--color-success)_30%,transparent)] bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] px-4 py-3 text-sm text-[var(--color-success)]"
     >
       {message}
     </div>

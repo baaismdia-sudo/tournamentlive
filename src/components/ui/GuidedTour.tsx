@@ -122,7 +122,7 @@ export function GuidedTour({ steps, onClose, onFinish }: { steps: TourStep[]; on
           <button onClick={back} disabled={index === 0} className="rounded-lg px-3 py-1.5 text-xs font-medium text-[var(--color-muted)] disabled:opacity-0">
             Back
           </button>
-          <button onClick={next} className="rounded-lg bg-[var(--color-primary)] px-4 py-1.5 text-xs font-semibold text-white">
+          <button onClick={next} className="rounded-lg bg-[var(--color-primary)] px-4 py-1.5 text-xs font-semibold text-[var(--color-on-primary)]">
             {index === steps.length - 1 ? "Got it" : "Next"}
           </button>
         </div>

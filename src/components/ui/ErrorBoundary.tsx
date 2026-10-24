@@ -34,7 +34,7 @@ export class ErrorBoundary extends Component<Props, State> {
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="rounded-lg bg-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold text-white"
+            className="rounded-lg bg-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold text-[var(--color-on-primary)]"
           >
             Reload
           </button>
