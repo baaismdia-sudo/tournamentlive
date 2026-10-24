@@ -4,10 +4,10 @@ import type { QuickAction } from "../data/sportEventConfigs";
 interface PlayerOption { id: string; full_name: string }
 
 const TONE_CLASSES: Record<string, string> = {
-  success: "border-[var(--color-success)]/40 text-[var(--color-success)] hover:bg-[var(--color-success)]/10",
-  warning: "border-[var(--color-warning)]/40 text-[var(--color-warning)] hover:bg-[var(--color-warning)]/10",
-  danger: "border-[var(--color-danger)]/40 text-[var(--color-danger)] hover:bg-[var(--color-danger)]/10",
-  info: "border-[var(--color-info)]/40 text-[var(--color-info)] hover:bg-[var(--color-info)]/10",
+  success: "border-[color:color-mix(in_srgb,var(--color-success)_40%,transparent)] text-[var(--color-success)] hover:bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)]",
+  warning: "border-[color:color-mix(in_srgb,var(--color-warning)_40%,transparent)] text-[var(--color-warning)] hover:bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)]",
+  danger: "border-[color:color-mix(in_srgb,var(--color-danger)_40%,transparent)] text-[var(--color-danger)] hover:bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)]",
+  info: "border-[color:color-mix(in_srgb,var(--color-info)_40%,transparent)] text-[var(--color-info)] hover:bg-[color:color-mix(in_srgb,var(--color-info)_10%,transparent)]",
 };
 
 export function QuickActionButtons({
@@ -102,7 +102,7 @@ export function QuickActionButtons({
             )}
             <div className="mt-4 flex gap-2">
               <button onClick={() => setPending(null)} className="flex-1 rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm font-medium">Cancel</button>
-              <button onClick={confirmPending} className="flex-1 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)]">Confirm</button>
+              <button onClick={confirmPending} className="flex-1 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)]">Confirm</button>
             </div>
           </div>
         </div>

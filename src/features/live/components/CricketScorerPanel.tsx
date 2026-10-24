@@ -223,7 +223,7 @@ export function CricketScorerPanel({
               await endMatch(match.id, liveScore?.home_score ?? 0, liveScore?.away_score ?? 0);
               refetch();
             })}
-            className="mt-4 w-full rounded-lg bg-[var(--color-primary)] py-3 text-sm font-bold text-white disabled:opacity-50"
+            className="mt-4 w-full rounded-lg bg-[var(--color-primary)] py-3 text-sm font-bold text-[var(--color-on-primary)] disabled:opacity-50"
           >
             Finish match &amp; save result
           </button>
@@ -256,7 +256,7 @@ export function CricketScorerPanel({
         <div className="mt-2 flex items-end justify-between">
           <div>
             <p className="font-heading text-2xl font-bold text-[var(--color-heading)]">{battingTeam?.name}</p>
-            <p className="font-heading text-3xl font-black text-[var(--color-primary)]">
+            <p className="score text-3xl font-bold text-[var(--color-primary-ink)]">
               {state.runs}/{state.wickets} <span className="text-base font-medium text-[var(--color-muted)]">({oversStr}{state.total_overs ? ` / ${state.total_overs}` : ""})</span>
             </p>
           </div>
@@ -266,7 +266,7 @@ export function CricketScorerPanel({
           </div>
         </div>
         {state.target != null && required != null && ballsRemaining != null && (
-          <p className="mt-2 rounded-lg bg-[var(--color-primary)]/10 px-3 py-1.5 text-sm font-medium text-[var(--color-primary)]">
+          <p className="mt-2 rounded-lg bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] px-3 py-1.5 text-sm font-medium text-[var(--color-primary-ink)]">
             Need {Math.max(required, 0)} run{required === 1 ? "" : "s"} from {Math.max(ballsRemaining, 0)} ball{ballsRemaining === 1 ? "" : "s"}
             {reqRunRate && <span className="ml-2 text-xs font-normal">(RRR {reqRunRate})</span>}
           </p>
@@ -278,7 +278,7 @@ export function CricketScorerPanel({
       </div>
 
       {flash && (
-        <div className="fixed left-1/2 top-24 z-50 -translate-x-1/2 rounded-full bg-[var(--color-heading)] px-6 py-3 text-xl font-black text-white shadow-lg">
+        <div className="fixed left-1/2 top-24 z-50 -translate-x-1/2 rounded-full bg-[var(--color-heading)] px-6 py-3 text-xl font-black text-[var(--color-background)] shadow-lg">
           {flash}
         </div>
       )}
@@ -310,8 +310,8 @@ export function CricketScorerPanel({
           <div data-tour="batter-bowler-switcher" className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-3">
             <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-[var(--color-muted)]">Batter · Non-striker · Bowler</p>
             <div className="grid grid-cols-3 gap-2">
-              <div className="rounded-lg border-2 border-[var(--color-primary)] bg-[var(--color-primary)]/5 p-2 text-center">
-                <p className="text-[9px] font-bold uppercase text-[var(--color-primary)]">Striker ⭐</p>
+              <div className="rounded-lg border-2 border-[var(--color-primary)] bg-[color:color-mix(in_srgb,var(--color-primary)_5%,transparent)] p-2 text-center">
+                <p className="text-[9px] font-bold uppercase text-[var(--color-primary-ink)]">Striker ⭐</p>
                 <p className="truncate text-xs font-bold text-[var(--color-heading)]">{nameOf(state.striker_id)}</p>
                 <p className="text-[11px] text-[var(--color-muted)]">{striker?.runs ?? 0} ({striker?.balls ?? 0})</p>
               </div>
@@ -347,8 +347,8 @@ export function CricketScorerPanel({
                 key={r}
                 disabled={isBusy}
                 onClick={() => deliver("run", r)}
-                className={`rounded-card py-6 font-heading text-2xl font-black shadow-sm transition active:scale-95 disabled:opacity-50 ${
-                  r === 4 ? "bg-[var(--color-success)] text-white" : r === 6 ? "bg-[var(--color-primary)] text-white" : "border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-heading)]"
+                className={`rounded-card py-6 score text-3xl font-bold shadow-sm transition active:scale-95 disabled:opacity-50 ${
+                  r === 4 ? "bg-[var(--color-success)] text-[var(--color-on-success)]" : r === 6 ? "bg-[var(--color-primary)] text-[var(--color-on-primary)]" : "border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-heading)]"
                 }`}
               >
                 {r}
@@ -363,7 +363,7 @@ export function CricketScorerPanel({
                 key={t}
                 disabled={isBusy}
                 onClick={() => setExtraOpen(t)}
-                className="rounded-lg border border-[var(--color-warning)]/40 bg-[var(--color-warning)]/10 py-2.5 text-xs font-semibold capitalize text-[var(--color-warning)] disabled:opacity-50"
+                className="rounded-lg border border-[color:color-mix(in_srgb,var(--color-warning)_40%,transparent)] bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] py-2.5 text-xs font-semibold capitalize text-[var(--color-warning)] disabled:opacity-50"
               >
                 {t.replace("_", " ")}
               </button>
@@ -455,7 +455,7 @@ export function CricketScorerPanel({
             });
           }
         }}
-        className="w-full rounded-lg border border-[var(--color-danger)]/40 py-2.5 text-xs font-semibold text-[var(--color-danger)] disabled:opacity-50"
+        className="w-full rounded-lg border border-[color:color-mix(in_srgb,var(--color-danger)_40%,transparent)] py-2.5 text-xs font-semibold text-[var(--color-danger)] disabled:opacity-50"
       >
         End match early
       </button>
@@ -464,7 +464,7 @@ export function CricketScorerPanel({
       <button
         onClick={() => tour.setOpen(true)}
         aria-label="How to use this screen"
-        className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)] text-white shadow-lg"
+        className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)] text-[var(--color-on-primary)] shadow-lg"
       >
         <HelpCircle size={20} />
       </button>
@@ -475,7 +475,7 @@ export function CricketScorerPanel({
 
 function SelectPrompt({ title, players, onSelect, isBusy }: { title: string; players: PlayerOption[]; onSelect: (id: string) => void; isBusy: boolean }) {
   return (
-    <div className="rounded-card border border-[var(--color-primary)] bg-[var(--color-primary)]/5 p-4">
+    <div className="rounded-card border border-[var(--color-primary)] bg-[color:color-mix(in_srgb,var(--color-primary)_5%,transparent)] p-4">
       <p className="mb-2 text-sm font-semibold text-[var(--color-heading)]">{title}</p>
       <div className="flex flex-wrap gap-2">
         {players.map((p) => (
@@ -605,8 +605,8 @@ function TossStep({
         </select>
         <label className="mb-1 block text-left text-xs font-medium text-[var(--color-muted)]">Call</label>
         <div className="mb-5 grid grid-cols-2 gap-2">
-          <button onClick={() => setCall("heads")} className={`rounded-lg border py-2 text-sm font-semibold capitalize ${call === "heads" ? "border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "border-[var(--color-border)] text-[var(--color-text)]"}`}>Heads</button>
-          <button onClick={() => setCall("tails")} className={`rounded-lg border py-2 text-sm font-semibold capitalize ${call === "tails" ? "border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "border-[var(--color-border)] text-[var(--color-text)]"}`}>Tails</button>
+          <button onClick={() => setCall("heads")} className={`rounded-lg border py-2 text-sm font-semibold capitalize ${call === "heads" ? "border-[var(--color-primary)] bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary-ink)]" : "border-[var(--color-border)] text-[var(--color-text)]"}`}>Heads</button>
+          <button onClick={() => setCall("tails")} className={`rounded-lg border py-2 text-sm font-semibold capitalize ${call === "tails" ? "border-[var(--color-primary)] bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary-ink)]" : "border-[var(--color-border)] text-[var(--color-text)]"}`}>Tails</button>
         </div>
         <button
           disabled={flipping || !callingTeamId}
@@ -635,7 +635,7 @@ function TossStep({
         <button
           disabled={isBusy || !winnerTeam}
           onClick={() => winnerTeam && onConfirm({ winnerTeamId: winnerTeam.id, call, result, decision: "bat" })}
-          className="rounded-lg border border-[var(--color-primary)] bg-[var(--color-primary)]/10 py-3 text-sm font-bold text-[var(--color-primary)] disabled:opacity-50"
+          className="rounded-lg border border-[var(--color-primary)] bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] py-3 text-sm font-bold text-[var(--color-primary-ink)] disabled:opacity-50"
         >
           Bat first
         </button>
@@ -685,7 +685,7 @@ function InningsSetup({
       <h3 className="mb-3 font-heading text-base font-bold text-[var(--color-heading)]">Start innings {innings}</h3>
 
       {forcedBattingTeamId && battingTeamLabel && (
-        <p className="mb-3 rounded-lg bg-[var(--color-primary)]/10 px-3 py-2 text-sm text-[var(--color-primary)]">
+        <p className="mb-3 rounded-lg bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] px-3 py-2 text-sm text-[var(--color-primary-ink)]">
           <b>{battingTeamLabel}</b> bats first
         </p>
       )}
@@ -728,7 +728,7 @@ function InningsSetup({
       <button
         disabled={isBusy || !strikerId || !nonStrikerId || !bowlerId || !battingTeamId}
         onClick={() => onStart({ battingTeamId, bowlingTeamId, strikerId, nonStrikerId, bowlerId, totalOvers: totalOvers ?? (overs ? Number(overs) : null) })}
-        className="w-full rounded-lg bg-[var(--color-primary)] py-3 text-sm font-bold text-white disabled:opacity-50"
+        className="w-full rounded-lg bg-[var(--color-primary)] py-3 text-sm font-bold text-[var(--color-on-primary)] disabled:opacity-50"
       >
         Start innings {innings}
       </button>

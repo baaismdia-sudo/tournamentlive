@@ -89,7 +89,7 @@ export function CricketUmpireView({
 
       <div className="px-4 pb-3 pt-2 text-center">
         <p className="text-sm font-semibold text-[var(--color-heading)]">
-          <span style={{ color: "var(--color-primary)" }}>{battingTeam?.name}</span>
+          <span style={{ color: "var(--color-primary-ink)" }}>{battingTeam?.name}</span>
           <span className="mx-1.5 text-[var(--color-muted)]">|</span>
           {nameOf(state.bowler_id)} <span className="text-[var(--color-success)]">bowling</span>
           <span className="mx-1.5 text-[var(--color-muted)]">·</span>
@@ -99,27 +99,27 @@ export function CricketUmpireView({
 
       <div data-tour="uv-score" className="mx-4 mb-3 flex items-center justify-between rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3">
         <div>
-          <p className="font-heading text-3xl font-black">
+          <p className="score text-4xl font-bold">
             <span className="text-[var(--color-success)]">{state.runs}</span>
             <span className="text-[var(--color-danger)]">/{state.wickets}</span>
           </p>
           <p className="text-[11px] uppercase tracking-wide text-[var(--color-muted)]">Score / Wickets ({state.innings === 2 ? "chasing" : "1st innings"})</p>
         </div>
         <div className="text-right">
-          <p className="font-heading text-2xl font-black text-[var(--color-heading)]">{oversDisplay(state)}</p>
+          <p className="score text-3xl font-bold text-[var(--color-heading)]">{oversDisplay(state)}</p>
           <p className="text-[11px] uppercase tracking-wide text-[var(--color-muted)]">Overs {state.total_overs ? `(${state.total_overs})` : ""}</p>
         </div>
       </div>
 
       {state.target != null && required != null && ballsRemaining != null && (
-        <div className="mx-4 mb-3 rounded-lg bg-[var(--color-primary)]/10 px-3 py-2 text-center text-sm font-medium text-[var(--color-primary)]">
+        <div className="mx-4 mb-3 rounded-lg bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] px-3 py-2 text-center text-sm font-medium text-[var(--color-primary-ink)]">
           Need {Math.max(required, 0)} run{required === 1 ? "" : "s"} from {Math.max(ballsRemaining, 0)} ball{ballsRemaining === 1 ? "" : "s"} · Target {state.target}
         </div>
       )}
 
       <div data-tour="uv-over" className="mx-4 mb-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-3">
         <div className="mb-2 flex items-center justify-between text-xs text-[var(--color-muted)]">
-          <span>{state.current_over_balls.length} of 6 balls</span>
+          <span>{state.ball} of 6 balls</span>
           <span className="font-semibold text-[var(--color-heading)]">Over {state.over + 1}</span>
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -135,7 +135,7 @@ export function CricketUmpireView({
       <button
         onClick={() => tour.setOpen(true)}
         aria-label="How to read this scoreboard"
-        className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)] text-white shadow-lg"
+        className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary)] text-[var(--color-on-primary)] shadow-lg"
       >
         <HelpCircle size={20} />
       </button>

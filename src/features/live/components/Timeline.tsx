@@ -76,7 +76,7 @@ export function Timeline({
               </div>
               {error && <p className="text-xs text-[var(--color-danger)]">{error}</p>}
               <div className="flex gap-2">
-                <button onClick={() => saveEdit(event.id)} disabled={isSaving} className="rounded-lg bg-[var(--color-primary)] px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50">
+                <button onClick={() => saveEdit(event.id)} disabled={isSaving} className="rounded-lg bg-[var(--color-primary)] px-3 py-1.5 text-xs font-medium text-[var(--color-on-primary)] disabled:opacity-50">
                   {isSaving ? "Saving..." : "Save"}
                 </button>
                 <button onClick={cancelEdit} disabled={isSaving} className="rounded-lg border border-[var(--color-border)] px-3 py-1.5 text-xs font-medium">
@@ -96,7 +96,7 @@ export function Timeline({
                 <p className="mt-0.5 text-[10px] text-[var(--color-muted)]">{new Date(event.created_at).toLocaleTimeString()}</p>
               </div>
               <div className="flex shrink-0 gap-3">
-                <button onClick={() => startEdit(event)} className="text-xs font-medium text-[var(--color-primary)] hover:underline">
+                <button onClick={() => startEdit(event)} className="text-xs font-medium text-[var(--color-primary-ink)] hover:underline">
                   Edit
                 </button>
                 {onUndo && (

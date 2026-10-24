@@ -21,7 +21,7 @@ export function MatchClockControl({
       </div>
       <div className="flex flex-wrap gap-2">
         {(!liveScore || liveScore.clock_status === "stopped") && (
-          <button onClick={onStart} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-success)] px-4 py-2 text-sm font-medium text-white hover:opacity-90">
+          <button onClick={onStart} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-success)] px-4 py-2 text-sm font-medium text-[var(--color-on-success)] hover:opacity-90">
             <Play size={15} /> Start
           </button>
         )}
@@ -31,7 +31,7 @@ export function MatchClockControl({
           </button>
         )}
         {liveScore?.clock_status === "paused" && (
-          <button onClick={onResume} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-success)] px-4 py-2 text-sm font-medium text-white hover:opacity-90">
+          <button onClick={onResume} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-success)] px-4 py-2 text-sm font-medium text-[var(--color-on-success)] hover:opacity-90">
             <Play size={15} /> Resume
           </button>
         )}

@@ -24,7 +24,7 @@ function renderMarkdown(text: string) {
 
 function CommentaryLine({ item }: { item: CommentaryRow }) {
   return (
-    <div className={`rounded-lg border p-3 ${item.is_highlight ? "border-[var(--color-warning)] bg-[var(--color-warning)]/5" : "border-[var(--color-border)] bg-[var(--color-surface)]"}`}>
+    <div className={`rounded-lg border p-3 ${item.is_highlight ? "border-[var(--color-warning)] bg-[color:color-mix(in_srgb,var(--color-warning)_5%,transparent)]" : "border-[var(--color-border)] bg-[var(--color-surface)]"}`}>
       <div className="flex items-center gap-2 text-[10px] text-[var(--color-muted)]">
         {item.is_pinned && <span>📌 Pinned</span>}
         {item.is_highlight && <span>✨ Highlight</span>}
