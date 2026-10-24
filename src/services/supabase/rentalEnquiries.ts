@@ -65,7 +65,7 @@ export async function submitRentalEnquiry(input: EnquiryInput): Promise<{ whatsa
 
   // Exact message format from the Prompt 11 spec.
   const lines = [
-    "Hello TournamentLive Team,",
+    "Hello Scorio Team,",
     "",
     "I would like to rent a tournament website.",
     "",
