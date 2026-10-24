@@ -25,7 +25,7 @@ export function TestimonialCard({ testimonial, index = 0 }: { testimonial: Testi
       </div>
       <p className="text-sm leading-relaxed text-[var(--color-text)]">"{testimonial.message}"</p>
       <div className="mt-5 flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-brand)]/10 font-semibold text-[var(--color-brand)]">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[color:color-mix(in_srgb,var(--color-brand)_10%,transparent)] font-semibold text-[var(--color-primary-ink)]">
           {testimonial.avatarInitial}
         </div>
         <div>

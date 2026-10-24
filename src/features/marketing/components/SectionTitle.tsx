@@ -20,11 +20,11 @@ export function SectionTitle({
       className={align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}
     >
       {eyebrow && (
-        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[var(--color-brand)]">
+        <p className="mb-3 font-display text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-primary-ink)]">
           {eyebrow}
         </p>
       )}
-      <h2 className="text-3xl font-semibold tracking-tight text-[var(--color-text)] sm:text-4xl">
+      <h2 className="font-display text-3xl font-bold tracking-tight text-[var(--color-heading)] sm:text-4xl">
         {title}
       </h2>
       {subtitle && <p className="mt-4 text-lg text-[var(--color-text-muted)]">{subtitle}</p>}

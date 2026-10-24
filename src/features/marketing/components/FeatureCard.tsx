@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import { MarketingIcon } from "./IconWrapper";
 
 export function FeatureCard({
   icon,
@@ -19,10 +20,10 @@ export function FeatureCard({
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.4) }}
       whileHover={{ y: -4 }}
-      className="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 transition-shadow hover:shadow-lg hover:shadow-[var(--color-brand)]/5"
+      className="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 transition-shadow hover:shadow-lg hover:shadow-[color:color-mix(in_srgb,var(--color-brand)_5%,transparent)]"
     >
-      <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--color-brand)]/10 text-xl text-[var(--color-brand)] transition-transform group-hover:scale-110">
-        {icon}
+      <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[color:color-mix(in_srgb,var(--color-brand)_10%,transparent)] text-xl text-[var(--color-primary-ink)] transition-transform group-hover:scale-110">
+        <MarketingIcon icon={icon} />
       </div>
       <h3 className="font-semibold text-[var(--color-text)]">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">{description}</p>

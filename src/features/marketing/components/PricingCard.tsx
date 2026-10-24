@@ -25,17 +25,17 @@ export function PricingCard({ plan, index = 0 }: { plan: PricingPlan; index?: nu
       transition={{ duration: 0.4, delay: Math.min(index * 0.06, 0.4) }}
       className={`relative flex flex-col rounded-2xl border p-6 ${
         plan.isPopular
-          ? "border-[var(--color-brand)] bg-[var(--color-brand)]/5 shadow-lg shadow-[var(--color-brand)]/10"
+          ? "border-[var(--color-brand)] bg-[color:color-mix(in_srgb,var(--color-brand)_5%,transparent)] shadow-lg shadow-[color:color-mix(in_srgb,var(--color-brand)_10%,transparent)]"
           : "border-[var(--color-border)] bg-[var(--color-surface)]"
       }`}
     >
       {plan.isPopular && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[var(--color-brand)] px-3 py-1 text-xs font-semibold text-white">
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[var(--color-brand)] px-3 py-1 text-xs font-semibold text-[var(--color-on-primary)]">
           Most popular
         </span>
       )}
       {plan.discountBadge && (
-        <span className="absolute -top-3 right-4 rounded-full bg-[var(--color-success)] px-2.5 py-1 text-xs font-semibold text-white">
+        <span className="absolute -top-3 right-4 rounded-full bg-[var(--color-success)] px-2.5 py-1 text-xs font-semibold text-[var(--color-on-success)]">
           {plan.discountBadge}
         </span>
       )}

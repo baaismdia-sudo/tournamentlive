@@ -11,10 +11,11 @@ interface ButtonProps {
   className?: string;
 }
 
+// Primary = Electric Volt fill with Stadium Carbon text (brand pairing).
 const VARIANTS = {
-  primary: "bg-[var(--color-brand)] text-white hover:opacity-90",
-  secondary: "bg-[var(--color-surface-alt)] text-[var(--color-text)] hover:bg-[var(--color-border)]",
-  ghost: "bg-transparent text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] border border-[var(--color-border)]",
+  primary: "bg-[var(--color-primary)] text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)]",
+  secondary: "bg-[var(--color-surface-secondary)] text-[var(--color-heading)] hover:bg-[var(--color-border)]",
+  ghost: "bg-transparent text-[var(--color-heading)] hover:bg-[var(--color-surface-secondary)] border border-[var(--color-border)]",
 };
 
 const SIZES = {
@@ -24,7 +25,7 @@ const SIZES = {
 };
 
 export function Button({ children, to, href, onClick, variant = "primary", size = "md", className = "" }: ButtonProps) {
-  const classes = `inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 ${VARIANTS[variant]} ${SIZES[size]} ${className}`;
+  const classes = `inline-flex items-center justify-center gap-2 rounded-lg font-display font-semibold tracking-tight transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 ${VARIANTS[variant]} ${SIZES[size]} ${className}`;
   if (to) return <Link to={to} className={classes}>{children}</Link>;
   if (href) return <a href={href} className={classes}>{children}</a>;
   return <button onClick={onClick} className={classes}>{children}</button>;

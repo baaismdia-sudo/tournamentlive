@@ -19,7 +19,7 @@ function useCountUp(target: number, durationMs = 1400, start: boolean) {
   return value;
 }
 
-export function StatsCounter({ value, suffix = "", label }: { value: number; suffix?: string; label: string }) {
+export function StatsCounter({ value, suffix = "", label, align = "center" }: { value: number; suffix?: string; label: string; align?: "center" | "left" }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const animated = useCountUp(value, 1400, inView);
@@ -30,10 +30,12 @@ export function StatsCounter({ value, suffix = "", label }: { value: number; suf
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="text-center"
+      className={align === "left" ? "text-left" : "text-center"}
     >
-      <p className="text-3xl font-semibold text-[var(--color-text)] sm:text-4xl">
-        {animated.toLocaleString()}
+      <p className="score text-3xl font-bold text-[var(--color-heading)] sm:text-4xl">
+        {value >= 10000
+          ? new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 0 }).format(animated)
+          : animated.toLocaleString()}
         {suffix}
       </p>
       <p className="mt-1 text-sm text-[var(--color-text-muted)]">{label}</p>

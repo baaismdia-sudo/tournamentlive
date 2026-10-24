@@ -18,7 +18,7 @@ export function FloatingCard({
         opacity: { duration: 0.6, delay },
         y: { duration: 5, repeat: Infinity, ease: "easeInOut", delay },
       }}
-      className={`rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/90 p-4 shadow-xl backdrop-blur ${className}`}
+      className={`rounded-xl border border-[var(--color-border)] bg-[color:color-mix(in_srgb,var(--color-surface)_90%,transparent)] p-4 shadow-xl backdrop-blur ${className}`}
     >
       {children}
     </motion.div>

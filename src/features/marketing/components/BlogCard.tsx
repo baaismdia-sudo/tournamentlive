@@ -21,12 +21,12 @@ export function BlogCard({ post, index = 0 }: { post: BlogPost; index?: number }
         to={`/blog/${post.slug}`}
         className="group block overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] transition-shadow hover:shadow-lg"
       >
-        <div className="flex h-40 items-center justify-center bg-gradient-to-br from-[var(--color-brand)]/10 to-[var(--color-accent)]/10 text-5xl">
+        <div className="flex h-40 items-center justify-center bg-gradient-to-br from-[color:color-mix(in_srgb,var(--color-brand)_10%,transparent)] to-[color:color-mix(in_srgb,var(--color-accent)_10%,transparent)] text-5xl">
           {post.imageEmoji}
         </div>
         <div className="p-5">
-          <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-brand)]">{post.category}</p>
-          <h3 className="mt-2 font-semibold text-[var(--color-text)] transition-colors group-hover:text-[var(--color-brand)]">
+          <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-primary-ink)]">{post.category}</p>
+          <h3 className="mt-2 font-semibold text-[var(--color-text)] transition-colors group-hover:text-[var(--color-primary-ink)]">
             {post.title}
           </h3>
           <p className="mt-3 text-xs text-[var(--color-text-muted)]">{post.date}</p>
