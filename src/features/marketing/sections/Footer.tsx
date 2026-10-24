@@ -84,7 +84,7 @@ export function Footer() {
     src="/brand/scorio-horizontal-white.svg"
     alt=""
     aria-hidden="true"
-    className="h-auto w-[70vw] select-none opacity-[0.06] sm:w-[55vw]"
+    className="h-auto w-[90vw] select-none opacity-[0.10] sm:w-[75vw]"
   />
 </div>
       </footer>
