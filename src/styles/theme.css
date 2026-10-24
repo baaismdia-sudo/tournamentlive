@@ -1,94 +1,117 @@
 /*
- * TournamentLive Global Design System
- * ONE canonical token set for every SaaS-platform surface (landing, auth,
- * every dashboard, settings, CMS, everything except organizer-customized
- * public tournament sites, which use their own per-tournament theme tokens
- * from website_themes — that separation is intentional and must stay).
+ * Scorio Global Design System  ("Live Scores & Tournament Management")
  *
- * Legacy aliases (--color-brand, --color-surface-alt, --color-text-muted,
- * --color-danger) are kept mapped onto the canonical tokens below so the
- * ~140 components already built in Prompts 3-4 don't need a mechanical
- * find-and-replace pass to stay compliant — they inherit the new palette
- * automatically. New components should prefer the canonical names directly.
+ * ONE canonical token set for every SaaS-platform surface (landing, auth,
+ * every dashboard, settings, CMS). Organizer-customized public tournament
+ * sites use their own per-tournament theme tokens from website_themes —
+ * that separation is intentional and must stay.
+ *
+ * Brand palette (see brand guidelines):
+ *   Electric Volt  #00E575  - primary action / energy
+ *   Stadium Carbon #0A0F1D  - dark canvas and text on Volt
+ *   Match Point Blaze #FF4500 - live alerts, wickets, goals
+ *   Pure White     #FFFFFF
+ *
+ * DARK IS THE DEFAULT (the brand's recommended mode). Light mode keeps Volt
+ * as the *fill* colour (buttons, chips, indicators) with Carbon text on it,
+ * but uses a deeper green (--color-primary-ink) wherever Volt would be used
+ * as *text/link colour* on a white surface — pure Volt on white is ~1.4:1
+ * contrast and unreadable.
+ *
+ * Token roles:
+ *   --color-primary       fill colour (buttons, active pills, indicators)
+ *   --color-on-primary    text/icon colour that sits ON a primary fill
+ *   --color-primary-ink   primary used as TEXT / link colour (readable on surface)
+ *   --color-on-success    text on a success fill
+ *
+ * Legacy aliases (--color-brand, --color-surface-alt, --color-text-muted)
+ * map onto the canonical tokens so older components inherit the palette.
  */
 
 :root,
-[data-theme="light"] {
-  /* Canonical brand tokens */
-  --color-primary: #4F46E5;
-  --color-primary-hover: #4338CA;
-  --color-secondary: #7C3AED;
-  --color-secondary-hover: #6D28D9;
-  --color-accent: #06B6D4;
+[data-theme="dark"] {
+  --color-primary: #00E575;
+  --color-primary-hover: #33EC93;
+  --color-on-primary: #0A0F1D;
+  --color-primary-ink: #00E575;
+  --color-secondary: #FF4500;
+  --color-secondary-hover: #FF6A33;
+  --color-accent: #4DA3FF;
 
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-danger: #EF4444;
-  --color-info: #3B82F6;
+  --color-success: #00E575;
+  --color-on-success: #0A0F1D;
+  --color-warning: #FFB020;
+  --color-danger: #FF4500;
+  --color-info: #4DA3FF;
 
-  --color-background: #F8FAFC;
-  --color-surface: #FFFFFF;
-  --color-surface-secondary: #F1F5F9;
-  --color-border: #E2E8F0;
-  --color-heading: #0F172A;
-  --color-text: #475569;
-  --color-muted: #64748B;
+  --color-background: #0A0F1D;
+  --color-surface: #0F1626;
+  --color-surface-secondary: #161E33;
+  --color-border: #232D47;
+  --color-heading: #FFFFFF;
+  --color-text: #C3CBDB;
+  --color-muted: #8892A9;
 
-  --gradient-brand: linear-gradient(135deg, #4F46E5, #7C3AED);
+  --gradient-brand: #00E575; /* flat — brand rule: no gradients outside the palette */
 
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
-  --radius-base: 18px;
-  --transition-base: 250ms;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.55);
+  --shadow-glow: 0 0 0 1px rgba(0, 229, 117, 0.35), 0 8px 32px rgba(0, 229, 117, 0.14);
+  --radius-base: 14px;
+  --transition-base: 200ms;
 
-  /* Chart palette — use only these five, in this order, across every chart */
-  --chart-indigo: #4F46E5;
-  --chart-violet: #7C3AED;
-  --chart-cyan: #06B6D4;
-  --chart-emerald: #10B981;
-  --chart-amber: #F59E0B;
+  /* Chart palette — use only these five, in this order, across every chart.
+   * (Names kept from the previous system so existing charts need no edits.) */
+  --chart-indigo: #00E575;   /* Volt */
+  --chart-violet: #FF4500;   /* Blaze */
+  --chart-cyan: #4DA3FF;     /* Sky */
+  --chart-emerald: #FFD23F;  /* Gold */
+  --chart-amber: #8EA2C8;    /* Steel */
 
-  /* Legacy aliases -> canonical (kept for backward compatibility) */
   --color-brand: var(--color-primary);
   --color-surface-alt: var(--color-surface-secondary);
   --color-text-muted: var(--color-muted);
+  color-scheme: dark;
 }
 
-[data-theme="dark"] {
-  --color-primary: #6366F1;
-  --color-primary-hover: #818CF8;
-  --color-secondary: #8B5CF6;
-  --color-secondary-hover: #A78BFA;
-  --color-accent: #22D3EE;
+[data-theme="light"] {
+  --color-primary: #00E575;
+  --color-primary-hover: #00CC68;
+  --color-on-primary: #0A0F1D;
+  --color-primary-ink: #007A3A;
+  --color-secondary: #E63E00;
+  --color-secondary-hover: #C73500;
+  --color-accent: #1D7FE0;
 
-  --color-success: #34D399;
-  --color-warning: #FBBF24;
-  --color-danger: #F87171;
-  --color-info: #60A5FA;
+  --color-success: #008A44;
+  --color-on-success: #FFFFFF;
+  --color-warning: #C77700;
+  --color-danger: #D93A00;
+  --color-info: #1D7FE0;
 
-  --color-background: #020617;
-  --color-surface: #0F172A;
-  --color-surface-secondary: #1E293B;
-  --color-border: #334155;
-  --color-heading: #F8FAFC;
-  --color-text: #CBD5E1;
-  --color-muted: #94A3B8;
+  --color-background: #F4F6FA;
+  --color-surface: #FFFFFF;
+  --color-surface-secondary: #EDF0F6;
+  --color-border: #DCE1EB;
+  --color-heading: #0A0F1D;
+  --color-text: #3A4358;
+  --color-muted: #5B6579;
 
-  --gradient-brand: linear-gradient(135deg, #4F46E5, #7C3AED);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --gradient-brand: #00E575; /* flat — brand rule: no gradients outside the palette */
 
-  --chart-indigo: #818CF8;
-  --chart-violet: #A78BFA;
-  --chart-cyan: #22D3EE;
-  --chart-emerald: #34D399;
-  --chart-amber: #FBBF24;
+  --shadow-sm: 0 1px 2px rgba(10, 15, 29, 0.05);
+  --shadow-md: 0 4px 16px rgba(10, 15, 29, 0.08);
+  --shadow-lg: 0 12px 32px rgba(10, 15, 29, 0.12);
+  --shadow-glow: 0 0 0 1px rgba(0, 138, 68, 0.3), 0 8px 24px rgba(0, 229, 117, 0.18);
 
-  --color-brand: var(--color-primary);
-  --color-surface-alt: var(--color-surface-secondary);
-  --color-text-muted: var(--color-muted);
+  --chart-indigo: #00B35A;
+  --chart-violet: #E63E00;
+  --chart-cyan: #1D7FE0;
+  --chart-emerald: #C79A00;
+  --chart-amber: #5B6579;
+
+  color-scheme: light;
 }
 
 * {
@@ -100,9 +123,22 @@ body {
   background-color: var(--color-background);
 }
 
+/* Scores, clocks, overs, run rates: tabular monospaced numerals so digits
+ * never jitter as a live score ticks over. Use .score or Tailwind font-mono. */
+.score {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.85); }
 }
 
 @media (prefers-reduced-motion: reduce) {
