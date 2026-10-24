@@ -65,14 +65,14 @@ export default function TwoFactorAuthPage() {
               onChange={(e) => handleChange(i, e.target.value)}
               inputMode="numeric"
               maxLength={1}
-              className="h-14 w-12 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-center text-xl font-semibold outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+              className="h-14 w-12 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-center text-xl font-semibold outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[color:color-mix(in_srgb,var(--color-brand)_20%,transparent)]"
             />
           ))}
         </div>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] transition hover:opacity-90 disabled:opacity-60"
         >
           {isSubmitting && <ButtonSpinner />}
           Verify

@@ -116,7 +116,7 @@ export default function LoginPage() {
               autoComplete="email"
               {...register("email")}
               aria-invalid={Boolean(errors.email)}
-              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[color:color-mix(in_srgb,var(--color-brand)_20%,transparent)]"
             />
             {errors.email && <p role="alert" className="mt-1 text-sm text-[var(--color-danger)]">{errors.email.message}</p>}
           </div>
@@ -137,7 +137,7 @@ export default function LoginPage() {
               <input type="checkbox" {...register("rememberMe")} defaultChecked className="rounded" />
               Remember me
             </label>
-            <Link to="/forgot-password" className="font-medium text-[var(--color-brand)] hover:underline">
+            <Link to="/forgot-password" className="font-medium text-[var(--color-primary-ink)] hover:underline">
               Forgot password?
             </Link>
           </div>
@@ -145,7 +145,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] transition hover:opacity-90 disabled:opacity-60"
           >
             {isSubmitting && <ButtonSpinner />}
             Log in
@@ -154,7 +154,7 @@ export default function LoginPage() {
 
         <p className="text-center text-sm text-[var(--color-text-muted)]">
           Don't have an account?{" "}
-          <Link to="/register" className="font-medium text-[var(--color-brand)] hover:underline">
+          <Link to="/register" className="font-medium text-[var(--color-primary-ink)] hover:underline">
             Sign up
           </Link>
         </p>

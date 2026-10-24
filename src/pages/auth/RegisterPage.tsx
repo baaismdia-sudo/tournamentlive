@@ -138,7 +138,7 @@ export default function RegisterPage() {
             <input
               value={form.name}
               onChange={(e) => update("name", e.target.value)}
-              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[color:color-mix(in_srgb,var(--color-brand)_20%,transparent)]"
             />
             <InlineFieldError message={errors.name} />
           </div>
@@ -150,7 +150,7 @@ export default function RegisterPage() {
               onChange={(e) => update("username", e.target.value)}
               onBlur={checkUsername}
               placeholder="e.g. kodungallur_organizer"
-              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[color:color-mix(in_srgb,var(--color-brand)_20%,transparent)]"
             />
             <InlineFieldError message={errors.username} />
           </div>
@@ -161,7 +161,7 @@ export default function RegisterPage() {
               type="email"
               value={form.email}
               onChange={(e) => update("email", e.target.value)}
-              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[color:color-mix(in_srgb,var(--color-brand)_20%,transparent)]"
             />
             <InlineFieldError message={errors.email} />
           </div>
@@ -177,7 +177,7 @@ export default function RegisterPage() {
           <button
             type="button"
             onClick={() => update("password", generateStrongPassword())}
-            className="text-xs font-medium text-[var(--color-brand)] hover:underline"
+            className="text-xs font-medium text-[var(--color-primary-ink)] hover:underline"
           >
             Generate a strong password
           </button>
@@ -199,9 +199,9 @@ export default function RegisterPage() {
             />
             <span>
               I agree to the{" "}
-              <Link to="/terms" className="text-[var(--color-brand)] hover:underline">Terms of Service</Link>{" "}
+              <Link to="/terms" className="text-[var(--color-primary-ink)] hover:underline">Terms of Service</Link>{" "}
               and{" "}
-              <Link to="/privacy" className="text-[var(--color-brand)] hover:underline">Privacy Policy</Link>
+              <Link to="/privacy" className="text-[var(--color-primary-ink)] hover:underline">Privacy Policy</Link>
             </span>
           </label>
           <InlineFieldError message={errors.agreedToTerms} />
@@ -219,7 +219,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={isSubmitting || !isValid}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isSubmitting && <ButtonSpinner />}
             Create account
@@ -228,7 +228,7 @@ export default function RegisterPage() {
 
         <p className="text-center text-sm text-[var(--color-text-muted)]">
           Already have an account?{" "}
-          <Link to="/login" className="font-medium text-[var(--color-brand)] hover:underline">
+          <Link to="/login" className="font-medium text-[var(--color-primary-ink)] hover:underline">
             Log in
           </Link>
         </p>

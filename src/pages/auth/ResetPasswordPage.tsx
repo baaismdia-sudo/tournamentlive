@@ -64,7 +64,7 @@ export default function ResetPasswordPage() {
           title="This reset link is invalid or expired"
           message="Password reset links expire after a short time for your security. Request a new one to continue."
         />
-        <a href="/forgot-password" className="mt-4 block text-center text-sm font-medium text-[var(--color-brand)] hover:underline">
+        <a href="/forgot-password" className="mt-4 block text-center text-sm font-medium text-[var(--color-primary-ink)] hover:underline">
           Request a new link
         </a>
       </AuthLayout>
@@ -89,7 +89,7 @@ export default function ResetPasswordPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] transition hover:opacity-90 disabled:opacity-60"
           >
             {isSubmitting && <ButtonSpinner />}
             Change password

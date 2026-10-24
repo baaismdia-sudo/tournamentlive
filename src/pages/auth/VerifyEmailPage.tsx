@@ -53,7 +53,7 @@ export default function VerifyEmailPage() {
   return (
     <AuthLayout title="Verify your email" subtitle="Almost there!" seoTitle="Verify Email">
       <div className="space-y-5 text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-brand)]/10 text-3xl">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[color:color-mix(in_srgb,var(--color-brand)_10%,transparent)] text-3xl">
           ✉️
         </div>
         <p className="text-sm text-[var(--color-text-muted)]">
@@ -62,7 +62,7 @@ export default function VerifyEmailPage() {
           Click the link to activate your account. This page updates automatically once you're verified.
         </p>
 
-        {message && <p className="text-sm text-[var(--color-brand)]">{message}</p>}
+        {message && <p className="text-sm text-[var(--color-primary-ink)]">{message}</p>}
 
         <button
           onClick={handleResend}

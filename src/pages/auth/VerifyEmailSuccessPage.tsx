@@ -13,7 +13,7 @@ export default function VerifyEmailSuccessPage() {
         </p>
         <Link
           to="/login"
-          className="block w-full rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-white transition hover:opacity-90"
+          className="block w-full rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] transition hover:opacity-90"
         >
           Continue to login
         </Link>

@@ -35,7 +35,7 @@ export default function ForgotPasswordPage() {
       {sent ? (
         <div className="space-y-4">
           <SuccessBanner message={`If an account exists for ${email}, a reset link is on its way.`} />
-          <Link to="/login" className="block text-center text-sm font-medium text-[var(--color-brand)] hover:underline">
+          <Link to="/login" className="block text-center text-sm font-medium text-[var(--color-primary-ink)] hover:underline">
             Back to login
           </Link>
         </div>
@@ -53,13 +53,13 @@ export default function ForgotPasswordPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="email"
-              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[color:color-mix(in_srgb,var(--color-brand)_20%,transparent)]"
             />
           </div>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] transition hover:opacity-90 disabled:opacity-60"
           >
             {isSubmitting && <ButtonSpinner />}
             Send reset link
