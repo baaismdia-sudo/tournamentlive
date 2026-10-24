@@ -61,7 +61,7 @@ export default function PublicSiteLayout() {
         imageUrl={seo?.og_image_url ?? tournament.cover_image_url ?? undefined}
       />
 
-      <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-surface)]/90 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[color:color-mix(in_srgb,var(--color-surface)_90%,transparent)] backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
           <Link to={`/tournament/${tournament.slug}`} className="flex items-center gap-2.5">
             {tournament.logo_url ? (
@@ -78,7 +78,7 @@ export default function PublicSiteLayout() {
                 key={item.to}
                 to={item.to}
                 end={item.to === `/tournament/${tournament.slug}`}
-                className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? "text-[var(--color-primary)]" : "text-[var(--color-text)] hover:text-[var(--color-primary)]"}`}
+                className={({ isActive }) => `text-sm font-medium transition-colors ${isActive ? "text-[var(--color-primary-ink)]" : "text-[var(--color-text)] hover:text-[var(--color-primary-ink)]"}`}
               >
                 {item.label}
               </NavLink>
@@ -120,13 +120,13 @@ export default function PublicSiteLayout() {
               {siteSettings?.tagline && <p className="text-sm text-[var(--color-muted)]">{siteSettings.tagline}</p>}
             </div>
             <div className="flex gap-4 text-sm text-[var(--color-muted)]">
-              <Link to={`/tournament/${tournament.slug}/about`} className="hover:text-[var(--color-primary)]">About</Link>
-              <Link to={`/tournament/${tournament.slug}/contact`} className="hover:text-[var(--color-primary)]">Contact</Link>
-              <Link to={`/tournament/${tournament.slug}/privacy`} className="hover:text-[var(--color-primary)]">Privacy</Link>
-              <Link to={`/tournament/${tournament.slug}/terms`} className="hover:text-[var(--color-primary)]">Terms</Link>
+              <Link to={`/tournament/${tournament.slug}/about`} className="hover:text-[var(--color-primary-ink)]">About</Link>
+              <Link to={`/tournament/${tournament.slug}/contact`} className="hover:text-[var(--color-primary-ink)]">Contact</Link>
+              <Link to={`/tournament/${tournament.slug}/privacy`} className="hover:text-[var(--color-primary-ink)]">Privacy</Link>
+              <Link to={`/tournament/${tournament.slug}/terms`} className="hover:text-[var(--color-primary-ink)]">Terms</Link>
             </div>
           </div>
-          <p className="mt-6 text-xs text-[var(--color-muted)]">{siteSettings?.footer_text ?? `© ${new Date().getFullYear()} ${tournament.name}. Powered by TournamentLive.`}</p>
+          <p className="mt-6 text-xs text-[var(--color-muted)]">{siteSettings?.footer_text ?? `© ${new Date().getFullYear()} ${tournament.name}. Powered by Scorio.`}</p>
         </div>
       </footer>
 

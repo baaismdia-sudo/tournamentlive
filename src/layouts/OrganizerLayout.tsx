@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BrandLogo } from "../components/brand/BrandLogo";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { Bell, Sun, Moon, Menu, X, ChevronRight, Plus } from "lucide-react";
 import { ORGANIZER_SIDEBAR_GROUPS } from "../features/organizer/data/sidebar";
@@ -35,7 +36,7 @@ export default function OrganizerLayout() {
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-[var(--color-border)] bg-[var(--color-surface)]/90 px-4 py-3 backdrop-blur sm:px-6">
+        <header className="sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-[var(--color-border)] bg-[color:color-mix(in_srgb,var(--color-surface)_90%,transparent)] px-4 py-3 backdrop-blur sm:px-6">
           <div className="flex items-center gap-3">
             <button onClick={() => setMobileOpen(true)} aria-label="Open menu" className="rounded-lg p-2 hover:bg-[var(--color-surface-secondary)] lg:hidden">
               <Menu size={20} />
@@ -54,7 +55,7 @@ export default function OrganizerLayout() {
           <GlobalSearch />
 
           <div className="flex items-center gap-2">
-            <Link to="/dashboard/tournaments/new" className="hidden items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] sm:flex">
+            <Link to="/dashboard/tournaments/new" className="hidden items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] sm:flex">
               <Plus size={16} /> New tournament
             </Link>
             <button onClick={toggleTheme} aria-label="Toggle theme" className="rounded-lg p-2 text-[var(--color-muted)] hover:bg-[var(--color-surface-secondary)]">
@@ -65,7 +66,7 @@ export default function OrganizerLayout() {
               <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-[var(--color-danger)]" />
             </button>
             <Link to="/account/profile" className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-[var(--color-surface-secondary)]">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-primary)]/10 text-sm font-semibold text-[var(--color-primary)]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-sm font-semibold text-[var(--color-primary-ink)]">
                 {profile?.full_name?.charAt(0).toUpperCase() ?? "O"}
               </div>
             </Link>
@@ -83,9 +84,8 @@ export default function OrganizerLayout() {
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <>
-      <div className="flex items-center gap-2 border-b border-[var(--color-border)] px-5 py-5">
-        <img src="/branding/scorio-icon.png" alt="" className="h-8 w-8 rounded-lg" />
-        <span className="font-heading text-lg font-bold text-[var(--color-heading)]">Scorio</span>
+      <div className="flex items-center border-b border-[var(--color-border)] px-5 py-5">
+        <BrandLogo height={28} />
       </div>
       <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-5">
         {ORGANIZER_SIDEBAR_GROUPS.map((group) => (
@@ -100,7 +100,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
                   onClick={onNavigate}
                   className={({ isActive }) =>
                     `flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                      isActive ? "bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "text-[var(--color-text)] hover:bg-[var(--color-surface-secondary)]"
+                      isActive ? "bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary-ink)]" : "text-[var(--color-text)] hover:bg-[var(--color-surface-secondary)]"
                     }`
                   }
                 >

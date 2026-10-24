@@ -1,4 +1,5 @@
 import { Outlet, Link } from "react-router-dom";
+import { BrandLogo } from "../components/brand/BrandLogo";
 import { Sun, Moon } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { useTheme } from "../contexts/ThemeContext";
@@ -15,9 +16,9 @@ export function RoleWorkspaceLayout({ label }: { label: string }) {
   return (
     <div className="min-h-screen bg-[var(--color-background)]">
       <header className="flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 sm:px-6">
-        <Link to="/" className="flex items-center gap-2 font-heading font-semibold text-[var(--color-heading)]">
-          <span className="inline-block h-7 w-7 rounded-lg" style={{ background: "var(--gradient-brand)" }} />
-          Scorio <span className="text-[var(--color-muted)]">· {label}</span>
+        <Link to="/" aria-label="Scorio home" className="flex items-center gap-3 font-display font-semibold text-[var(--color-heading)]">
+          <BrandLogo height={26} />
+          <span className="text-[var(--color-muted)]">· {label}</span>
         </Link>
         <div className="flex items-center gap-3">
           <span className="hidden text-sm text-[var(--color-muted)] sm:inline">{profile?.full_name}</span>
