@@ -87,4 +87,6 @@ export function Footer() {
     className="h-auto w-[70vw] select-none opacity-[0.06] sm:w-[55vw]"
   />
 </div>
-      
+      </footer>
+  );
+}
