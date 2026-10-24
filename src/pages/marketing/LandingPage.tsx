@@ -38,7 +38,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[var(--color-surface)]">
       <Seo
-        title="TournamentLive — Rent a tournament website in minutes"
+        title="Scorio — Rent a tournament website in minutes"
         description="Create a fully branded tournament website with live scores, fixtures, standings, and sponsors — no code required. Rent by the day, week, or month."
         path="/"
       />
