@@ -86,7 +86,7 @@ export default function AccountSettingsPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "tournamentlive-account-data.json";
+    a.download = "scorio-account-data.json";
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -110,7 +110,7 @@ export default function AccountSettingsPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-10 p-6">
-      <title>Account Settings · TournamentLive</title>
+      <title>Account Settings · Scorio</title>
       <div>
         <h1 className="text-xl font-semibold text-[var(--color-text)]">Account settings</h1>
         <p className="text-sm text-[var(--color-text-muted)]">Security, sessions, and data controls.</p>
@@ -133,7 +133,7 @@ export default function AccountSettingsPage() {
           <button
             type="submit"
             disabled={isSavingPassword}
-            className="flex items-center gap-2 rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 disabled:opacity-60"
+            className="flex items-center gap-2 rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:opacity-90 disabled:opacity-60"
           >
             {isSavingPassword && <ButtonSpinner />}
             Update
@@ -153,13 +153,13 @@ export default function AccountSettingsPage() {
               type="email"
               value={newEmail}
               onChange={(e) => setNewEmail(e.target.value)}
-              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[color:color-mix(in_srgb,var(--color-brand)_20%,transparent)]"
             />
           </div>
           <button
             type="submit"
             disabled={isSavingEmail}
-            className="flex items-center gap-2 rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-white hover:opacity-90 disabled:opacity-60"
+            className="flex items-center gap-2 rounded-lg bg-[var(--color-brand)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:opacity-90 disabled:opacity-60"
           >
             {isSavingEmail && <ButtonSpinner />}
             Update
@@ -196,7 +196,7 @@ export default function AccountSettingsPage() {
       </section>
 
       {/* Delete account */}
-      <section className="space-y-3 rounded-xl border border-[var(--color-danger)]/40 p-5">
+      <section className="space-y-3 rounded-xl border border-[color:color-mix(in_srgb,var(--color-danger)_40%,transparent)] p-5">
         <h2 className="font-medium text-[var(--color-danger)]">Delete account</h2>
         <p className="text-sm text-[var(--color-text-muted)]">
           This permanently deactivates your account and all associated tournament sites. Type{" "}
