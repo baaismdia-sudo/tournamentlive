@@ -34,7 +34,7 @@ export function QrCodeButton({ value, label }: { value: string; label: string })
             </div>
             {dataUrl && <img src={dataUrl} alt={`QR code for ${label}`} className="h-56 w-56 rounded-lg border border-[var(--color-border)]" />}
             <p className="max-w-56 truncate text-center text-xs text-[var(--color-muted)]">{value}</p>
-            <button onClick={download} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)]">
+            <button onClick={download} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)]">
               <Download size={14} /> Download PNG
             </button>
           </div>
