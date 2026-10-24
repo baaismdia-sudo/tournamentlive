@@ -13,9 +13,9 @@ export function WizardStepper({ steps, currentStep }: { steps: string[]; current
               <div
                 className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold transition-colors ${
                   isDone
-                    ? "bg-[var(--color-success)] text-white"
+                    ? "bg-[var(--color-success)] text-[var(--color-on-success)]"
                     : isActive
-                    ? "bg-[var(--color-primary)] text-white"
+                    ? "bg-[var(--color-primary)] text-[var(--color-on-primary)]"
                     : "bg-[var(--color-surface-secondary)] text-[var(--color-muted)]"
                 }`}
               >
