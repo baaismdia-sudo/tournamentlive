@@ -151,17 +151,17 @@ export default function MatchesPage() {
   const remove = async (m: Match) => { await supabase.from("matches").delete().eq("id", m.id); load(); };
 
   const statusColor: Record<string, string> = {
-    scheduled: "bg-[var(--color-info)]/10 text-[var(--color-info)]",
-    warm_up: "bg-[var(--color-info)]/10 text-[var(--color-info)]",
-    live: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-    half_time: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-    break: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-    extra_time: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-    penalty_shootout: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-    completed: "bg-[var(--color-muted)]/10 text-[var(--color-muted)]",
-    cancelled: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
-    abandoned: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
-    postponed: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
+    scheduled: "bg-[color:color-mix(in_srgb,var(--color-info)_10%,transparent)] text-[var(--color-info)]",
+    warm_up: "bg-[color:color-mix(in_srgb,var(--color-info)_10%,transparent)] text-[var(--color-info)]",
+    live: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+    half_time: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+    break: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+    extra_time: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+    penalty_shootout: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+    completed: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]",
+    cancelled: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
+    abandoned: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
+    postponed: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
   };
 
   const columns: Column<Match>[] = [
@@ -179,7 +179,7 @@ export default function MatchesPage() {
 
   return (
     <>
-      <title>Matches · TournamentLive</title>
+      <title>Matches · Scorio</title>
       <div className="flex flex-wrap items-center justify-between gap-3 px-6 pt-6">
         <TournamentSelector tournaments={tournaments} selectedId={selectedId} onChange={(id) => { setPage(1); setSelectedId(id); }} />
         <ExportMenu rows={rows.map((m) => ({ home: teamName(m.home_team_id), away: teamName(m.away_team_id), venue: m.venue, scheduled_at: m.scheduled_at, status: m.status, home_score: m.home_score, away_score: m.away_score }))} filenameBase="matches-export" pdfTitle="Matches" />
@@ -235,7 +235,7 @@ export default function MatchesPage() {
             </div>
           )}
 
-          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSaving && <ButtonSpinner />}
             {editing ? "Save changes" : "Schedule match"}
           </button>

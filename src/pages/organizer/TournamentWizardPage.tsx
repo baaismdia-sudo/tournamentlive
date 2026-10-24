@@ -99,7 +99,7 @@ export default function TournamentWizardPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-8 p-6">
-      <title>Create Tournament · TournamentLive</title>
+      <title>Create Tournament · Scorio</title>
       <div>
         <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Create a tournament</h1>
         <p className="text-sm text-[var(--color-muted)]">Set everything up in a few steps — you can edit any of this later.</p>
@@ -134,7 +134,7 @@ export default function TournamentWizardPage() {
                   key={f.value}
                   onClick={() => update("format", f.value as CreateTournamentPayload["format"])}
                   className={`rounded-lg border p-4 text-left text-sm font-medium transition ${
-                    form.format === f.value ? "border-[var(--color-primary)] bg-[var(--color-primary)]/5 text-[var(--color-primary)]" : "border-[var(--color-border)] text-[var(--color-text)]"
+                    form.format === f.value ? "border-[var(--color-primary)] bg-[color:color-mix(in_srgb,var(--color-primary)_5%,transparent)] text-[var(--color-primary-ink)]" : "border-[var(--color-border)] text-[var(--color-text)]"
                   }`}
                 >
                   {f.label}
@@ -240,14 +240,14 @@ export default function TournamentWizardPage() {
           Back
         </button>
         {step < STEPS.length ? (
-          <button onClick={next} className="rounded-lg bg-[var(--color-primary)] px-5 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)]">
+          <button onClick={next} className="rounded-lg bg-[var(--color-primary)] px-5 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)]">
             Continue
           </button>
         ) : (
           <button
             onClick={handlePublish}
             disabled={isSaving}
-            className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-5 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60"
+            className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-5 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60"
           >
             {isSaving && <ButtonSpinner />}
             Create tournament

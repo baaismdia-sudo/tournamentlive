@@ -87,7 +87,7 @@ function StaffAssignmentsPanel({ tournamentId }: { tournamentId: string }) {
     <section className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
       <h2 className="font-heading text-sm font-semibold text-[var(--color-heading)]">Assigned staff</h2>
       <p className="mt-1 text-xs text-[var(--color-muted)]">
-        Invite a manager, scorekeeper, or commentator by the email address of their existing TournamentLive account.
+        Invite a manager, scorekeeper, or commentator by the email address of their existing Scorio account.
         They must sign up first — inviting them here links their account to your business and gives them access to
         this tournament.
       </p>
@@ -105,7 +105,7 @@ function StaffAssignmentsPanel({ tournamentId }: { tournamentId: string }) {
           <option value="scorekeeper">Scorekeeper</option>
           <option value="commentator">Commentator</option>
         </select>
-        <button onClick={invite} disabled={isSaving || !email.trim()} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+        <button onClick={invite} disabled={isSaving || !email.trim()} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
           <UserPlus size={14} /> Invite
         </button>
       </div>
@@ -150,7 +150,7 @@ export default function TournamentDetailPage() {
 
   return (
     <div className="space-y-6 p-6">
-      <title>{`${tournament.name} · TournamentLive`}</title>
+      <title>{`${tournament.name} · Scorio`}</title>
       <div className="flex items-center gap-4">
         <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl bg-[var(--color-surface-secondary)]">
           {tournament.logo_url ? <img src={tournament.logo_url} alt="" className="h-full w-full object-cover" /> : "🏆"}
@@ -165,7 +165,7 @@ export default function TournamentDetailPage() {
 
       <div className="flex flex-wrap items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-secondary)] px-3 py-2.5">
         <span className="text-xs font-medium text-[var(--color-muted)]">Public Website</span>
-        <a href={getTournamentUrl(tournament.slug)} target="_blank" rel="noreferrer" className="truncate text-sm text-[var(--color-primary)] hover:underline">
+        <a href={getTournamentUrl(tournament.slug)} target="_blank" rel="noreferrer" className="truncate text-sm text-[var(--color-primary-ink)] hover:underline">
           {getTournamentUrl(tournament.slug)}
         </a>
         <div className="ml-auto flex items-center gap-2">
@@ -188,7 +188,7 @@ export default function TournamentDetailPage() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {QUICK_LINKS.map((link) => (
           <Link key={link.label} to={link.to} className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-4 text-center transition-shadow hover:shadow-[var(--shadow-md)]">
-            <link.icon size={18} className="mx-auto mb-2 text-[var(--color-primary)]" />
+            <link.icon size={18} className="mx-auto mb-2 text-[var(--color-primary-ink)]" />
             <p className="text-sm font-medium text-[var(--color-heading)]">{link.label}</p>
           </Link>
         ))}

@@ -79,7 +79,7 @@ export default function OfficialsPage() {
 
   return (
     <>
-      <title>Officials · TournamentLive</title>
+      <title>Officials · Scorio</title>
       <AdminDataTable title="Officials" description="Referees, commentators, scorekeepers, and volunteers you can assign to matches." columns={columns} rows={rows} isLoading={isLoading} error={error} search="" onSearchChange={() => {}} onCreate={openCreate} onEdit={openEdit} onDelete={remove} page={1} totalPages={1} onPageChange={() => {}} emptyLabel="No officials added yet" />
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title={editing ? "Edit official" : "New official"}>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -90,7 +90,7 @@ export default function OfficialsPage() {
           <TextField label="Certification" value={form.certification} onChange={(v) => setForm((f) => ({ ...f, certification: v }))} />
           <TextField label="Years of experience" type="number" value={form.experience_years} onChange={(v) => setForm((f) => ({ ...f, experience_years: v }))} />
           <TextAreaField label="Availability notes" value={form.availability_notes} onChange={(v) => setForm((f) => ({ ...f, availability_notes: v }))} />
-          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSaving && <ButtonSpinner />}
             {editing ? "Save changes" : "Add official"}
           </button>

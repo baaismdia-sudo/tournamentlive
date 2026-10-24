@@ -87,7 +87,7 @@ export default function AdvancedBrandingPage() {
 
   return (
     <div className="grid grid-cols-1 gap-6 p-6 lg:grid-cols-2">
-      <title>Advanced Branding · TournamentLive</title>
+      <title>Advanced Branding · Scorio</title>
       <div className="space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
@@ -99,7 +99,7 @@ export default function AdvancedBrandingPage() {
 
         <div className="flex flex-wrap gap-1 border-b border-[var(--color-border)]">
           {(["colors", "typography", "header", "footer", "css"] as const).map((t) => (
-            <button key={t} onClick={() => setTab(t)} className={`border-b-2 px-3 py-2 text-sm font-medium capitalize ${tab === t ? "border-[var(--color-primary)] text-[var(--color-primary)]" : "border-transparent text-[var(--color-muted)]"}`}>
+            <button key={t} onClick={() => setTab(t)} className={`border-b-2 px-3 py-2 text-sm font-medium capitalize ${tab === t ? "border-[var(--color-primary)] text-[var(--color-primary-ink)]" : "border-transparent text-[var(--color-muted)]"}`}>
               {t === "css" ? "Custom CSS" : t}
             </button>
           ))}
@@ -172,7 +172,7 @@ export default function AdvancedBrandingPage() {
                       <button onClick={() => removeQuickLink(i)} className="text-xs text-[var(--color-danger)]">Remove</button>
                     </div>
                   ))}
-                  <button onClick={addQuickLink} className="text-xs font-medium text-[var(--color-primary)] hover:underline">+ Add link</button>
+                  <button onClick={addQuickLink} className="text-xs font-medium text-[var(--color-primary-ink)] hover:underline">+ Add link</button>
                 </div>
               </div>
             )}
@@ -190,7 +190,7 @@ export default function AdvancedBrandingPage() {
               )
             )}
 
-            <button onClick={save} disabled={isSaving} className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-5 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+            <button onClick={save} disabled={isSaving} className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-5 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
               {isSaving && <ButtonSpinner />}
               Save branding
             </button>
@@ -203,7 +203,7 @@ export default function AdvancedBrandingPage() {
           <p className="text-sm font-medium text-[var(--color-text)]">Live preview</p>
           <div className="flex gap-1 rounded-lg border border-[var(--color-border)] p-1">
             {[{ key: "desktop", icon: Monitor }, { key: "tablet", icon: Tablet }, { key: "mobile", icon: Smartphone }].map(({ key, icon: Icon }) => (
-              <button key={key} onClick={() => setDevice(key as typeof device)} className={`rounded p-1.5 ${device === key ? "bg-[var(--color-primary)] text-white" : "text-[var(--color-muted)]"}`}>
+              <button key={key} onClick={() => setDevice(key as typeof device)} className={`rounded p-1.5 ${device === key ? "bg-[var(--color-primary)] text-[var(--color-on-primary)]" : "text-[var(--color-muted)]"}`}>
                 <Icon size={14} />
               </button>
             ))}

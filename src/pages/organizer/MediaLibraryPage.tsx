@@ -74,7 +74,7 @@ export default function MediaLibraryPage() {
 
   return (
     <div className="space-y-5 p-6">
-      <title>Media Library · TournamentLive</title>
+      <title>Media Library · Scorio</title>
       <div>
         <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Media Library</h1>
         <p className="text-sm text-[var(--color-muted)]">Central storage for logos, icons, images, and documents — images auto-convert to WebP on upload.</p>
@@ -89,7 +89,7 @@ export default function MediaLibraryPage() {
           <Search size={15} className="text-[var(--color-muted)]" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search files..." className="bg-transparent text-sm outline-none" />
         </div>
-        <button onClick={() => fileInputRef.current?.click()} disabled={isUploading} className="ml-auto flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+        <button onClick={() => fileInputRef.current?.click()} disabled={isUploading} className="ml-auto flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
           {isUploading ? <ButtonSpinner /> : <Upload size={15} />} Bulk upload
         </button>
         <input ref={fileInputRef} type="file" accept="image/*,video/*" multiple className="hidden" onChange={(e) => handleUpload(e.target.files)} />

@@ -118,7 +118,7 @@ export default function WebsiteSettingsPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-6">
-      <title>Website Builder · TournamentLive</title>
+      <title>Website Builder · Scorio</title>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Website Builder</h1>
@@ -129,7 +129,7 @@ export default function WebsiteSettingsPage() {
 
       <div className="flex gap-1 border-b border-[var(--color-border)]">
         {(["branding", "sections", "themes", "seo"] as const).map((t) => (
-          <button key={t} onClick={() => setTab(t)} className={`border-b-2 px-3 py-2 text-sm font-medium capitalize ${tab === t ? "border-[var(--color-primary)] text-[var(--color-primary)]" : "border-transparent text-[var(--color-muted)]"}`}>
+          <button key={t} onClick={() => setTab(t)} className={`border-b-2 px-3 py-2 text-sm font-medium capitalize ${tab === t ? "border-[var(--color-primary)] text-[var(--color-primary-ink)]" : "border-transparent text-[var(--color-muted)]"}`}>
             {t === "sections" ? "Homepage Sections" : t}
           </button>
         ))}
@@ -231,7 +231,7 @@ export default function WebsiteSettingsPage() {
                 )}
                 <div className="mt-4 flex gap-2">
                   <input value={newThemeName} onChange={(e) => setNewThemeName(e.target.value)} placeholder="Name this theme..." className="flex-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)]" />
-                  <button onClick={saveAsCustomTheme} disabled={!newThemeName.trim()} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-50">
+                  <button onClick={saveAsCustomTheme} disabled={!newThemeName.trim()} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-50">
                     <Copy size={14} /> Save current as theme
                   </button>
                 </div>
@@ -253,7 +253,7 @@ export default function WebsiteSettingsPage() {
             </section>
           )}
 
-          <button onClick={save} disabled={isSaving} className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-5 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button onClick={save} disabled={isSaving} className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-5 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSaving && <ButtonSpinner />}
             Save website settings
           </button>
@@ -273,7 +273,7 @@ function SectionRow({ section, onToggle }: { section: HomepageSection; onToggle:
         </button>
         <span className={`text-sm ${section.visible ? "text-[var(--color-text)]" : "text-[var(--color-muted)] line-through"}`}>{SECTION_LABELS[section.key] ?? section.key}</span>
       </div>
-      <button onClick={onToggle} aria-label={section.visible ? "Hide section" : "Show section"} className="text-[var(--color-muted)] hover:text-[var(--color-primary)]">
+      <button onClick={onToggle} aria-label={section.visible ? "Hide section" : "Show section"} className="text-[var(--color-muted)] hover:text-[var(--color-primary-ink)]">
         {section.visible ? <Eye size={16} /> : <EyeOff size={16} />}
       </button>
     </Reorder.Item>

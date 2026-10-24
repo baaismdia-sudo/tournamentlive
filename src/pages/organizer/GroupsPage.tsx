@@ -68,7 +68,7 @@ export default function GroupsPage() {
 
   return (
     <>
-      <title>Groups · TournamentLive</title>
+      <title>Groups · Scorio</title>
       <div className="px-6 pt-6"><TournamentSelector tournaments={tournaments} selectedId={selectedId} onChange={setSelectedId} /></div>
       <AdminDataTable title="Groups" description="Create unlimited groups and assign teams to each." columns={columns} rows={groups} isLoading={isLoading} error={error} search="" onSearchChange={() => {}} onCreate={() => setDrawerOpen(true)} onDelete={removeGroup} page={1} totalPages={1} onPageChange={() => {}} emptyLabel="No groups yet" />
 
@@ -96,7 +96,7 @@ export default function GroupsPage() {
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title="New group">
         <form onSubmit={addGroup} className="space-y-4">
           <TextField label="Group name (e.g. Group A)" value={groupName} onChange={setGroupName} />
-          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSaving && <ButtonSpinner />}
             Add group
           </button>

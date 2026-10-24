@@ -10,7 +10,7 @@ const LINKS = [
 export default function HelpCenterPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">
-      <title>Help Center · TournamentLive</title>
+      <title>Help Center · Scorio</title>
       <div>
         <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Help Center</h1>
         <p className="text-sm text-[var(--color-muted)]">Get help running your tournament.</p>
@@ -18,7 +18,7 @@ export default function HelpCenterPage() {
       <div className="grid gap-3 sm:grid-cols-3">
         {LINKS.map((link) => (
           <Link key={link.title} to={link.to} className="rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] p-5 transition-shadow hover:shadow-[var(--shadow-md)]">
-            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary-ink)]">
               <link.icon size={17} />
             </div>
             <p className="font-medium text-[var(--color-heading)]">{link.title}</p>

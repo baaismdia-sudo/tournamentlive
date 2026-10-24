@@ -74,14 +74,14 @@ export default function RentalEnquiryPage() {
 
   return (
     <div className="mx-auto max-w-xl space-y-6 p-6">
-      <title>Rental Enquiry · TournamentLive</title>
+      <title>Rental Enquiry · Scorio</title>
       <div>
         <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Activate or renew a rental</h1>
         <p className="text-sm text-[var(--color-muted)]">Fill this in, then continue on WhatsApp — our team activates it manually and confirms by email.</p>
       </div>
 
       {submitted ? (
-        <div className="rounded-card border border-[var(--color-success)]/30 bg-[var(--color-success)]/5 p-6 text-center">
+        <div className="rounded-card border border-[color:color-mix(in_srgb,var(--color-success)_30%,transparent)] bg-[color:color-mix(in_srgb,var(--color-success)_5%,transparent)] p-6 text-center">
           <MessageCircle size={28} className="mx-auto mb-3 text-[var(--color-success)]" />
           <p className="font-medium text-[var(--color-heading)]">Enquiry sent</p>
           <p className="mt-1 text-sm text-[var(--color-muted)]">

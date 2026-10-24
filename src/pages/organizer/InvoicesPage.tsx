@@ -60,12 +60,12 @@ export default function InvoicesPage() {
     { header: "Date", render: (i) => new Date(i.issue_date).toLocaleDateString() },
     { header: "Total", render: (i) => formatCurrency(i.total_cents, i.currency) },
     { header: "Status", render: (i) => <span className="capitalize">{i.status}</span> },
-    { header: "Download", render: (i) => <button onClick={() => downloadInvoice(i)} className="flex items-center gap-1 text-[var(--color-primary)] hover:underline"><Download size={13} /> PDF</button> },
+    { header: "Download", render: (i) => <button onClick={() => downloadInvoice(i)} className="flex items-center gap-1 text-[var(--color-primary-ink)] hover:underline"><Download size={13} /> PDF</button> },
   ];
 
   return (
     <>
-      <title>Invoices · TournamentLive</title>
+      <title>Invoices · Scorio</title>
       <AdminDataTable title="Invoices" description="Billing history for your account, with GST breakdown." columns={columns} rows={rows} isLoading={isLoading} error={error} search="" onSearchChange={() => {}} page={1} totalPages={1} onPageChange={() => {}} emptyLabel="No invoices yet" />
     </>
   );

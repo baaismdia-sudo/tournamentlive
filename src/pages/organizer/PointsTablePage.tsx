@@ -51,7 +51,7 @@ export default function PointsTablePage() {
 
   return (
     <div className="space-y-5 p-6">
-      <title>Points Table · TournamentLive</title>
+      <title>Points Table · Scorio</title>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Points Table</h1>
@@ -104,7 +104,7 @@ export default function PointsTablePage() {
                   <td className="px-4 py-3">{r.goals_for}</td>
                   <td className="px-4 py-3">{r.goals_against}</td>
                   <td className="px-4 py-3">{r.goal_difference}</td>
-                  <td className="px-4 py-3 font-semibold text-[var(--color-primary)]">{r.points}</td>
+                  <td className="px-4 py-3 font-semibold text-[var(--color-primary-ink)]">{r.points}</td>
                 </tr>
               ))}
             </tbody>

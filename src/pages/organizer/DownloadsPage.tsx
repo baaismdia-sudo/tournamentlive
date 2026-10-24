@@ -59,7 +59,7 @@ export default function DownloadsPage() {
 
   return (
     <div className="space-y-5 p-6">
-      <title>Downloads · TournamentLive</title>
+      <title>Downloads · Scorio</title>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Downloads</h1>
@@ -72,7 +72,7 @@ export default function DownloadsPage() {
         <TextField label="Title" value={title} onChange={setTitle} />
         <SelectField label="Category" value={category} onChange={setCategory} options={CATEGORIES} />
         <div className="flex items-end sm:col-span-2">
-          <button onClick={() => fileInputRef.current?.click()} disabled={isUploading || !title.trim()} className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-50">
+          <button onClick={() => fileInputRef.current?.click()} disabled={isUploading || !title.trim()} className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-50">
             {isUploading ? <ButtonSpinner /> : <Upload size={15} />} Upload PDF
           </button>
           <input ref={fileInputRef} type="file" accept=".pdf" className="hidden" onChange={(e) => upload(e.target.files?.[0])} />
@@ -88,7 +88,7 @@ export default function DownloadsPage() {
                 <p className="text-xs capitalize text-[var(--color-muted)]">{item.category.replace("_", " ")}</p>
               </div>
               <div className="flex items-center gap-3">
-                <a href={item.file_url} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-xs font-medium text-[var(--color-primary)] hover:underline"><Download size={13} /> Download</a>
+                <a href={item.file_url} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-xs font-medium text-[var(--color-primary-ink)] hover:underline"><Download size={13} /> Download</a>
                 <button onClick={() => remove(item)} aria-label="Delete"><Trash2 size={14} className="text-[var(--color-muted)] hover:text-[var(--color-danger)]" /></button>
               </div>
             </div>

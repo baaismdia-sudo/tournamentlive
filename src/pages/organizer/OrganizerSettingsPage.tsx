@@ -40,7 +40,7 @@ export default function OrganizerSettingsPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">
-      <title>Settings · TournamentLive</title>
+      <title>Settings · Scorio</title>
       <div>
         <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Organization Settings</h1>
         <p className="text-sm text-[var(--color-muted)]">General information about your organization.</p>
@@ -58,7 +58,7 @@ export default function OrganizerSettingsPage() {
           <TextField label="Timezone" value={timezone} onChange={setTimezone} />
           <SelectField label="Currency" value={currency} onChange={setCurrency} options={[{ value: "INR", label: "INR" }, { value: "USD", label: "USD" }]} />
         </div>
-        <button onClick={save} disabled={isSaving} className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+        <button onClick={save} disabled={isSaving} className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
           {isSaving && <ButtonSpinner />}
           Save
         </button>
@@ -66,7 +66,7 @@ export default function OrganizerSettingsPage() {
 
       <p className="text-sm text-[var(--color-muted)]">
         Password, notification preferences, and privacy settings live under{" "}
-        <a href="/account/settings" className="text-[var(--color-primary)] hover:underline">Account Settings</a> — shared across every role rather than duplicated here.
+        <a href="/account/settings" className="text-[var(--color-primary-ink)] hover:underline">Account Settings</a> — shared across every role rather than duplicated here.
       </p>
     </div>
   );

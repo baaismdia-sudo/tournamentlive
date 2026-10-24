@@ -59,7 +59,7 @@ export default function CustomDomainPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">
-      <title>Custom Domain · TournamentLive</title>
+      <title>Custom Domain · Scorio</title>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Custom Domain</h1>
@@ -80,7 +80,7 @@ export default function CustomDomainPage() {
             <p className="mt-2 flex items-center gap-2 text-sm text-[var(--color-text)]">
               {selectedSlug ? getTournamentUrl(selectedSlug) : "Not set"}
               {selectedSlug && (
-                <button onClick={() => navigator.clipboard.writeText(getTournamentUrl(selectedSlug))} aria-label="Copy link" className="text-[var(--color-muted)] hover:text-[var(--color-primary)]">
+                <button onClick={() => navigator.clipboard.writeText(getTournamentUrl(selectedSlug))} aria-label="Copy link" className="text-[var(--color-muted)] hover:text-[var(--color-primary-ink)]">
                   <Copy size={14} />
                 </button>
               )}
@@ -121,7 +121,7 @@ export default function CustomDomainPage() {
                   <TextField label="Domain name" value={newDomain} onChange={setNewDomain} />
                 </div>
                 <div className="flex items-end">
-                  <button onClick={connect} disabled={isSaving} className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+                  <button onClick={connect} disabled={isSaving} className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
                     {isSaving && <ButtonSpinner />}
                     Connect
                   </button>
@@ -142,9 +142,9 @@ export default function CustomDomainPage() {
 
 function StatusPill({ icon: Icon, label, tone }: { icon: typeof ShieldCheck; label: string; tone: "success" | "warning" | "danger" }) {
   const tones = {
-    success: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-    warning: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-    danger: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
+    success: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+    warning: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+    danger: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
   };
   return (
     <span className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${tones[tone]}`}>

@@ -37,7 +37,7 @@ export default function ResultsPage() {
   }, [selectedId]);
 
   const columns: Column<MatchRow>[] = [
-    { header: "Match", render: (m) => <Link to={`/live/${m.id}`} className="font-medium text-[var(--color-heading)] hover:text-[var(--color-primary)]">{m.home?.name} vs {m.away?.name}</Link> },
+    { header: "Match", render: (m) => <Link to={`/live/${m.id}`} className="font-medium text-[var(--color-heading)] hover:text-[var(--color-primary-ink)]">{m.home?.name} vs {m.away?.name}</Link> },
     { header: "Score", render: (m) => `${m.home_score} - ${m.away_score}` },
     { header: "Completed", render: (m) => (m.ended_at ? new Date(m.ended_at).toLocaleString() : "—") },
   ];
@@ -47,7 +47,7 @@ export default function ResultsPage() {
 
   return (
     <>
-      <title>Results · TournamentLive</title>
+      <title>Results · Scorio</title>
       <div className="px-6 pt-6"><TournamentSelector tournaments={tournaments} selectedId={selectedId} onChange={setSelectedId} /></div>
       <AdminDataTable title="Results" description="Completed matches for the selected tournament." columns={columns} rows={rows} isLoading={isLoading} error={null} search="" onSearchChange={() => {}} page={1} totalPages={1} onPageChange={() => {}} emptyLabel="No completed matches yet" />
     </>

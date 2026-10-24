@@ -135,7 +135,7 @@ export default function FixturesPage() {
 
   return (
     <>
-      <title>Fixtures · TournamentLive</title>
+      <title>Fixtures · Scorio</title>
       <div className="flex flex-wrap items-center justify-between gap-3 px-6 pt-6">
         <TournamentSelector tournaments={tournaments} selectedId={selectedId} onChange={setSelectedId} />
         <button
@@ -169,7 +169,7 @@ export default function FixturesPage() {
           <TextField label="Round name" value={form.round_name} onChange={(v) => setForm((f) => ({ ...f, round_name: v }))} />
           <TextField label="Scheduled at" type="datetime-local" value={form.scheduled_at} onChange={(v) => setForm((f) => ({ ...f, scheduled_at: v }))} />
           <TextField label="Venue" value={form.venue} onChange={(v) => setForm((f) => ({ ...f, venue: v }))} />
-          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSaving && <ButtonSpinner />}
             Add round
           </button>

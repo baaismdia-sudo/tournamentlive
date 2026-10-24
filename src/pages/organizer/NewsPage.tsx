@@ -88,7 +88,7 @@ export default function NewsPage() {
 
   const columns: Column<NewsArticle>[] = [
     { header: "Title", render: (n) => <span className="font-medium text-[var(--color-heading)]">{n.title}</span> },
-    { header: "Status", render: (n) => <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${n.is_published ? "bg-[var(--color-success)]/10 text-[var(--color-success)]" : "bg-[var(--color-muted)]/10 text-[var(--color-muted)]"}`}>{n.is_published ? "Published" : "Draft"}</span> },
+    { header: "Status", render: (n) => <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${n.is_published ? "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]" : "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]"}`}>{n.is_published ? "Published" : "Draft"}</span> },
     { header: "Published", render: (n) => (n.published_at ? new Date(n.published_at).toLocaleDateString() : "—") },
   ];
 
@@ -97,7 +97,7 @@ export default function NewsPage() {
 
   return (
     <>
-      <title>News · TournamentLive</title>
+      <title>News · Scorio</title>
       <div className="px-6 pt-6"><TournamentSelector tournaments={tournaments} selectedId={selectedId} onChange={setSelectedId} /></div>
       <AdminDataTable title="News" description="Articles and announcements for your tournament's public site." columns={columns} rows={rows} isLoading={isLoading} error={error} search="" onSearchChange={() => {}} onCreate={openCreate} onEdit={openEdit} onDelete={remove} page={1} totalPages={1} onPageChange={() => {}} emptyLabel="No articles yet" />
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title={editing ? "Edit article" : "New article"}>
@@ -108,7 +108,7 @@ export default function NewsPage() {
           <TextAreaField label="Excerpt" value={form.excerpt} onChange={(v) => setForm((f) => ({ ...f, excerpt: v }))} />
           <TextAreaField label="Content" value={form.content} onChange={(v) => setForm((f) => ({ ...f, content: v }))} rows={8} />
           <CheckboxField label="Published" checked={form.is_published} onChange={(v) => setForm((f) => ({ ...f, is_published: v }))} />
-          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSaving && <ButtonSpinner />}
             {editing ? "Save changes" : "Create article"}
           </button>

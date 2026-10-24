@@ -207,9 +207,9 @@ export default function PlayersPage() {
           <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-[var(--color-surface-secondary)]">
             {p.photo_url ? <img src={p.photo_url} alt="" className="h-full w-full object-cover" /> : <User size={14} className="text-[var(--color-muted)]" />}
           </div>
-          <Link to={`/dashboard/players/${p.id}`} className="font-medium text-[var(--color-heading)] hover:text-[var(--color-primary)]">{p.full_name}</Link>
-          {p.is_captain && <span className="rounded bg-[var(--color-accent)]/10 px-1.5 py-0.5 text-[10px] font-semibold text-[var(--color-accent)]">C</span>}
-          {p.is_vice_captain && <span className="rounded bg-[var(--color-secondary)]/10 px-1.5 py-0.5 text-[10px] font-semibold text-[var(--color-secondary)]">VC</span>}
+          <Link to={`/dashboard/players/${p.id}`} className="font-medium text-[var(--color-heading)] hover:text-[var(--color-primary-ink)]">{p.full_name}</Link>
+          {p.is_captain && <span className="rounded bg-[color:color-mix(in_srgb,var(--color-accent)_10%,transparent)] px-1.5 py-0.5 text-[10px] font-semibold text-[var(--color-accent)]">C</span>}
+          {p.is_vice_captain && <span className="rounded bg-[color:color-mix(in_srgb,var(--color-secondary)_10%,transparent)] px-1.5 py-0.5 text-[10px] font-semibold text-[var(--color-secondary)]">VC</span>}
         </div>
       ),
     },
@@ -225,7 +225,7 @@ export default function PlayersPage() {
 
   return (
     <>
-      <title>Players · TournamentLive</title>
+      <title>Players · Scorio</title>
       <div className="flex flex-wrap items-center justify-between gap-3 px-6 pt-6">
         <div className="flex gap-2">
           <TournamentSelector tournaments={tournaments} selectedId={selectedId} onChange={(id) => { setPage(1); setSelectedId(id); }} />
@@ -308,7 +308,7 @@ export default function PlayersPage() {
             <TextField label="Emergency contact phone" value={form.emergency_contact_phone} onChange={(v) => setForm((f) => ({ ...f, emergency_contact_phone: v }))} />
           </div>
           <TextAreaField label="Medical notes (optional, private — visible to tournament staff only)" value={form.medical_notes} onChange={(v) => setForm((f) => ({ ...f, medical_notes: v }))} />
-          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSaving && <ButtonSpinner />}
             {editing ? "Save changes" : "Add player"}
           </button>

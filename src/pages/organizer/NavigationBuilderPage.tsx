@@ -69,7 +69,7 @@ export default function NavigationBuilderPage() {
 
   return (
     <div className="space-y-5 p-6">
-      <title>Navigation Builder · TournamentLive</title>
+      <title>Navigation Builder · Scorio</title>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Navigation Builder</h1>
@@ -91,7 +91,7 @@ export default function NavigationBuilderPage() {
                 <SelectField label="Page" value={form.custom_page_id} onChange={(v) => setForm((f) => ({ ...f, custom_page_id: v }))} options={[{ value: "", label: "Select page" }, ...customPages.map((p) => ({ value: p.id, label: p.title }))]} />
               )}
               <div className="flex items-end">
-                <button onClick={addItem} disabled={isSaving || !form.label} className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-50">
+                <button onClick={addItem} disabled={isSaving || !form.label} className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-50">
                   {isSaving && <ButtonSpinner />} Add
                 </button>
               </div>

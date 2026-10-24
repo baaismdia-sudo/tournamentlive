@@ -148,8 +148,8 @@ export default function TeamsPage() {
     },
     { header: "Manager / Coach", render: (t) => [t.manager_name, t.coach_name].filter(Boolean).join(" / ") || "—" },
     { header: "Home ground", render: (t) => t.home_ground ?? "—" },
-    { header: "Status", render: (t) => <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${t.status === "approved" ? "bg-[var(--color-success)]/10 text-[var(--color-success)]" : t.status === "rejected" ? "bg-[var(--color-danger)]/10 text-[var(--color-danger)]" : "bg-[var(--color-warning)]/10 text-[var(--color-warning)]"}`}>{t.status}</span> },
-    { header: "Duplicate", render: (t) => <button onClick={() => duplicate(t)} className="text-[var(--color-muted)] hover:text-[var(--color-primary)]" aria-label="Duplicate team"><Copy size={15} /></button> },
+    { header: "Status", render: (t) => <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${t.status === "approved" ? "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]" : t.status === "rejected" ? "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]" : "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]"}`}>{t.status}</span> },
+    { header: "Duplicate", render: (t) => <button onClick={() => duplicate(t)} className="text-[var(--color-muted)] hover:text-[var(--color-primary-ink)]" aria-label="Duplicate team"><Copy size={15} /></button> },
     { header: "QR", render: (t) => <QrCodeButton value={getTournamentPageUrl(selectedSlug, `teams#${t.id}`)} label={t.name} /> },
   ];
 
@@ -158,7 +158,7 @@ export default function TeamsPage() {
 
   return (
     <>
-      <title>Teams · TournamentLive</title>
+      <title>Teams · Scorio</title>
       <div className="flex flex-wrap items-center justify-between gap-3 px-6 pt-6">
         <TournamentSelector tournaments={tournaments} selectedId={selectedId} onChange={(id) => { setPage(1); setSelectedId(id); }} />
         <ExportMenu rows={rows.map((t) => ({ name: t.name, short_name: t.short_name, manager: t.manager_name, coach: t.coach_name, status: t.status, home_ground: t.home_ground, founded_year: t.founded_year }))} filenameBase="teams-export" pdfTitle="Teams" />
@@ -202,7 +202,7 @@ export default function TeamsPage() {
           <TextField label="Website" value={form.website_url} onChange={(v) => setForm((f) => ({ ...f, website_url: v }))} />
           <TextField label="Contact email" value={form.contact_email} onChange={(v) => setForm((f) => ({ ...f, contact_email: v }))} />
           <SelectField label="Status" value={form.status} onChange={(v) => setForm((f) => ({ ...f, status: v }))} options={[{ value: "pending", label: "Pending" }, { value: "approved", label: "Approved" }, { value: "rejected", label: "Rejected" }]} />
-          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSaving && <ButtonSpinner />}
             {editing ? "Save changes" : "Add team"}
           </button>

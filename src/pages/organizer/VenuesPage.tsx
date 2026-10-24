@@ -80,7 +80,7 @@ export default function VenuesPage() {
 
   return (
     <>
-      <title>Venues · TournamentLive</title>
+      <title>Venues · Scorio</title>
       <AdminDataTable title="Venues" description="Reusable across all your tournaments." columns={columns} rows={rows} isLoading={isLoading} error={error} search="" onSearchChange={() => {}} onCreate={openCreate} onEdit={openEdit} onDelete={remove} page={1} totalPages={1} onPageChange={() => {}} emptyLabel="No venues yet" />
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title={editing ? "Edit venue" : "New venue"}>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -99,7 +99,7 @@ export default function VenuesPage() {
           <CheckboxField label="Parking available" checked={form.parking} onChange={(v) => setForm((f) => ({ ...f, parking: v }))} />
           <CheckboxField label="Officials room" checked={form.officials_room} onChange={(v) => setForm((f) => ({ ...f, officials_room: v }))} />
           <CheckboxField label="Media room" checked={form.media_room} onChange={(v) => setForm((f) => ({ ...f, media_room: v }))} />
-          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSaving && <ButtonSpinner />}
             {editing ? "Save changes" : "Add venue"}
           </button>

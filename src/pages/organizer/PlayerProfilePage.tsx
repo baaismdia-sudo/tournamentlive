@@ -75,7 +75,7 @@ export default function PlayerProfilePage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-6">
-      <title>{`${player.full_name} · TournamentLive`}</title>
+      <title>{`${player.full_name} · Scorio`}</title>
       <Link to="/dashboard/players" className="flex items-center gap-1.5 text-sm text-[var(--color-muted)] hover:text-[var(--color-text)]">
         <ArrowLeft size={15} /> Back to players
       </Link>
@@ -87,8 +87,8 @@ export default function PlayerProfilePage() {
         <div className="flex-1">
           <div className="flex items-center gap-2">
             <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">{player.full_name}</h1>
-            {player.is_captain && <span className="rounded bg-[var(--color-accent)]/10 px-2 py-0.5 text-xs font-semibold text-[var(--color-accent)]">Captain</span>}
-            {player.is_vice_captain && <span className="rounded bg-[var(--color-secondary)]/10 px-2 py-0.5 text-xs font-semibold text-[var(--color-secondary)]">Vice Captain</span>}
+            {player.is_captain && <span className="rounded bg-[color:color-mix(in_srgb,var(--color-accent)_10%,transparent)] px-2 py-0.5 text-xs font-semibold text-[var(--color-accent)]">Captain</span>}
+            {player.is_vice_captain && <span className="rounded bg-[color:color-mix(in_srgb,var(--color-secondary)_10%,transparent)] px-2 py-0.5 text-xs font-semibold text-[var(--color-secondary)]">Vice Captain</span>}
           </div>
           {player.nickname && <p className="text-sm text-[var(--color-muted)]">"{player.nickname}"</p>}
           <p className="mt-1 text-sm text-[var(--color-text)]">
@@ -130,7 +130,7 @@ export default function PlayerProfilePage() {
         ) : (
           <ul className="mt-2 flex flex-wrap gap-2">
             {player.awards.map((award) => (
-              <li key={award} className="rounded-full bg-[var(--color-warning)]/10 px-3 py-1 text-xs font-medium text-[var(--color-warning)]">🏅 {award}</li>
+              <li key={award} className="rounded-full bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] px-3 py-1 text-xs font-medium text-[var(--color-warning)]">🏅 {award}</li>
             ))}
           </ul>
         )}

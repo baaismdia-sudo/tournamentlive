@@ -69,7 +69,7 @@ export default function GalleryPage() {
 
   return (
     <div className="space-y-5 p-6">
-      <title>Gallery · TournamentLive</title>
+      <title>Gallery · Scorio</title>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Gallery</h1>
@@ -85,7 +85,7 @@ export default function GalleryPage() {
       >
         <Upload size={22} className="text-[var(--color-muted)]" />
         <p className="text-sm text-[var(--color-muted)]">Drag & drop images here, or</p>
-        <button onClick={() => fileInputRef.current?.click()} disabled={isUploading} className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)]">
+        <button onClick={() => fileInputRef.current?.click()} disabled={isUploading} className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)]">
           {isUploading && <ButtonSpinner />}
           Browse files
         </button>

@@ -47,15 +47,15 @@ export default function SupportPage() {
   };
 
   const statusColor: Record<string, string> = {
-    open: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-    in_progress: "bg-[var(--color-info)]/10 text-[var(--color-info)]",
-    resolved: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-    closed: "bg-[var(--color-muted)]/10 text-[var(--color-muted)]",
+    open: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+    in_progress: "bg-[color:color-mix(in_srgb,var(--color-info)_10%,transparent)] text-[var(--color-info)]",
+    resolved: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+    closed: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]",
   };
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">
-      <title>Support · TournamentLive</title>
+      <title>Support · Scorio</title>
       <div>
         <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Support</h1>
         <p className="text-sm text-[var(--color-muted)]">Open a ticket and our team will respond here and by email.</p>
@@ -67,7 +67,7 @@ export default function SupportPage() {
         <TextField label="Subject" value={subject} onChange={setSubject} />
         <SelectField label="Priority" value={priority} onChange={setPriority} options={[{ value: "low", label: "Low" }, { value: "medium", label: "Medium" }, { value: "high", label: "High" }, { value: "urgent", label: "Urgent" }]} />
         <TextAreaField label="Message" value={message} onChange={setMessage} rows={4} />
-        <button type="submit" disabled={isSubmitting} className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+        <button type="submit" disabled={isSubmitting} className="flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
           {isSubmitting && <ButtonSpinner />}
           Submit ticket
         </button>

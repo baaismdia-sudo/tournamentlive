@@ -58,7 +58,7 @@ export default function CustomPagesPage() {
   const columns: Column<CustomPage>[] = [
     { header: "Title", render: (p) => <span className="font-medium text-[var(--color-heading)]">{p.title}</span> },
     { header: "Slug", render: (p) => <span className="font-mono text-xs text-[var(--color-muted)]">/{p.slug}</span> },
-    { header: "Status", render: (p) => <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${p.is_published ? "bg-[var(--color-success)]/10 text-[var(--color-success)]" : "bg-[var(--color-muted)]/10 text-[var(--color-muted)]"}`}>{p.is_published ? "Published" : "Draft"}</span> },
+    { header: "Status", render: (p) => <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${p.is_published ? "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]" : "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]"}`}>{p.is_published ? "Published" : "Draft"}</span> },
   ];
 
   if (tournamentsLoading) return null;
@@ -66,7 +66,7 @@ export default function CustomPagesPage() {
 
   return (
     <>
-      <title>Custom Pages · TournamentLive</title>
+      <title>Custom Pages · Scorio</title>
       <div className="px-6 pt-6"><TournamentSelector tournaments={tournaments} selectedId={selectedId} onChange={setSelectedId} /></div>
       <AdminDataTable
         title="Custom Pages"
@@ -81,7 +81,7 @@ export default function CustomPagesPage() {
           <TextField label="Slug" value={form.slug} onChange={(v) => setForm((f) => ({ ...f, slug: v }))} />
           <TextAreaField label="Content" value={form.content} onChange={(v) => setForm((f) => ({ ...f, content: v }))} rows={10} />
           <CheckboxField label="Published" checked={form.is_published} onChange={(v) => setForm((f) => ({ ...f, is_published: v }))} />
-          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSaving && <ButtonSpinner />}
             {editing ? "Save changes" : "Create page"}
           </button>

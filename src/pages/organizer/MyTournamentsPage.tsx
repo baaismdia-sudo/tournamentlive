@@ -64,12 +64,12 @@ export default function MyTournamentsPage() {
   };
 
   const statusColor: Record<string, string> = {
-    draft: "bg-[var(--color-muted)]/10 text-[var(--color-muted)]",
-    pending_payment: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-    active: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-    expiring: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-    archived: "bg-[var(--color-muted)]/10 text-[var(--color-muted)]",
-    suspended: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
+    draft: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]",
+    pending_payment: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+    active: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+    expiring: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+    archived: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]",
+    suspended: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
   };
 
   const columns: Column<TournamentRow>[] = [
@@ -80,7 +80,7 @@ export default function MyTournamentsPage() {
           <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-[var(--color-surface-secondary)]">
             {t.logo_url ? <img src={t.logo_url} alt="" className="h-full w-full object-cover" /> : <span className="text-xs text-[var(--color-muted)]">🏆</span>}
           </div>
-          <Link to={`/dashboard/tournaments/${t.id}`} className="font-medium text-[var(--color-heading)] hover:text-[var(--color-primary)]">
+          <Link to={`/dashboard/tournaments/${t.id}`} className="font-medium text-[var(--color-heading)] hover:text-[var(--color-primary-ink)]">
             {t.name}
           </Link>
         </div>
@@ -88,15 +88,15 @@ export default function MyTournamentsPage() {
     },
     { header: "Sport", render: (t) => t.sport },
     { header: "Status", render: (t) => <span className={`rounded-full px-2 py-0.5 text-xs font-medium capitalize ${statusColor[t.status]}`}>{t.status.replace("_", " ")}</span> },
-    { header: "Website", render: (t) => (t.is_public ? <a href={getTournamentUrl(t.slug)} target="_blank" rel="noreferrer" className="text-[var(--color-primary)] hover:underline">/tournament/{t.slug}</a> : "Private") },
+    { header: "Website", render: (t) => (t.is_public ? <a href={getTournamentUrl(t.slug)} target="_blank" rel="noreferrer" className="text-[var(--color-primary-ink)] hover:underline">/tournament/{t.slug}</a> : "Private") },
     { header: "Created", render: (t) => new Date(t.created_at).toLocaleDateString() },
     {
       header: "Actions",
       render: (t) => (
         <div className="flex items-center gap-2.5">
-          <button onClick={() => share(t)} aria-label="Share" className="text-[var(--color-muted)] hover:text-[var(--color-primary)]"><Share2 size={15} /></button>
-          <a href={getTournamentUrl(t.slug)} target="_blank" rel="noreferrer" aria-label="Preview" className="text-[var(--color-muted)] hover:text-[var(--color-primary)]"><Eye size={15} /></a>
-          <button onClick={() => withReload(duplicateTournament)(t.id)} aria-label="Duplicate" className="text-[var(--color-muted)] hover:text-[var(--color-primary)]"><Copy size={15} /></button>
+          <button onClick={() => share(t)} aria-label="Share" className="text-[var(--color-muted)] hover:text-[var(--color-primary-ink)]"><Share2 size={15} /></button>
+          <a href={getTournamentUrl(t.slug)} target="_blank" rel="noreferrer" aria-label="Preview" className="text-[var(--color-muted)] hover:text-[var(--color-primary-ink)]"><Eye size={15} /></a>
+          <button onClick={() => withReload(duplicateTournament)(t.id)} aria-label="Duplicate" className="text-[var(--color-muted)] hover:text-[var(--color-primary-ink)]"><Copy size={15} /></button>
           {t.status === "active" ? (
             <button onClick={() => withReload(unpublishTournament)(t.id)} aria-label="Unpublish" className="text-[var(--color-muted)] hover:text-[var(--color-warning)]"><XCircle size={15} /></button>
           ) : (
@@ -110,7 +110,7 @@ export default function MyTournamentsPage() {
 
   return (
     <div className="relative">
-      <title>My Tournaments · TournamentLive</title>
+      <title>My Tournaments · Scorio</title>
       <AdminDataTable
         title="My Tournaments"
         description="Every tournament you've created, and their current status."
@@ -127,7 +127,7 @@ export default function MyTournamentsPage() {
         emptyLabel="No tournaments yet — create your first one"
       />
       {toast && (
-        <div className="fixed bottom-6 right-6 rounded-lg bg-[var(--color-heading)] px-4 py-2.5 text-sm text-white shadow-lg">
+        <div className="fixed bottom-6 right-6 rounded-lg bg-[var(--color-heading)] px-4 py-2.5 text-sm text-[var(--color-background)] shadow-lg">
           {toast}
         </div>
       )}

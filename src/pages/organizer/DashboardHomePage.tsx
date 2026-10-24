@@ -16,13 +16,13 @@ export default function DashboardHomePage() {
 
   return (
     <div className="space-y-8 p-6">
-      <title>Dashboard · TournamentLive</title>
+      <title>Dashboard · Scorio</title>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-heading text-2xl font-bold text-[var(--color-heading)]">Welcome back</h1>
           <p className="text-sm text-[var(--color-muted)]">Here's what's happening across your tournaments.</p>
         </div>
-        <Link to="/dashboard/tournaments/new" className="rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)]">
+        <Link to="/dashboard/tournaments/new" className="rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)]">
           + Create tournament
         </Link>
       </div>

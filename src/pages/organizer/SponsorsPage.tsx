@@ -62,7 +62,7 @@ export default function SponsorsPage() {
   const columns: Column<Sponsor>[] = [
     { header: "Sponsor", render: (s) => <span className="font-medium text-[var(--color-heading)]">{s.name}</span> },
     { header: "Tier", render: (s) => <span className="capitalize">{s.tier}</span> },
-    { header: "Website", render: (s) => s.website_url ? <a href={s.website_url} target="_blank" rel="noreferrer" className="text-[var(--color-primary)] hover:underline">{s.website_url}</a> : "—" },
+    { header: "Website", render: (s) => s.website_url ? <a href={s.website_url} target="_blank" rel="noreferrer" className="text-[var(--color-primary-ink)] hover:underline">{s.website_url}</a> : "—" },
   ];
 
   if (tournamentsLoading) return null;
@@ -70,7 +70,7 @@ export default function SponsorsPage() {
 
   return (
     <>
-      <title>Sponsors · TournamentLive</title>
+      <title>Sponsors · Scorio</title>
       <div className="px-6 pt-6"><TournamentSelector tournaments={tournaments} selectedId={selectedId} onChange={setSelectedId} /></div>
       <AdminDataTable title="Sponsors" description="Sponsors shown on your tournament's public website." columns={columns} rows={rows} isLoading={isLoading} error={error} search="" onSearchChange={() => {}} onCreate={openCreate} onEdit={openEdit} onDelete={remove} page={1} totalPages={1} onPageChange={() => {}} emptyLabel="No sponsors yet" />
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title={editing ? "Edit sponsor" : "New sponsor"}>
@@ -79,7 +79,7 @@ export default function SponsorsPage() {
           <TextField label="Logo URL" value={form.logo_url} onChange={(v) => setForm((f) => ({ ...f, logo_url: v }))} />
           <TextField label="Website URL" value={form.website_url} onChange={(v) => setForm((f) => ({ ...f, website_url: v }))} />
           <SelectField label="Tier" value={form.tier} onChange={(v) => setForm((f) => ({ ...f, tier: v }))} options={[{ value: "platinum", label: "Platinum" }, { value: "gold", label: "Gold" }, { value: "silver", label: "Silver" }, { value: "bronze", label: "Bronze" }]} />
-          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
+          <button type="submit" disabled={isSaving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-60">
             {isSaving && <ButtonSpinner />}
             {editing ? "Save changes" : "Add sponsor"}
           </button>

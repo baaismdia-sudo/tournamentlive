@@ -40,7 +40,7 @@ export default function LiveScoresOverviewPage() {
 
   return (
     <div className="space-y-5 p-6">
-      <title>Live Scores · TournamentLive</title>
+      <title>Live Scores · Scorio</title>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Live Scores</h1>
@@ -65,7 +65,7 @@ export default function LiveScoresOverviewPage() {
                 <Link to={`/live/${m.id}`} className="flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] px-3 py-1.5 text-xs font-medium hover:bg-[var(--color-surface-secondary)]">
                   <Eye size={13} /> View live page
                 </Link>
-                <Link to={`/scorekeeper/${m.id}`} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[var(--color-primary-hover)]">
+                <Link to={`/scorekeeper/${m.id}`} className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-1.5 text-xs font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)]">
                   <Gamepad2 size={13} /> Control match
                 </Link>
               </div>

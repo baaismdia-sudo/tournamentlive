@@ -34,24 +34,24 @@ export default function SubscriptionPage() {
   }, []);
 
   const statusColor: Record<string, string> = {
-    active: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-    trialing: "bg-[var(--color-info)]/10 text-[var(--color-info)]",
-    past_due: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-    cancelled: "bg-[var(--color-muted)]/10 text-[var(--color-muted)]",
-    expired: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
+    active: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+    trialing: "bg-[color:color-mix(in_srgb,var(--color-info)_10%,transparent)] text-[var(--color-info)]",
+    past_due: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+    cancelled: "bg-[color:color-mix(in_srgb,var(--color-muted)_10%,transparent)] text-[var(--color-muted)]",
+    expired: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
   };
 
   if (isLoading) return <PageLoader label="Loading subscriptions..." />;
 
   return (
     <div className="space-y-6 p-6">
-      <title>Subscription · TournamentLive</title>
+      <title>Subscription · Scorio</title>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">Subscription</h1>
           <p className="text-sm text-[var(--color-muted)]">Your rental history across all tournaments.</p>
         </div>
-        <Link to="/dashboard/subscription/enquire" className="rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)]">
+        <Link to="/dashboard/subscription/enquire" className="rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)]">
           Activate or renew a rental
         </Link>
       </div>
@@ -72,7 +72,7 @@ export default function SubscriptionPage() {
                 {sub.rental_plans && <span className="text-sm font-medium text-[var(--color-heading)]">{formatCurrency(sub.rental_plans.price_cents, sub.rental_plans.currency)}</span>}
                 <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${statusColor[sub.status]}`}>{sub.status.replace("_", " ")}</span>
                 {(sub.status === "expired" || sub.status === "cancelled") && (
-                  <Link to="/dashboard/subscription/enquire" className="rounded-lg bg-[var(--color-primary)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[var(--color-primary-hover)]">
+                  <Link to="/dashboard/subscription/enquire" className="rounded-lg bg-[var(--color-primary)] px-3 py-1.5 text-xs font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)]">
                     Renew
                   </Link>
                 )}
