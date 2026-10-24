@@ -62,7 +62,7 @@ export default function ScorekeeperMatchListPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-6">
-      <title>Scorekeeper · TournamentLive</title>
+      <title>Scorekeeper · Scorio</title>
       <div>
         <h1 className="font-heading text-xl font-bold text-[var(--color-heading)]">
           {roleName === "scorekeeper" ? "Your matches" : "Matches you can control"}
@@ -71,7 +71,7 @@ export default function ScorekeeperMatchListPage() {
       </div>
 
       {error && (
-        <p className="rounded-lg bg-[var(--color-danger)]/10 p-3 text-sm text-[var(--color-danger)]">{error}</p>
+        <p className="rounded-lg bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] p-3 text-sm text-[var(--color-danger)]">{error}</p>
       )}
 
       {matches.length === 0 ? (
@@ -89,7 +89,7 @@ export default function ScorekeeperMatchListPage() {
                 <p className="text-xs text-[var(--color-muted)]">{m.tournaments?.name} · {m.tournaments?.sport}</p>
               </div>
               {m.status === "live" ? (
-                <span className="flex items-center gap-1 rounded-full bg-[var(--color-danger)]/10 px-2.5 py-1 text-xs font-semibold text-[var(--color-danger)]">
+                <span className="flex items-center gap-1 rounded-full bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] px-2.5 py-1 text-xs font-semibold text-[var(--color-danger)]">
                   <Radio size={12} /> LIVE
                 </span>
               ) : (

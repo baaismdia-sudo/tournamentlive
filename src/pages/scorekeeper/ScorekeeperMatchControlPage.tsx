@@ -87,7 +87,7 @@ export default function ScorekeeperMatchControlPage() {
     <div className="mx-auto max-w-3xl space-y-6 p-6">
       <title>Match Control · Scorio</title>
       {toast && (
-        <div className={`fixed right-4 top-4 z-50 rounded-lg px-4 py-2 text-sm text-white shadow-lg ${toast.isError ? "bg-[var(--color-danger)]" : "bg-[var(--color-heading)]"}`}>
+        <div className={`fixed right-4 top-4 z-50 rounded-lg px-4 py-2 text-sm shadow-lg ${toast.isError ? "bg-[var(--color-danger)] text-white" : "bg-[var(--color-heading)] text-[var(--color-background)]"}`}>
           {toast.message}
         </div>
       )}
@@ -96,12 +96,12 @@ export default function ScorekeeperMatchControlPage() {
       </Link>
 
       {!isConnected && (
-        <div className="flex items-center gap-2 rounded-lg bg-[var(--color-warning)]/10 px-3 py-2 text-sm text-[var(--color-warning)]">
+        <div className="flex items-center gap-2 rounded-lg bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] px-3 py-2 text-sm text-[var(--color-warning)]">
           <WifiOff size={15} /> Reconnecting — your actions are queued and will sync automatically.
         </div>
       )}
       {otherScorekeepers.length > 0 && (
-        <div className="rounded-lg bg-[var(--color-info)]/10 px-3 py-2 text-sm text-[var(--color-info)]">
+        <div className="rounded-lg bg-[color:color-mix(in_srgb,var(--color-info)_10%,transparent)] px-3 py-2 text-sm text-[var(--color-info)]">
           {otherScorekeepers.map((u) => u.fullName).join(", ")} {otherScorekeepers.length === 1 ? "is" : "are"} also controlling this match right now.
         </div>
       )}
@@ -124,7 +124,7 @@ export default function ScorekeeperMatchControlPage() {
                 key={period}
                 onClick={() => runAction("Update status", () => setMatchStatus(match.id, period))}
                 className={`rounded-lg border px-3 py-1.5 text-xs font-medium capitalize ${
-                  match.status === period ? "border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "border-[var(--color-border)] text-[var(--color-muted)]"
+                  match.status === period ? "border-[var(--color-primary)] bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary-ink)]" : "border-[var(--color-border)] text-[var(--color-muted)]"
                 }`}
               >
                 {period.replace("_", " ")}
