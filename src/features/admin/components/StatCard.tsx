@@ -15,12 +15,12 @@ export function StatCard({
   tone?: "primary" | "secondary" | "accent" | "success" | "warning" | "danger";
 }) {
   const tones: Record<string, string> = {
-    primary: "bg-[var(--color-primary)]/10 text-[var(--color-primary)]",
-    secondary: "bg-[var(--color-secondary)]/10 text-[var(--color-secondary)]",
-    accent: "bg-[var(--color-accent)]/10 text-[var(--color-accent)]",
-    success: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
-    warning: "bg-[var(--color-warning)]/10 text-[var(--color-warning)]",
-    danger: "bg-[var(--color-danger)]/10 text-[var(--color-danger)]",
+    primary: "bg-[color:color-mix(in_srgb,var(--color-primary)_10%,transparent)] text-[var(--color-primary-ink)]",
+    secondary: "bg-[color:color-mix(in_srgb,var(--color-secondary)_10%,transparent)] text-[var(--color-secondary)]",
+    accent: "bg-[color:color-mix(in_srgb,var(--color-accent)_10%,transparent)] text-[var(--color-accent)]",
+    success: "bg-[color:color-mix(in_srgb,var(--color-success)_10%,transparent)] text-[var(--color-success)]",
+    warning: "bg-[color:color-mix(in_srgb,var(--color-warning)_10%,transparent)] text-[var(--color-warning)]",
+    danger: "bg-[color:color-mix(in_srgb,var(--color-danger)_10%,transparent)] text-[var(--color-danger)]",
   };
 
   return (

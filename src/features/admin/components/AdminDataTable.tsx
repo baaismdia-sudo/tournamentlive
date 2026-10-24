@@ -63,7 +63,7 @@ export function AdminDataTable<T extends { id: string }>({
         {onCreate && (
           <button
             onClick={onCreate}
-            className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-primary-hover)]"
+            className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-on-primary)] hover:bg-[var(--color-primary-hover)]"
           >
             <Plus size={16} /> Add new
           </button>
@@ -104,7 +104,7 @@ export function AdminDataTable<T extends { id: string }>({
               </thead>
               <tbody className="divide-y divide-[var(--color-border)]">
                 {rows.map((row) => (
-                  <tr key={row.id} className="hover:bg-[var(--color-surface-secondary)]/50">
+                  <tr key={row.id} className="hover:bg-[color:color-mix(in_srgb,var(--color-surface-secondary)_50%,transparent)]">
                     {columns.map((col) => (
                       <td key={col.header} className={`px-4 py-3 ${col.className ?? ""}`}>
                         {col.render(row)}
@@ -114,7 +114,7 @@ export function AdminDataTable<T extends { id: string }>({
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
                           {onEdit && (
-                            <button onClick={() => onEdit(row)} aria-label="Edit" className="text-[var(--color-muted)] hover:text-[var(--color-primary)]">
+                            <button onClick={() => onEdit(row)} aria-label="Edit" className="text-[var(--color-muted)] hover:text-[var(--color-primary-ink)]">
                               <Pencil size={15} />
                             </button>
                           )}
