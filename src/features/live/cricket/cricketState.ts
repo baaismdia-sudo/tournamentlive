@@ -30,11 +30,11 @@ export interface CricketState {
 
 export function ballDot(b: { type: string; runs: number; wicket: boolean }) {
   if (b.wicket) return { text: "W", cls: "bg-[var(--color-danger)] text-white" };
-  if (b.type === "wide") return { text: "wd" + (b.runs > 1 ? `+${b.runs - 1}` : ""), cls: "bg-[var(--color-warning)]/20 text-[var(--color-warning)]" };
-  if (b.type === "no_ball") return { text: "nb" + (b.runs > 1 ? `+${b.runs - 1}` : ""), cls: "bg-[var(--color-warning)]/20 text-[var(--color-warning)]" };
-  if (b.type === "bye" || b.type === "leg_bye") return { text: String(b.runs), cls: "bg-[var(--color-info)]/15 text-[var(--color-info)]" };
-  if (b.runs === 4) return { text: "4", cls: "bg-[var(--color-success)]/15 text-[var(--color-success)] font-bold" };
-  if (b.runs === 6) return { text: "6", cls: "bg-[var(--color-primary)]/15 text-[var(--color-primary)] font-bold" };
+  if (b.type === "wide") return { text: "wd" + (b.runs > 1 ? `+${b.runs - 1}` : ""), cls: "bg-[color:color-mix(in_srgb,var(--color-warning)_20%,transparent)] text-[var(--color-warning)]" };
+  if (b.type === "no_ball") return { text: "nb" + (b.runs > 1 ? `+${b.runs - 1}` : ""), cls: "bg-[color:color-mix(in_srgb,var(--color-warning)_20%,transparent)] text-[var(--color-warning)]" };
+  if (b.type === "bye" || b.type === "leg_bye") return { text: String(b.runs), cls: "bg-[color:color-mix(in_srgb,var(--color-info)_15%,transparent)] text-[var(--color-info)]" };
+  if (b.runs === 4) return { text: "4", cls: "bg-[color:color-mix(in_srgb,var(--color-success)_15%,transparent)] text-[var(--color-success)] font-bold" };
+  if (b.runs === 6) return { text: "6", cls: "bg-[color:color-mix(in_srgb,var(--color-primary)_15%,transparent)] text-[var(--color-primary-ink)] font-bold" };
   return { text: String(b.runs), cls: "bg-[var(--color-surface-secondary)] text-[var(--color-text)]" };
 }
 
