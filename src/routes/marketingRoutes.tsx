@@ -1,14 +1,26 @@
 import type { RouteObject } from "react-router-dom";
 import LandingPage from "../pages/marketing/LandingPage";
+import {
+  FeaturesPage, PricingPage, DemoPage, SportsPage, TemplatesPage, BlogIndexPage, ContactPage,
+  LegalPlaceholderPage, NotFoundPage,
+} from "../pages/marketing/MarketingPages";
 
 /**
- * Only the homepage is fully built out in this pass (Prompt 4 scope: the
- * landing page itself). /features, /pricing, /demo, /sports, /blog, /contact
- * etc. are linked throughout the nav/footer already and should resolve to
- * their own dedicated pages built the same way as LandingPage — flagged
- * here rather than stubbed with placeholder components, since Prompt 4 was
- * scoped to "the landing page," not the full marketing site's every route.
+ * Marketing site. Every destination linked from the navbar, footer and sign-up
+ * form resolves to a real page, and unknown URLs get a branded 404 (the "*"
+ * route has the lowest router priority, so it never shadows the other route
+ * groups: auth, admin, organizer, live and public tournament sites).
  */
 export const marketingRoutes: RouteObject[] = [
   { path: "/", element: <LandingPage /> },
+  { path: "/features", element: <FeaturesPage /> },
+  { path: "/pricing", element: <PricingPage /> },
+  { path: "/demo", element: <DemoPage /> },
+  { path: "/sports", element: <SportsPage /> },
+  { path: "/templates", element: <TemplatesPage /> },
+  { path: "/blog", element: <BlogIndexPage /> },
+  { path: "/contact", element: <ContactPage /> },
+  { path: "/terms", element: <LegalPlaceholderPage kind="terms" /> },
+  { path: "/privacy", element: <LegalPlaceholderPage kind="privacy" /> },
+  { path: "*", element: <NotFoundPage /> },
 ];
