@@ -1,4 +1,5 @@
 import { supabase } from "../../lib/supabaseClient";
+import { trackOperation } from "../../lib/observability/logger";
 
 export interface UserListFilters {
   search?: string;
@@ -46,32 +47,44 @@ export async function listUsers(filters: UserListFilters) {
 }
 
 export async function suspendUser(userId: string) {
-  const { error } = await supabase.rpc("admin_set_user_status", {
-    p_user_id: userId,
-    p_status: "suspended",
+  // Admin actions are security-relevant: always leave an app-level trace (who, what, which target).
+  return trackOperation("admin.user.suspend", { targetUserId: userId }, async () => {
+    const { error } = await supabase.rpc("admin_set_user_status", {
+      p_user_id: userId,
+      p_status: "suspended",
+    });
+    if (error) throw error;
   });
-  if (error) throw error;
 }
 
 export async function reactivateUser(userId: string) {
-  const { error } = await supabase.rpc("admin_set_user_status", {
-    p_user_id: userId,
-    p_status: "active",
+  // Admin actions are security-relevant: always leave an app-level trace (who, what, which target).
+  return trackOperation("admin.user.reactivate", { targetUserId: userId }, async () => {
+    const { error } = await supabase.rpc("admin_set_user_status", {
+      p_user_id: userId,
+      p_status: "active",
+    });
+    if (error) throw error;
   });
-  if (error) throw error;
 }
 
 export async function assignRole(userId: string, roleId: string) {
-  const { error } = await supabase.rpc("admin_assign_role", {
-    p_user_id: userId,
-    p_role_id: roleId,
+  // Admin actions are security-relevant: always leave an app-level trace (who, what, which target).
+  return trackOperation("admin.user.assign_role", { targetUserId: userId, roleId }, async () => {
+    const { error } = await supabase.rpc("admin_assign_role", {
+      p_user_id: userId,
+      p_role_id: roleId,
+    });
+    if (error) throw error;
   });
-  if (error) throw error;
 }
 
 export async function deleteUser(userId: string) {
-  const { error } = await supabase.rpc("admin_delete_user", { p_user_id: userId });
-  if (error) throw error;
+  // Admin actions are security-relevant: always leave an app-level trace (who, what, which target).
+  return trackOperation("admin.user.delete", { targetUserId: userId }, async () => {
+    const { error } = await supabase.rpc("admin_delete_user", { p_user_id: userId });
+    if (error) throw error;
+  });
 }
 
 export function exportUsersToCsv(users: Array<Record<string, unknown>>): string {

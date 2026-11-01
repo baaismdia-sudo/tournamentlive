@@ -1,4 +1,5 @@
 import { supabase } from "../../lib/supabaseClient";
+import { log, startRequest, describeError } from "../../lib/observability/logger";
 
 export interface EnquiryInput {
   rentalPlanId: string;
@@ -26,16 +27,21 @@ export interface EnquiryInput {
  * requires: changeable without a code deploy.
  */
 async function getPlatformWhatsappNumber(): Promise<string> {
-  const { data } = await supabase.from("system_settings").select("value").eq("key", "whatsapp_number").single();
+  const { data, error } = await supabase.from("system_settings").select("value").eq("key", "whatsapp_number").single();
+  // If this lookup fails, leads are silently routed to the hardcoded fallback number below.
+  // That must never happen unnoticed (it is the number customers' enquiries go to).
+  if (error || !data?.value) log.warn("rental.whatsapp_number_fallback", { errorCode: error ? describeError(error).errorCode : "missing_setting" });
   const raw = (data?.value as string) ?? "+91 8075350630";
   return raw.replace(/[^\d]/g, ""); // wa.me needs digits only, no + or spaces
 }
 
 export async function submitRentalEnquiry(input: EnquiryInput): Promise<{ whatsappUrl: string }> {
+  const req = startRequest("rental.enquiry", { rentalPlanId: input.rentalPlanId, sport: input.sport, country: input.country, expectedTeams: input.expectedTeams ?? null });
   const { data: userData } = await supabase.auth.getUser();
   if (!userData.user) throw new Error("Not authenticated");
 
-  const { data: plan } = await supabase.from("rental_plans").select("name").eq("id", input.rentalPlanId).single();
+  const { data: plan, error: planError } = await supabase.from("rental_plans").select("name").eq("id", input.rentalPlanId).single();
+  if (planError) req.warn("rental.enquiry.plan_lookup_failed", { errorCode: describeError(planError).errorCode });
 
   const { error } = await supabase.from("rental_enquiries").insert({
     organizer_id: userData.user.id,
@@ -57,11 +63,17 @@ export async function submitRentalEnquiry(input: EnquiryInput): Promise<{ whatsa
     expected_players: input.expectedPlayers ?? null,
     message: input.message ?? null,
   });
-  if (error) throw error;
+  if (error) {
+    // A lost enquiry is a lost customer — always an issue, never just a toast.
+    req.fail(error);
+    throw error;
+  }
 
-  await supabase.from("activity_logs").insert({
+  const activity = await supabase.from("activity_logs").insert({
     profile_id: userData.user.id, action: "rental_enquiry_submitted", entity_type: "rental_enquiries",
   });
+  if (activity.error) req.warn("rental.enquiry.activity_log_failed", { errorCode: describeError(activity.error).errorCode });
+  req.ok();
 
   // Exact message format from the Prompt 11 spec.
   const lines = [

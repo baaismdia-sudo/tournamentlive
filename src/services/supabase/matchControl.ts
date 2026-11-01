@@ -1,52 +1,63 @@
 import { supabase } from "../../lib/supabaseClient";
+import { log, trackOperation as tracked } from "../../lib/observability/logger";
 
 export async function startMatch(matchId: string) {
-  const { error: matchErr } = await supabase.from("matches").update({ status: "live", started_at: new Date().toISOString() }).eq("id", matchId);
-  if (matchErr) throw matchErr;
-  const { error: scoreErr } = await supabase.from("live_scores").upsert(
-    { match_id: matchId, is_live: true, clock_status: "running", clock_started_at: new Date().toISOString() },
-    { onConflict: "match_id" }
-  );
-  if (scoreErr) throw scoreErr;
+  return tracked("scoring.match.start", { matchId }, async () => {
+    const { error: matchErr } = await supabase.from("matches").update({ status: "live", started_at: new Date().toISOString() }).eq("id", matchId);
+    if (matchErr) throw matchErr;
+    const { error: scoreErr } = await supabase.from("live_scores").upsert(
+      { match_id: matchId, is_live: true, clock_status: "running", clock_started_at: new Date().toISOString() },
+      { onConflict: "match_id" }
+    );
+    if (scoreErr) throw scoreErr;
+  });
 }
 
 export async function pauseClock(matchId: string, currentElapsedSeconds: number) {
-  const { error } = await supabase.from("live_scores").update({ clock_status: "paused", clock_elapsed_seconds: currentElapsedSeconds, clock_started_at: null }).eq("match_id", matchId);
-  if (error) throw error;
+  return tracked("scoring.clock.pause", { matchId, elapsedSeconds: currentElapsedSeconds }, async () => {
+    const { error } = await supabase.from("live_scores").update({ clock_status: "paused", clock_elapsed_seconds: currentElapsedSeconds, clock_started_at: null }).eq("match_id", matchId);
+    if (error) throw error;
+  });
 }
 
 export async function resumeClock(matchId: string) {
-  const { error } = await supabase.from("live_scores").update({ clock_status: "running", clock_started_at: new Date().toISOString() }).eq("match_id", matchId);
-  if (error) throw error;
+  return tracked("scoring.clock.resume", { matchId }, async () => {
+    const { error } = await supabase.from("live_scores").update({ clock_status: "running", clock_started_at: new Date().toISOString() }).eq("match_id", matchId);
+    if (error) throw error;
+  });
 }
 
 export async function setMatchStatus(matchId: string, status: string) {
-  const { error: matchErr } = await supabase.from("matches").update({ status }).eq("id", matchId);
-  if (matchErr) throw matchErr;
-  const { error: scoreErr } = await supabase.from("live_scores").update({ period: status.replace("_", " ") }).eq("match_id", matchId);
-  if (scoreErr) throw scoreErr;
+  return tracked("scoring.match.status", { matchId, status }, async () => {
+    const { error: matchErr } = await supabase.from("matches").update({ status }).eq("id", matchId);
+    if (matchErr) throw matchErr;
+    const { error: scoreErr } = await supabase.from("live_scores").update({ period: status.replace("_", " ") }).eq("match_id", matchId);
+    if (scoreErr) throw scoreErr;
+  });
 }
 
 export async function endMatch(matchId: string, homeScore: number, awayScore: number) {
-  // Previously computed but never saved (a real bug — matches always ended
-  // with no winner recorded, regardless of the final score).
-  const winnerTeamField =
-    homeScore > awayScore ? "home_team_id" : awayScore > homeScore ? "away_team_id" : null;
-  const { data: matchRow, error: fetchErr } = await supabase.from("matches").select("home_team_id, away_team_id").eq("id", matchId).single();
-  if (fetchErr) throw fetchErr;
-  const winnerTeamId = winnerTeamField ? (matchRow as Record<string, string | null>)[winnerTeamField] : null;
+  return tracked("scoring.match.end", { matchId, homeScore, awayScore }, async () => {
+    // Previously computed but never saved (a real bug — matches always ended
+    // with no winner recorded, regardless of the final score).
+    const winnerTeamField =
+      homeScore > awayScore ? "home_team_id" : awayScore > homeScore ? "away_team_id" : null;
+    const { data: matchRow, error: fetchErr } = await supabase.from("matches").select("home_team_id, away_team_id").eq("id", matchId).single();
+    if (fetchErr) throw fetchErr;
+    const winnerTeamId = winnerTeamField ? (matchRow as Record<string, string | null>)[winnerTeamField] : null;
 
-  const { error: matchErr } = await supabase.from("matches").update({
-    status: "completed",
-    ended_at: new Date().toISOString(),
-    home_score: homeScore,
-    away_score: awayScore,
-    winner_team_id: winnerTeamId,
-  }).eq("id", matchId);
-  if (matchErr) throw matchErr;
+    const { error: matchErr } = await supabase.from("matches").update({
+      status: "completed",
+      ended_at: new Date().toISOString(),
+      home_score: homeScore,
+      away_score: awayScore,
+      winner_team_id: winnerTeamId,
+    }).eq("id", matchId);
+    if (matchErr) throw matchErr;
 
-  const { error: scoreErr } = await supabase.from("live_scores").update({ is_live: false, clock_status: "stopped" }).eq("match_id", matchId);
-  if (scoreErr) throw scoreErr;
+    const { error: scoreErr } = await supabase.from("live_scores").update({ is_live: false, clock_status: "stopped" }).eq("match_id", matchId);
+    if (scoreErr) throw scoreErr;
+  });
 }
 
 export async function addAddedTime(matchId: string, seconds: number) {
@@ -95,31 +106,40 @@ export interface LogEventInput {
  * what caused scores to get stuck instead of incrementing.
  */
 export async function logMatchEvent(input: LogEventInput) {
-  const { data, error } = await supabase.rpc("log_match_event_atomic", {
-    p_match_id: input.matchId,
-    p_team_id: input.teamId ?? null,
-    p_player_id: input.playerId ?? null,
-    p_event_type: input.eventType,
-    p_minute: input.minute ?? null,
-    p_description: input.description ?? null,
-    p_value: input.value ?? 1,
-    p_score_delta: input.scoreDelta ?? null,
-    p_scoring_team: input.scoringTeam ?? null,
+  return tracked("scoring.event.log", { matchId: input.matchId, eventType: input.eventType, scoreDelta: input.scoreDelta ?? null, scoringTeam: input.scoringTeam ?? null }, async () => {
+    const { data, error } = await supabase.rpc("log_match_event_atomic", {
+      p_match_id: input.matchId,
+      p_team_id: input.teamId ?? null,
+      p_player_id: input.playerId ?? null,
+      p_event_type: input.eventType,
+      p_minute: input.minute ?? null,
+      p_description: input.description ?? null,
+      p_value: input.value ?? 1,
+      p_score_delta: input.scoreDelta ?? null,
+      p_scoring_team: input.scoringTeam ?? null,
+    });
+    if (error) throw error;
+    return data;
   });
-  if (error) throw error;
-  return data;
 }
 
 export async function undoEvent(eventId: string) {
-  const { error } = await supabase.rpc("undo_match_event", { p_event_id: eventId });
-  if (error) throw error;
+  return tracked("scoring.event.undo", { eventId }, async () => {
+    const { error } = await supabase.rpc("undo_match_event", { p_event_id: eventId });
+    if (error) throw error;
+  });
 }
 
 export async function postCommentary(matchId: string, authorId: string, message: string, minute?: number) {
-  const { error } = await supabase.from("commentary").insert({ match_id: matchId, author_id: authorId, message, minute: minute ?? null });
-  if (error) throw error;
+  return tracked("commentary.post", { matchId }, async () => {
+    const { error } = await supabase.from("commentary").insert({ match_id: matchId, author_id: authorId, message, minute: minute ?? null });
+    if (error) throw error;
+  });
 }
 
 export async function updateSportState(matchId: string, sportState: Record<string, unknown>) {
-  await supabase.from("live_scores").update({ sport_state: sportState }).eq("match_id", matchId);
+  const { error } = await supabase.from("live_scores").update({ sport_state: sportState }).eq("match_id", matchId);
+  // Previously the result was ignored entirely, so a failed live-state write was invisible.
+  // Still non-throwing (callers never expected it to throw) — but now it leaves a trace.
+  if (error) log.fail("scoring.sport_state.update_failed", error, { matchId });
 }
