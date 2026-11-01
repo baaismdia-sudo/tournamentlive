@@ -1,3 +1,5 @@
+import { log } from "../../lib/observability/logger";
+
 /**
  * Lightweight user-agent parsing — good enough for "Chrome on Windows,
  * mobile" style login-history display without pulling in a full UA-parser
@@ -20,10 +22,16 @@ export function parseDeviceInfo(userAgent: string) {
 export async function getClientIp(): Promise<string | null> {
   try {
     const res = await fetch("https://api.ipify.org?format=json");
-    if (!res.ok) return null;
+    if (!res.ok) {
+      log.warn("thirdparty.ipify.bad_status", { status: res.status });
+      return null;
+    }
     const data = await res.json();
     return data.ip ?? null;
-  } catch {
+  } catch (err) {
+    // Third-party call: ad-blockers and offline users make this fail routinely, so a warning
+    // (not an issue) — but it explains why login_history.ip_address is sometimes empty.
+    log.warn("thirdparty.ipify.failed", { errorMessage: err instanceof Error ? err.message : "failed" });
     return null;
   }
 }
