@@ -1,5 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import {
+  HeartPulse,
   LayoutDashboard, Globe, Home, Navigation, PanelBottom, Palette, Ticket, CreditCard,
   Users, ShieldCheck, KeyRound, Building2, Trophy, Dumbbell, ShieldHalf, User, Swords,
   Radio, Newspaper, Image, Handshake, FileText, BookOpen, HelpCircle, MessageSquareQuote,
@@ -102,6 +103,7 @@ export const SIDEBAR_GROUPS: SidebarGroup[] = [
       { label: "White Label", to: "/admin/white-label", icon: Paintbrush },
       { label: "API Keys", to: "/admin/api-keys", icon: KeyRound },
       { label: "Webhook Logs", to: "/admin/webhook-logs", icon: Webhook },
+      { label: "Monitoring", to: "/admin/monitoring", icon: HeartPulse },
       { label: "Backup & Restore", to: "/admin/backup", icon: DatabaseBackup },
       { label: "System Settings", to: "/admin/system-settings", icon: Settings },
       { label: "Audit Logs", to: "/admin/audit-logs", icon: History },
