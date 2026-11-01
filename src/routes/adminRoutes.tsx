@@ -34,12 +34,8 @@ import AdminSponsorsPage from "../pages/admin/AdminSponsorsPage";
 import AdminMediaLibraryPage from "../pages/admin/AdminMediaLibraryPage";
 import AdminWebhookLogsPage from "../pages/admin/AdminWebhookLogsPage";
 import AdminApiKeysPage from "../pages/admin/AdminApiKeysPage";
+import MonitoringPage from "../pages/admin/MonitoringPage";
 import AdminTestimonialsPage from "../pages/admin/AdminTestimonialsPage";
-import FaqPage from "../pages/admin/FaqPage";
-import AdvertisementsPage from "../pages/admin/AdvertisementsPage";
-import BlogPage from "../pages/admin/BlogPage";
-import TaxesPage from "../pages/admin/TaxesPage";
-import PaymentSettingsPage from "../pages/admin/PaymentSettingsPage";
 import ComingSoonPage from "../pages/admin/ComingSoonPage";
 
 // Every sidebar destination not yet built with real CRUD routes to
@@ -47,14 +43,15 @@ import ComingSoonPage from "../pages/admin/ComingSoonPage";
 // are intentionally absent — see prior notes; they're merged into
 // custom-domains and roles respectively.
 //
-// "cms" remains deferred: unlike blog/faq/advertisements, a platform CMS
-// needs its own schema decision (custom_pages is tournament-scoped only,
-// not nullable, so it can't be reused directly for platform-wide pages).
+// "blog" and "faq" remain deferred because no backing database tables exist
+// for them yet (no blog_posts / faqs tables) — building real admin CRUD
+// for those requires a schema migration first, which wasn't done silently.
 // "reports" and "backup" have no dedicated table/feature to back them either.
 const DEFERRED_PATHS = [
   "website-builder", "homepage-builder", "navigation-builder", "footer-builder",
+  "taxes", "payment-settings",
   "live-scores",
-  "cms",
+  "cms", "blog", "faq", "advertisements",
   "reports", "backup",
 ];
 
@@ -102,11 +99,7 @@ export const adminRoutes: RouteObject[] = [
       { path: "media-library", element: <AdminMediaLibraryPage /> },
       { path: "webhook-logs", element: <AdminWebhookLogsPage /> },
       { path: "api-keys", element: <AdminApiKeysPage /> },
-      { path: "faq", element: <FaqPage /> },
-      { path: "advertisements", element: <AdvertisementsPage /> },
-      { path: "blog", element: <BlogPage /> },
-      { path: "taxes", element: <TaxesPage /> },
-      { path: "payment-settings", element: <PaymentSettingsPage /> },
+      { path: "monitoring", element: <MonitoringPage /> },
       ...DEFERRED_PATHS.map((path) => ({ path, element: <ComingSoonPage /> })),
     ],
   },
