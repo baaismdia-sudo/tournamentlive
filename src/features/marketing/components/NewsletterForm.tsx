@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ButtonSpinner } from "../../../components/ui/LoadingSpinner";
 import { supabase } from "../../../lib/supabaseClient";
+import { startRequest } from "../../../lib/observability/logger";
 
 export function NewsletterForm() {
   const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ export function NewsletterForm() {
       return;
     }
     setStatus("loading");
+    const req = startRequest("newsletter.subscribe");
     try {
       // Platform-level newsletter signups reuse contact_messages (tournament_id
       // null = platform inbox) rather than a bespoke table, since the shape
@@ -28,9 +30,11 @@ export function NewsletterForm() {
         message: "Subscribed via landing page newsletter form",
       });
       if (error) throw error;
+      req.ok();
       setStatus("success");
       setEmail("");
-    } catch {
+    } catch (err) {
+      req.fail(err);
       setStatus("error");
       setErrorMessage("Something went wrong. Please try again.");
     }
