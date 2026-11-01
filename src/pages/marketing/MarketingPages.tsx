@@ -6,6 +6,7 @@ import { Button } from "../../features/marketing/components/Button";
 import { Features } from "../../features/marketing/sections/Features";
 import { supabase } from "../../lib/supabaseClient";
 import { getErrorMessage } from "../../lib/errors";
+import { startRequest } from "../../lib/observability/logger";
 import { ButtonSpinner } from "../../components/ui/LoadingSpinner";
 
 const lz = <K extends string>(loader: () => Promise<Record<K, React.ComponentType>>, key: K) =>
@@ -95,14 +96,18 @@ export function ContactPage() {
     setError(null);
     if (!/^\S+@\S+\.\S+$/.test(form.email)) return setError("Enter a valid email address.");
     setStatus("sending");
+    const req = startRequest("contact.submit", { subjectProvided: Boolean(form.subject.trim()), messageLength: form.message.trim().length });
     try {
       const { error: insertError } = await supabase.from("contact_messages").insert({
         tournament_id: null, name: form.name.trim(), email: form.email.trim(),
         subject: form.subject.trim() || "General enquiry", message: form.message.trim(),
       });
       if (insertError) throw insertError;
+      req.ok();
       setStatus("sent");
     } catch (err) {
+      // A visitor tried to reach you and it didn't arrive — that is a lost enquiry.
+      req.fail(err);
       setStatus("idle");
       setError(getErrorMessage(err));
     }
