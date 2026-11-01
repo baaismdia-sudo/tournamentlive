@@ -2,6 +2,9 @@ import { createContext, useContext, useEffect, useState, useCallback, type React
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabaseClient";
 import { getOwnProfile } from "../services/supabase/profiles";
+import { log } from "../lib/observability/logger";
+import { Sentry } from "../lib/observability/sentry";
+import { setLogUser, setLogRole, getLogUserId } from "../lib/observability/context";
 import type { Profile } from "../../supabase/types/database.types";
 
 interface ProfileWithRole extends Profile {
@@ -28,9 +31,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const loadProfile = useCallback(async () => {
     try {
-      const p = await getOwnProfile();
-      setProfile(p as ProfileWithRole | null);
-    } catch {
+      const p = (await getOwnProfile()) as ProfileWithRole | null;
+      setProfile(p);
+      setLogRole(p?.roles?.name ?? null);
+      // A signed-in user with no profile row looks "role-less" and gets bounced around
+      // the app with no error on screen — make it visible.
+      if (!p) log.warn("auth.profile_missing");
+    } catch (err) {
+      // Previously swallowed: the user simply appeared to have no role / no access.
+      log.fail("auth.profile_load_failed", err);
       setProfile(null);
     }
   }, []);
@@ -42,13 +51,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!mounted) return;
       setSession(data.session);
       setUser(data.session?.user ?? null);
+      setLogUser(data.session?.user?.id ?? null);
+      Sentry.setUser(data.session?.user ? { id: data.session.user.id } : null);
       if (data.session?.user) await loadProfile();
       setIsLoading(false);
     });
 
-    const { data: subscription } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
+    const { data: subscription } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+      const previousUserId = getLogUserId();
       setSession(newSession);
       setUser(newSession?.user ?? null);
+      setLogUser(newSession?.user?.id ?? null);
+      // Only the user's id is ever attached — never their email or name.
+      Sentry.setUser(newSession?.user ? { id: newSession.user.id } : null);
+      if (event === "SIGNED_IN" && newSession?.user && newSession.user.id !== previousUserId) log.info("auth.session.signed_in");
+      if (event === "SIGNED_OUT") log.info("auth.session.signed_out", { previousUserId });
+      if (event === "PASSWORD_RECOVERY") log.info("auth.session.password_recovery");
       if (newSession?.user) {
         await loadProfile();
       } else {
