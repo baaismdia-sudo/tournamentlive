@@ -1,8 +1,10 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
 import { AlertTriangle } from "lucide-react";
+import { Sentry } from "../../lib/observability/sentry";
+import { log, describeError } from "../../lib/observability/logger";
 
 interface Props { children: ReactNode }
-interface State { error: Error | null }
+interface State { error: Error | null; reference: string | null }
 
 /**
  * Without this, any uncaught render-time exception anywhere in the tree
@@ -11,15 +13,19 @@ interface State { error: Error | null }
  * This catches it, shows a real message, and offers a reload instead.
  */
 export class ErrorBoundary extends Component<Props, State> {
-  state: State = { error: null };
+  state: State = { error: null, reference: null };
 
   static getDerivedStateFromError(error: Error): State {
-    return { error };
+    return { error, reference: null };
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    // eslint-disable-next-line no-console
-    console.error("Unhandled render error:", error, info.componentStack);
+    const d = describeError(error);
+    log.error("ui.render_crash", { errorName: d.errorName, errorMessage: d.errorMessage });
+    // Sentry returns an event id; showing a short form of it lets a user tell you
+    // exactly which crash they hit ("it's broken" becomes "reference 3fa9c1d2").
+    const eventId = Sentry.captureException(error, { extra: { componentStack: info.componentStack?.slice(0, 1500) } });
+    this.setState({ reference: eventId ? eventId.slice(0, 8) : null });
   }
 
   render() {
@@ -30,8 +36,13 @@ export class ErrorBoundary extends Component<Props, State> {
           <h1 className="font-heading text-lg font-bold text-[var(--color-heading)]">Something went wrong</h1>
           <p className="max-w-sm text-sm text-[var(--color-muted)]">
             This page hit an unexpected error and couldn't continue. Reloading usually fixes it — if it keeps
-            happening, use the thumbs-down button to report it.
+            happening, tell us and quote the reference below.
           </p>
+          {this.state.reference && (
+            <p className="rounded-lg bg-[var(--color-surface-secondary)] px-3 py-1.5 font-mono text-xs text-[var(--color-muted)]">
+              Reference: {this.state.reference}
+            </p>
+          )}
           <button
             onClick={() => window.location.reload()}
             className="rounded-lg bg-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold text-[var(--color-on-primary)]"
