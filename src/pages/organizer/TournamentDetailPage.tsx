@@ -6,6 +6,7 @@ import { getTournamentUrl } from "../../lib/publicUrls";
 import { PageLoader } from "../../components/ui/LoadingSpinner";
 import { ErrorState } from "../../components/ui/ErrorState";
 import { getErrorMessage } from "../../lib/errors";
+import { startRequest, describeError } from "../../lib/observability/logger";
 
 interface TournamentDetail {
   id: string;
@@ -60,6 +61,7 @@ function StaffAssignmentsPanel({ tournamentId }: { tournamentId: string }) {
     setIsSaving(true);
     setError(null);
     setSuccess(null);
+    const req = startRequest("staff.invite", { tournamentId, role: selectedRole });
     try {
       const { data, error: rpcError } = await supabase.rpc("invite_tournament_staff", {
         p_email: email.trim(),
@@ -70,8 +72,13 @@ function StaffAssignmentsPanel({ tournamentId }: { tournamentId: string }) {
       const result = data as { full_name: string; role: string } | null;
       setSuccess(`${result?.full_name ?? email} is now assigned as ${selectedRole} on this tournament.`);
       setEmail("");
+      req.ok();
       load();
     } catch (err) {
+      // Most failures here are expected business rules ("no account for that email", "already
+      // staff for another organizer") — a warning with the reason, not a Sentry issue.
+      const d = describeError(err);
+      req.rejected(d.errorCode ?? "rejected", { errorMessage: d.errorMessage });
       setError(getErrorMessage(err));
     } finally {
       setIsSaving(false);
