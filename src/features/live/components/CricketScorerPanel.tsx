@@ -2,6 +2,8 @@ import { useMemo, useState } from "react";
 import { Undo2, Zap, ChevronDown, X, HelpCircle } from "lucide-react";
 import { supabase } from "../../../lib/supabaseClient";
 import { getErrorMessage } from "../../../lib/errors";
+import { startRequest } from "../../../lib/observability/logger";
+import type { LogAttrs } from "../../../lib/observability/redact";
 import { endMatch } from "../../../services/supabase/matchControl";
 import type { MatchRow, LiveScoreRow, MatchEventRow } from "../hooks/useRealtimeMatch";
 import { type CricketState, ballDot } from "../cricket/cricketState";
@@ -58,11 +60,17 @@ export function CricketScorerPanel({
   const battingSquad = state?.batting_team_id === homeTeam?.id ? homePlayers : awayPlayers;
   const bowlingSquad = state?.batting_team_id === homeTeam?.id ? awayPlayers : homePlayers;
 
-  const run = async (label: string, fn: () => Promise<void>) => {
+  // Every scorer action leaves a trace: scoring.cricket.<action>.ok / .failed, all tied to one
+  // requestId. A failed ball is the worst thing that can happen at a live match, so failures
+  // open a Sentry issue (via req.fail) rather than only showing a toast to the scorer.
+  const run = async (label: string, fn: () => Promise<void>, attrs: LogAttrs = {}) => {
+    const req = startRequest(`scoring.cricket.${label.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`, { matchId: match.id, ...attrs });
     setIsBusy(true);
     try {
       await fn();
+      req.ok();
     } catch (err) {
+      req.fail(err);
       notify(`${label} failed: ${getErrorMessage(err)}`, true);
     } finally {
       setIsBusy(false);
@@ -89,7 +97,7 @@ export function CricketScorerPanel({
       if (runs === 4 && type === "run") flashCard("FOUR! 🏏");
       if (runs === 6 && type === "run") flashCard("SIX! 🚀");
       refetch();
-    });
+    }, { deliveryType: type, runs, isWicket: Boolean(wicket), wicketType: wicket?.type ?? null });
 
   const undo = () => run("Undo", async () => {
     const { error } = await supabase.rpc("undo_cricket_delivery", { p_match_id: match.id });
