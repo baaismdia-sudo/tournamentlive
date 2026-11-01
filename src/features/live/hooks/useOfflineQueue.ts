@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { log } from "../../../lib/observability/logger";
 
 export interface QueuedAction<T = Record<string, unknown>> {
   id: string;
@@ -23,7 +24,14 @@ export function useOfflineQueue<T extends Record<string, unknown>>(
   useEffect(() => {
     if (!matchId) return;
     const raw = window.localStorage.getItem(storageKey);
-    if (raw) setQueue(JSON.parse(raw));
+    if (!raw) return;
+    try {
+      setQueue(JSON.parse(raw));
+    } catch {
+      // Corrupted storage used to throw inside an effect (blank page); now it's dropped, loudly.
+      log.error("offline.queue_corrupt", { matchId, bytes: raw.length });
+      window.localStorage.removeItem(storageKey);
+    }
   }, [matchId, storageKey]);
 
   useEffect(() => {
@@ -34,8 +42,9 @@ export function useOfflineQueue<T extends Record<string, unknown>>(
   const enqueue = useCallback((payload: T) => {
     const action: QueuedAction<T> = { id: crypto.randomUUID(), payload, createdAt: new Date().toISOString() };
     setQueue((q) => [...q, action]);
+    log.warn("offline.enqueued", { matchId, actionId: action.id, online: navigator.onLine });
     return action.id;
-  }, []);
+  }, [matchId]);
 
   const drain = useCallback(async () => {
     if (queue.length === 0) return;
@@ -43,12 +52,15 @@ export function useOfflineQueue<T extends Record<string, unknown>>(
     for (const action of queue) {
       try {
         await flush(action.payload);
-      } catch {
+      } catch (err) {
+        // Kept for the next attempt — but a queued score that keeps failing must be visible.
+        log.fail("offline.flush_failed", err, { matchId, actionId: action.id, queuedAt: action.createdAt });
         remaining.push(action);
       }
     }
+    log.info("offline.drained", { matchId, attempted: queue.length, stillPending: remaining.length });
     setQueue(remaining);
-  }, [queue, flush]);
+  }, [queue, flush, matchId]);
 
   useEffect(() => {
     const handleOnline = () => {
